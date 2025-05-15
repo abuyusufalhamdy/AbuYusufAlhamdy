@@ -3,207 +3,150 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Safari Sips - Salafi YouTube Channel</title>
+<title>Abu Yusuf Alhamdy - Salafi YouTube Channel</title>
 <style>
   body {
     margin: 0;
     font-family: 'Cinzel', serif;
     background: #f5f5f5;
-    color: #222;
+    color: #111;
     display: flex;
     min-height: 100vh;
   }
-  #sidebar {
-    width: 220px;
+  header {
     background: #000;
-    color: #eee;
+    padding: 10px 20px;
     display: flex;
-    flex-direction: column;
-    padding: 20px;
+    align-items: center;
   }
-  #sidebar img {
-    width: 60px;
+  header img {
+    width: 100px;
     height: auto;
-    margin-bottom: 20px;
-    cursor: pointer;
   }
-  #sidebar h2 {
-    margin: 10px 0 20px 0;
-    font-weight: bold;
-  }
-  #sidebar a {
-    color: #eee;
-    text-decoration: none;
-    padding: 10px 0;
-    font-weight: 600;
-    border-bottom: 1px solid #444;
-  }
-  #sidebar a:hover {
-    background: #222;
-  }
-  #main {
-    flex-grow: 1;
-    padding: 30px;
+  nav {
     background: #fff;
+    width: 220px;
+    padding: 20px;
+    box-shadow: 1px 0 5px rgba(0,0,0,0.1);
+  }
+  nav h2 {
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  nav a {
+    display: block;
+    margin-bottom: 12px;
+    color: #111;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+  main {
+    flex: 1;
+    padding: 20px;
+    background: #fff;
+    box-shadow: inset 0 0 10px #ddd;
     overflow-y: auto;
   }
-  #video-player {
-    width: 100%;
-    height: 400px;
-    margin-bottom: 30px;
-  }
-  #video-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  .video-list {
+    display: flex;
+    flex-wrap: wrap;
     gap: 15px;
   }
   .video-item {
-    cursor: pointer;
+    width: 320px;
   }
-  .video-item img {
+  .video-item iframe {
     width: 100%;
-    border-radius: 4px;
+    height: 180px;
   }
   .video-title {
-    margin-top: 8px;
-    font-size: 0.95rem;
-    color: #333;
+    margin-top: 6px;
+    font-weight: 600;
   }
 </style>
+<script src="https://apis.google.com/js/api.js"></script>
+<script>
+  const API_KEY = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng'; // Replace with your actual API key
+  const CHANNEL_ID = 'UCXZpmb3LM-OvdqLCyZWc7FA'; // Your YouTube Channel ID starting with UC
+
+  function loadClient() {
+    gapi.client.setApiKey(API_KEY);
+    return gapi.client.load('youtube', 'v3');
+  }
+
+  function displayVideos(response) {
+    const videosContainer = document.getElementById('videos');
+    videosContainer.innerHTML = '';
+    const items = response.result.items;
+    if(!items.length){
+      videosContainer.innerHTML = '<p>No videos found.</p>';
+      return;
+    }
+    items.forEach(item => {
+      const videoId = item.id.videoId;
+      const title = item.snippet.title;
+      const videoDiv = document.createElement('div');
+      videoDiv.className = 'video-item';
+      videoDiv.innerHTML = `
+        <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+        <div class="video-title">${title}</div>
+      `;
+      videosContainer.appendChild(videoDiv);
+    });
+  }
+
+  function fetchVideos() {
+    return gapi.client.youtube.search.list({
+      part: 'snippet',
+      channelId: CHANNEL_ID,
+      maxResults: 12,
+      order: 'date',
+      type: 'video'
+    }).then(displayVideos, err => {
+      document.getElementById('videos').innerHTML = '<p>Failed to load videos.</p>';
+      console.error('YouTube API error:', err);
+    });
+  }
+
+  function init() {
+    gapi.load('client', () => {
+      loadClient().then(fetchVideos);
+    });
+  }
+
+  window.onload = init;
+</script>
 </head>
 <body>
+  <nav>
+    <img src="logo.png" alt="Abu Yusuf Alhamdy logo" />
+    <h2>Menu</h2>
+    <a href="#about">About This Page</a>
+    <a href="#all-videos">All Videos</a>
+    <a href="#latest-video">Latest Video</a>
+  </nav>
+  <main>
+    <section id="about">
+      <h1>About This Page</h1>
+      <p>This is the official Salafi YouTube Channel of Abu Yusuf Alhamdy. Here you will find Islamic videos following the Salafi manhaj.</p>
+    </section>
 
-<div id="sidebar">
-  <img src="logo.png" alt="Safari Sips Logo" id="logo" />
-  <h2>Safari Sips</h2>
-  <a href="#" id="about-link">About This Page</a>
-  <a href="#" id="all-videos-link">All Videos</a>
-  <a href="#" id="latest-video-link">Latest Video</a>
-</div>
+    <section id="all-videos">
+      <h2>All Videos</h2>
+      <div id="videos" class="video-list">
+        <p>Loading videos...</p>
+      </div>
+    </section>
 
-<div id="main">
-  <div id="video-player-container">
-    <iframe id="video-player" src="" frameborder="0" allowfullscreen></iframe>
-  </div>
-  <div id="video-list"></div>
-</div>
-
-<script>
-  const API_KEY = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng';  // Your actual API key
-  const CHANNEL_ID = 'UCXZpmb3LM-OvdqLCyZWc7FA';  // Your YouTube Channel ID
-
-  const videoPlayer = document.getElementById('video-player');
-  const videoList = document.getElementById('video-list');
-  const aboutLink = document.getElementById('about-link');
-  const allVideosLink = document.getElementById('all-videos-link');
-  const latestVideoLink = document.getElementById('latest-video-link');
-
-  // Load videos from channel via YouTube Data API
-  async function fetchVideos(pageToken = '') {
-    const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=12&pageToken=${pageToken}`;
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      return data;
-    } catch (e) {
-      console.error('Error fetching videos', e);
-      return null;
-    }
-  }
-
-  // Display video list
-  function displayVideos(videos) {
-    videoList.innerHTML = '';
-    videos.forEach(video => {
-      if (video.id.kind === 'youtube#video') {
-        const videoId = video.id.videoId;
-        const title = video.snippet.title;
-        const thumbnail = video.snippet.thumbnails.medium.url;
-
-        const videoDiv = document.createElement('div');
-        videoDiv.classList.add('video-item');
-        videoDiv.innerHTML = `
-          <img src="${thumbnail}" alt="${title}" />
-          <div class="video-title">${title}</div>
-        `;
-        videoDiv.addEventListener('click', () => {
-          playVideo(videoId);
-        });
-        videoList.appendChild(videoDiv);
-      }
-    });
-  }
-
-  // Play video by videoId
-  function playVideo(videoId) {
-    videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-  }
-
-  // Show about info
-  function showAbout() {
-    videoPlayer.src = '';
-    videoList.innerHTML = `
-      <h2>About This Page</h2>
-      <p>This is the official Safari Sips Salafi YouTube Channel website, displaying all videos and latest uploads. Stay connected and updated.</p>
-    `;
-  }
-
-  // Show all videos
-  async function showAllVideos() {
-    const data = await fetchVideos();
-    if (data && data.items) {
-      displayVideos(data.items);
-      // Play first video by default
-      const firstVideo = data.items.find(item => item.id.kind === 'youtube#video');
-      if (firstVideo) playVideo(firstVideo.id.videoId);
-    }
-  }
-
-  // Show latest video uploaded this week
-  async function showLatestVideo() {
-    const data = await fetchVideos();
-    if (!data || !data.items) {
-      videoList.innerHTML = '<p>No videos found.</p>';
-      return;
-    }
-    // Filter videos uploaded within last 7 days
-    const oneWeekAgo = new Date();
-    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
-    const recentVideos = data.items.filter(item => {
-      if (item.id.kind !== 'youtube#video') return false;
-      const publishedDate = new Date(item.snippet.publishedAt);
-      return publishedDate >= oneWeekAgo;
-    });
-
-    if (recentVideos.length === 0) {
-      videoList.innerHTML = '<p>No videos uploaded this week.</p>';
-      videoPlayer.src = '';
-      return;
-    }
-
-    displayVideos(recentVideos);
-    playVideo(recentVideos[0].id.videoId);
-  }
-
-  aboutLink.addEventListener('click', e => {
-    e.preventDefault();
-    showAbout();
-  });
-
-  allVideosLink.addEventListener('click', e => {
-    e.preventDefault();
-    showAllVideos();
-  });
-
-  latestVideoLink.addEventListener('click', e => {
-    e.preventDefault();
-    showLatestVideo();
-  });
-
-  // Initial load - show all videos
-  showAllVideos();
-</script>
-
+    <section id="latest-video" style="margin-top: 40px;">
+      <h2>Latest Video</h2>
+      <div id="latest-video-container">
+        <!-- Latest video iframe will be added here -->
+      </div>
+    </section>
+  </main>
 </body>
 </html>
