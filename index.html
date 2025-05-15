@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>YouTube Channel</title>
+<title>Abu Yusuf Alhamdy's YouTube Channel</title>
 <style>
   /* Reset & base */
   body, html {
@@ -288,3 +288,153 @@
 </div>
 
 <script>
+const apiKey = "YOUR_YOUTUBE_API_KEY";
+const channelId = "YOUR_CHANNEL_ID";
+const formEndpoint = "YOUR_FORMSPREE_ENDPOINT";
+
+// Sidebar toggle
+const sidebar = document.getElementById("sidebar");
+const toggleBtn = document.getElementById("toggleBtn");
+
+toggleBtn.addEventListener("click", () => {
+if(window.innerWidth <= 700) {
+// Mobile: toggle show/hide class
+sidebar.classList.toggle("show");
+} else {
+sidebar.classList.toggle("hidden");
+// Adjust mainContent margin
+if(sidebar.classList.contains("hidden")) {
+document.getElementById("mainContent").style.marginLeft = "0";
+} else {
+document.getElementById("mainContent").style.marginLeft = "240px";
+}
+}
+});
+
+// Navigation tabs
+const tabs = {
+homeTab: "homePage",
+allVideosTab: "allVideosPage",
+aboutTab: "aboutPage",
+commentsTab: "commentsPage"
+};
+
+for (const tabId in tabs) {
+document.getElementById(tabId).addEventListener("click", e => {
+e.preventDefault();
+// Remove active class from all tabs
+Object.keys(tabs).forEach(t => {
+document.getElementById(t).classList.remove("active");
+document.getElementById(tabs[t]).classList.remove("active");
+});
+// Activate current
+e.target.classList.add("active");
+document.getElementById(tabs[tabId]).classList.add("active");
+
+  // On mobile, hide sidebar after selection
+  if(window.innerWidth <= 700) sidebar.classList.remove("show");
+});
+
+}
+
+// Fetch latest video and autoplay
+async function fetchLatestVideo() {
+const url = https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=1&type=video;
+try {
+const res = await fetch(url);
+const data = await res.json();
+if(data.items && data.items.length > 0) {
+const vid = data.items[0].id.videoId;
+const latestVideoDiv = document.getElementById("latestVideo");
+latestVideoDiv.innerHTML = <iframe src="https://www.youtube.com/embed/${vid}?autoplay=1&mute=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen title="Latest Video" ></iframe> ;
+} else {
+document.getElementById("latestVideo").textContent = "No videos found.";
+}
+} catch (e) {
+document.getElementById("latestVideo").textContent = "Failed to load latest video.";
+console.error(e);
+}
+}
+
+// Fetch all videos
+async function fetchAllVideos() {
+const videosGrid = document.getElementById("videosGrid");
+videosGrid.innerHTML = "Loading videos...";
+  // YouTube API maxResults max is 50
+const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=20&type=video`;
+try {
+  const res = await fetch(url);
+  const data = await res.json();
+  if(data.items && data.items.length > 0) {
+    videosGrid.innerHTML = "";
+    data.items.forEach(video => {
+      const vid = video.id.videoId;
+      const title = video.snippet.title;
+      const thumb = video.snippet.thumbnails.medium.url;
+      const videoDiv = document.createElement("div");
+      videoDiv.className = "video-item";
+      videoDiv.innerHTML = `
+        <img src="${thumb}" alt="${title}" />
+        <div class="video-title">${title}</div>
+      `;
+      videoDiv.addEventListener("click", () => openModal(vid));
+      videosGrid.appendChild(videoDiv);
+    });
+  } else {
+    videosGrid.textContent = "No videos found.";
+  }
+} catch (e) {
+  videosGrid.textContent = "Failed to load videos.";
+  console.error(e);
+}
+// Modal video
+const videoModal = document.getElementById("videoModal");
+const modalVideo = document.getElementById("modalVideo");
+const closeModalBtn = document.getElementById("closeModalBtn");
+
+function openModal(videoId) {
+modalVideo.src = https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0;
+videoModal.classList.add("active");
+}
+
+function closeModal() {
+videoModal.classList.remove("active");
+modalVideo.src = "";
+}
+
+closeModalBtn.addEventListener("click", closeModal);
+videoModal.addEventListener("click", (e) => {
+if(e.target === videoModal) closeModal();
+});
+
+// Comment form submit handler
+const commentForm = document.getElementById("commentForm");
+const formStatus = document.getElementById("formStatus");
+
+commentForm.addEventListener("submit", async e => {
+e.preventDefault();
+formStatus.textContent = "Sending...";
+const formData = new FormData(commentForm);
+  try {
+  const res = await fetch(formEndpoint, {
+    method: "POST",
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  });
+  if(res.ok) {
+    formStatus.textContent = "Message sent successfully!";
+    commentForm.reset();
+  } else {
+    formStatus.textContent = "Failed to send message.";
+  }
+} catch {
+  formStatus.textContent = "Failed to send message.";
+}
+  });
+
+// Initialize
+fetchLatestVideo();
+
+// Fetch all videos only when the all videos tab is clicked (lazy load)
+document.getElementById("allVideosTab").addEventListener("click", fetchAllVideos);
+</script> </body> </html> ``` 
