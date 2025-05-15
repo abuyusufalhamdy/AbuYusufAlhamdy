@@ -1,17 +1,227 @@
+/* Reset and base */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  color: #222;
+  transition: background 0.3s, color 0.3s;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+a {
+  color: #0645ad;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Sidebar */
+#sidebar {
+  width: 220px;
+  background: #fff;
+  border-right: 5px solid transparent;
+  border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="100"><path stroke="darkblue" stroke-width="5" d="M0 0 Q10 50 0 100" fill="none"/></svg>') 5 stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  box-sizing: border-box;
+  transition: background 0.3s, border-color 0.3s;
+  position: relative;
+  user-select: none;
+}
+
+/* Brush stroke effect with SVG as border-image */
+#sidebar a {
+  display: block;
+  width: 100%;
+  padding: 15px 20px;
+  border-bottom: 3px solid transparent;
+  transition: background 0.3s, border-color 0.3s;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+#sidebar a:hover,
+#sidebar a.active {
+  background: #e6f0ff;
+  border-color: darkblue;
+  color: darkblue;
+}
+
+/* Logo */
+.logo {
+  width: 64px;
+  height: auto;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+/* Tabs container */
+.tab {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: none;
+}
+
+.tab.active {
+  display: block;
+}
+
+/* Video grid */
+#video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+  gap: 15px;
+}
+
 .video-item {
   background: #fff;
   padding: 10px;
   border-radius: 8px;
   overflow: hidden;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  transition: background 0.3s;
 }
+
 .video-item img {
   width: 100%;
   border-radius: 4px;
 }
+
 .video-item p {
   font-size: 14px;
   margin-top: 5px;
+  color: #222;
 }
+
+/* Contact form */
+form {
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+input, textarea {
+  padding: 8px 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus {
+  border-color: darkblue;
+  outline: none;
+}
+
+button {
+  background: darkblue;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #002366;
+}
+
+/* Settings toggle button */
+#mode-toggle {
+  position: fixed;
+  top: 20px;
+  left: 100px; /* next to logo */
+  background: darkblue;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+  transition: background 0.3s;
+  z-index: 1000;
+}
+
+#mode-toggle:hover {
+  background: #002366;
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+  background: #121212;
+  color: #eee;
+}
+
+.dark-mode a {
+  color: #aad4ff;
+}
+
+.dark-mode #sidebar {
+  background: #1c1c1c;
+  border-color: transparent;
+}
+
+.dark-mode #sidebar a:hover,
+.dark-mode #sidebar a.active {
+  background: #003366;
+  border-color: #aad4ff;
+  color: #aad4ff;
+}
+
 .dark-mode .video-item {
   background: #2a2a2a;
+  box-shadow: none;
+}
+
+.dark-mode .video-item p {
+  color: #eee;
+}
+
+.dark-mode input,
+.dark-mode textarea {
+  background-color: #333;
+  color: white;
+  border: 1px solid #777;
+}
+
+.dark-mode input::placeholder,
+.dark-mode textarea::placeholder {
+  color: #bbb;
+}
+
+/* Text and form elements */
+.dark-mode #sidebar a,
+.dark-mode #settings-tab,
+.dark-mode .tab,
+.dark-mode label,
+.dark-mode p,
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6 {
+  color: white;
+}
+
+/* Scrollbar for tabs */
+.tab::-webkit-scrollbar {
+  width: 8px;
+}
+.tab::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+.dark-mode .tab::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255,0.2);
 }
