@@ -8,7 +8,7 @@
     :root {
       --bg: #f5f5f5;
       --text: #111;
-      --accent: darkblue;
+      --accent: #0ff;
     }
 
     body {
@@ -22,10 +22,10 @@
     .night {
       --bg: #000;
       --text: #fff;
-      background-image: radial-gradient(circle at top left, #0ff 1px, transparent 1px),
-                        radial-gradient(circle at top right, #0ff 1px, transparent 1px),
-                        radial-gradient(circle at bottom left, #0ff 1px, transparent 1px),
-                        radial-gradient(circle at bottom right, #0ff 1px, transparent 1px);
+      background-image: radial-gradient(circle at top left, var(--accent) 2px, transparent 2px),
+                        radial-gradient(circle at top right, var(--accent) 2px, transparent 2px),
+                        radial-gradient(circle at bottom left, var(--accent) 2px, transparent 2px),
+                        radial-gradient(circle at bottom right, var(--accent) 2px, transparent 2px);
       background-size: 100px 100px;
       background-repeat: no-repeat;
     }
@@ -40,7 +40,7 @@
       background-color: #111;
       color: white;
       padding: 20px;
-      border-right: 5px solid darkblue;
+      border-right: 5px solid var(--accent);
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -63,7 +63,7 @@
     }
 
     .sidebar a:hover {
-      border-bottom: 2px solid darkblue;
+      border-bottom: 2px solid var(--accent);
     }
 
     .mode-toggle {
@@ -71,11 +71,15 @@
       top: 10px;
       right: 10px;
       cursor: pointer;
-      background: darkblue;
-      color: white;
-      padding: 5px 10px;
+      background: none;
       border: none;
-      border-radius: 4px;
+      font-size: 24px;
+      color: var(--accent);
+      transition: transform 0.3s;
+    }
+
+    .mode-toggle:hover {
+      transform: rotate(20deg);
     }
 
     .content {
@@ -110,7 +114,7 @@
     }
 
     .brush-border {
-      border: 3px solid darkblue;
+      border: 3px solid var(--accent);
       border-style: dashed;
     }
 
@@ -120,7 +124,7 @@
   <div class="container">
     <div class="sidebar">
       <img src="logo.png" alt="Logo" />
-      <button class="mode-toggle" onclick="toggleMode()">Toggle Mode</button>
+      <button class="mode-toggle" id="toggleMode"><span id="modeIcon">☀️</span></button>
       <a href="#home">Home</a>
       <a href="#articles">Articles</a>
       <a href="#videos">Videos</a>
@@ -163,7 +167,10 @@
     const channelId = "UCoXzWPTne8dHYrftHpdIopw";
 
     function toggleMode() {
-      document.body.classList.toggle("night");
+      const body = document.body;
+      const icon = document.getElementById("modeIcon");
+      body.classList.toggle("night");
+      icon.textContent = body.classList.contains("night") ? "🌙" : "☀️";
     }
 
     function showSection(id) {
@@ -179,7 +186,8 @@
       });
     });
 
-    // Fetch latest video for homepage
+    document.getElementById("toggleMode").addEventListener("click", toggleMode);
+
     fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=1`)
       .then(res => res.json())
       .then(data => {
@@ -190,7 +198,6 @@
         `;
       });
 
-    // Load all videos
     function loadVideos() {
       fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=25`)
         .then(res => res.json())
