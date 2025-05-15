@@ -1,41 +1,38 @@
-body {
-    margin: 0;
-    font-family: 'Cinzel', serif;
-    background: linear-gradient(to bottom, #000000, #ffffff);
-    color: #000;
-    text-align: center;
-}
+<script>
+  const apiKey = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng';
+  const channelId = 'UCoXzWPTne8dHYrftHpdIopw';
+  const maxResults = 6;
 
-header {
-    padding: 20px;
-}
+  const latestVideoContainer = document.getElementById('latest-video');
+  const videosContainer = document.getElementById('videos-container');
 
-.logo {
-    max-width: 200px;
-}
+  fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&type=video&order=date&maxResults=${maxResults}`)
+    .then(response => response.json())
+    .then(data => {
+      if (!data.items || data.items.length === 0) {
+        latestVideoContainer.innerHTML = '<p>No videos found.</p>';
+        return;
+      }
 
-nav button {
-    margin: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #ffffffcc;
-    border: 1px solid #000;
-    transition: all 0.3s ease-in-out;
-}
+      data.items.forEach((item, index) => {
+        const videoId = item.id.videoId;
+        const title = item.snippet.title;
+        const embedHTML = `
+          <div class="video">
+            <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+            <p>${title}</p>
+          </div>
+        `;
 
-nav button:hover {
-    transform: scale(1.05);
-    background-color: #eee;
-}
-
-.youtube-feed {
-    margin: 20px auto;
-    max-width: 90%;
-}
-
-footer {
-    margin-top: 40px;
-    padding: 10px;
-    background-color: #00000022;
-}
+        if (index === 0) {
+          latestVideoContainer.innerHTML = embedHTML;
+        } else {
+          videosContainer.innerHTML += embedHTML;
+        }
+      });
+    })
+    .catch(err => {
+      console.error('Failed to fetch videos:', err);
+      latestVideoContainer.innerHTML = '<p>Error loading videos.</p>';
+    });
+</script>
