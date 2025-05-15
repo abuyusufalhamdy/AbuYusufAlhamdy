@@ -3,37 +3,39 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Your YouTube Channel</title>
+<title>YouTube Channel</title>
 <style>
-  body {
-    margin: 0; font-family: Arial, sans-serif;
-    background: #f7f7f7; color: #222;
+  /* Reset & base */
+  body, html {
+    margin: 0; padding: 0; height: 100%; font-family: Arial, sans-serif;
+    background: #f0f0f0; color: #222; overflow: hidden;
     display: flex;
-    height: 100vh;
-    overflow: hidden;
   }
+
+  /* Sidebar */
   #sidebar {
-    width: 220px;
+    width: 240px;
     background: #222;
     color: #eee;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
+    height: 100vh;
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    z-index: 1000;
   }
   #sidebar.hidden {
-    transform: translateX(-220px);
+    transform: translateX(-240px);
   }
   #sidebar header {
     padding: 20px;
-    font-size: 1.2em;
+    font-size: 1.3em;
     border-bottom: 1px solid #444;
-    display: flex;
-    align-items: center;
+    display: flex; align-items: center;
   }
   #sidebar header img {
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
+    width: 40px; height: 40px; margin-right: 10px;
   }
   #sidebar nav a {
     padding: 15px 20px;
@@ -41,26 +43,40 @@
     text-decoration: none;
     border-bottom: 1px solid #444;
     cursor: pointer;
+    display: block;
   }
-  #sidebar nav a.active, #sidebar nav a:hover {
+  #sidebar nav a.active,
+  #sidebar nav a:hover {
     background: #444;
   }
+
+  /* Toggle button */
   #toggleBtn {
-    background: #111; color: #eee;
+    position: fixed;
+    top: 10px; left: 10px;
+    z-index: 1100;
+    background: #222;
+    color: #eee;
     border: none;
-    padding: 10px;
+    padding: 10px 15px;
     cursor: pointer;
-    font-size: 1em;
+    border-radius: 5px;
   }
 
+  /* Main content */
   #mainContent {
-    flex: 1;
-    overflow-y: auto;
+    margin-left: 240px;
     padding: 20px;
+    overflow-y: auto;
+    height: 100vh;
+    flex: 1;
     background: #fff;
-    position: relative;
+  }
+  #sidebar.hidden + #mainContent {
+    margin-left: 0;
   }
 
+  /* Pages */
   .page {
     display: none;
   }
@@ -68,23 +84,22 @@
     display: block;
   }
 
+  /* Latest video */
   #latestVideo iframe {
     width: 100%;
     max-width: 720px;
     height: 405px;
-    border: none;
     border-radius: 8px;
     box-shadow: 0 0 8px #aaa;
-  }
-  #latestVideo p {
-    margin-top: 8px;
-    font-weight: bold;
+    border: none;
   }
 
+  /* Videos grid */
   #videosGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
     gap: 15px;
+    margin-top: 10px;
   }
   .video-item {
     background: #eee;
@@ -107,14 +122,15 @@
     color: #333;
   }
 
+  /* Modal */
   #videoModal {
     position: fixed;
-    top: 0; left: 0; right:0; bottom:0;
-    background: rgba(0,0,0,0.8);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 2000;
   }
   #videoModal.active {
     display: flex;
@@ -122,19 +138,19 @@
   }
   #videoModal iframe {
     width: 80vw;
-    height: 45vw;
     max-width: 900px;
+    height: 45vw;
     max-height: 506px;
-    border: none;
     border-radius: 10px;
     box-shadow: 0 0 15px #000;
+    border: none;
   }
   #closeModalBtn {
     position: absolute;
     top: 20px; right: 20px;
     background: #fff;
     border: none;
-    font-size: 1.5em;
+    font-size: 1.8em;
     padding: 5px 12px;
     cursor: pointer;
     border-radius: 6px;
@@ -146,8 +162,9 @@
     to {transform: scale(1); opacity: 1;}
   }
 
+  /* Comments form */
   #commentForm {
-    max-width: 500px;
+    max-width: 480px;
     margin-top: 20px;
   }
   #commentForm input, #commentForm textarea {
@@ -158,6 +175,7 @@
     border: 1px solid #ccc;
     font-size: 1em;
     resize: vertical;
+    box-sizing: border-box;
   }
   #commentForm button {
     margin-top: 15px;
@@ -174,30 +192,42 @@
     font-weight: bold;
   }
 
+  /* Footer */
   footer {
     position: fixed;
-    bottom: 0; left: 220px; right: 0;
+    bottom: 0; left: 240px; right: 0;
     background: #222;
     color: #eee;
     text-align: center;
     padding: 10px;
     font-size: 0.8em;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.5);
+  }
+  #sidebar.hidden + #mainContent footer {
+    left: 0;
   }
 
+  /* Responsive */
   @media(max-width: 700px) {
     #sidebar {
+      transform: translateX(-240px);
       position: fixed;
+      z-index: 1000;
       height: 100vh;
-      z-index: 10000;
-      transform: translateX(-220px);
     }
-    #sidebar.expanded {
+    #sidebar.hidden {
+      transform: translateX(-240px);
+    }
+    #sidebar.show {
       transform: translateX(0);
     }
     #toggleBtn {
-      position: fixed;
-      top: 10px; left: 10px;
-      z-index: 11000;
+      left: 10px; top: 10px;
+      z-index: 1100;
+    }
+    #mainContent {
+      margin-left: 0;
+      height: 100vh;
     }
     footer {
       left: 0;
@@ -209,7 +239,7 @@
 
 <div id="sidebar" class="hidden">
   <header>
-    <img src="logo.png" alt="Logo" />
+    <img src="logo.png" alt="Abu Yusuf Alhamdy logo" />
     <span>My Channel</span>
   </header>
   <nav>
@@ -219,7 +249,8 @@
     <a href="#" id="commentsTab">Comments</a>
   </nav>
 </div>
-<button id="toggleBtn">Show Menu</button>
+
+<button id="toggleBtn">☰</button>
 
 <div id="mainContent">
   <div id="homePage" class="page active">
@@ -229,7 +260,7 @@
 
   <div id="allVideosPage" class="page">
     <h2>All Videos</h2>
-    <div id="videosGrid"></div>
+    <div id="videosGrid">Loading videos...</div>
   </div>
 
   <div id="aboutPage" class="page">
@@ -247,164 +278,13 @@
     </form>
     <div id="formStatus"></div>
   </div>
+
+  <footer>© 2025 Abu Yusuf Alhamdy</footer>
 </div>
 
 <div id="videoModal">
-  <button id="closeModalBtn">&times;</button>
+  <button id="closeModalBtn" aria-label="Close video">&times;</button>
   <iframe id="modalVideo" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 
 <script>
-  const API_KEY = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng'; // Replace with your API key
-  const CHANNEL_ID = 'UCoXzWPTne8dHYrftHpdIopw'; // Replace with your channel ID
-
-  const sidebar = document.getElementById('sidebar');
-  const toggleBtn = document.getElementById('toggleBtn');
-  const homeTab = document.getElementById('homeTab');
-  const allVideosTab = document.getElementById('allVideosTab');
-  const aboutTab = document.getElementById('aboutTab');
-  const commentsTab = document.getElementById('commentsTab');
-
-  const homePage = document.getElementById('homePage');
-  const allVideosPage = document.getElementById('allVideosPage');
-  const aboutPage = document.getElementById('aboutPage');
-  const commentsPage = document.getElementById('commentsPage');
-
-  const latestVideoContainer = document.getElementById('latestVideo');
-  const videosGrid = document.getElementById('videosGrid');
-
-  const videoModal = document.getElementById('videoModal');
-  const modalVideo = document.getElementById('modalVideo');
-  const closeModalBtn = document.getElementById
-('closeModalBtn');
-
-toggleBtn.addEventListener('click', () => {
-if (sidebar.classList.contains('hidden')) {
-sidebar.classList.remove('hidden');
-toggleBtn.textContent = 'Hide Menu';
-} else {
-sidebar.classList.add('hidden');
-toggleBtn.textContent = 'Show Menu';
-}
-});
-
-function setActiveTab(tab) {
-[homeTab, allVideosTab, aboutTab, commentsTab].forEach(t => t.classList.remove('active'));
-tab.classList.add('active');
-homePage.classList.remove('active');
-allVideosPage.classList.remove('active');
-aboutPage.classList.remove('active');
-commentsPage.classList.remove('active');
-
-if (tab === homeTab) homePage.classList.add('active');
-else if (tab === allVideosTab) allVideosPage.classList.add('active');
-else if (tab === aboutTab) aboutPage.classList.add('active');
-else if (tab === commentsTab) commentsPage.classList.add('active');
-}
-
-homeTab.addEventListener('click', e => { e.preventDefault(); setActiveTab(homeTab); });
-allVideosTab.addEventListener('click', e => { e.preventDefault(); setActiveTab(allVideosTab); });
-aboutTab.addEventListener('click', e => { e.preventDefault(); setActiveTab(aboutTab); });
-commentsTab.addEventListener('click', e => { e.preventDefault(); setActiveTab(commentsTab); });
-
-async function fetchVideos() {
-// Latest video
-const latestUrl = https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=1&type=video;
-try {
-const latestRes = await fetch(latestUrl);
-const latestData = await latestRes.json();
-if (latestData.items && latestData.items.length > 0) {
-const latestVid = latestData.items[0];
-const videoId = latestVid.id.videoId;
-latestVideoContainer.innerHTML = <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe> <p>${latestVid.snippet.title}</p> <button id="likeSubscribeBtn">Like & Subscribe</button> ;
-      document.getElementById('likeSubscribeBtn').addEventListener('click', () => {
-      alert('Please like and subscribe on YouTube!');
-    });
-  } else {
-    latestVideoContainer.textContent = 'No videos found.';
-  }
-} catch (error) {
-  latestVideoContainer.textContent = 'Error loading latest video.';
-}
-
-// All videos
-const allUrl = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=50&type=video`;
-try {
-  const allRes = await fetch(allUrl);
-  const allData = await allRes.json();
-  videosGrid.innerHTML = '';
-  if (allData.items && allData.items.length > 0) {
-    allData.items.forEach(video => {
-      const vidId = video.id.videoId;
-      const thumb = video.snippet.thumbnails.medium.url;
-      const title = video.snippet.title;
-      const div = document.createElement('div');
-      div.className = 'video-item';
-      div.innerHTML = `<img src="${thumb}" alt="${title}"><div class="video-title">${title}</div>`;
-      div.addEventListener('click', () => openModal(vidId));
-      videosGrid.appendChild(div);
-    });
-  } else {
-    videosGrid.textContent = 'No videos found.';
-  }
-} catch (error) {
-  videosGrid.textContent = 'Error loading videos.';
-}
-}
-
-function openModal(videoId) {
-modalVideo.src = https://www.youtube.com/embed/${videoId}?autoplay=1;
-videoModal.classList.add('active');
-}
-function closeModal() {
-modalVideo.src = '';
-videoModal.classList.remove('active');
-}
-closeModalBtn.addEventListener('click', closeModal);
-videoModal.addEventListener('click', e => {
-if (e.target === videoModal) closeModal();
-});
-
-const commentForm = document.getElementById('commentForm');
-const formStatus = document.getElementById('formStatus');
-commentForm.addEventListener('submit', async e => {
-e.preventDefault();
-formStatus.textContent = 'Sending...';
-const formData = new FormData(commentForm);
-try {
-  const res = await fetch('https://formspree.io/f/yourFormID', { // Replace yourFormID
-    method: 'POST',
-    headers: { 'Accept': 'application/json' },
-    body: formData
-  });
-  if (res.ok) {
-    formStatus.textContent = 'Message sent! Thank you.';
-    commentForm.reset();
-  } else {
-    formStatus.textContent = 'Failed to send message.';
-  }
-} catch {
-  formStatus.textContent = 'Error sending message.';
-}
-const formData = new FormData(commentForm);
-try {
-  const res = await fetch('https://formspree.io/f/yourFormID', { // Replace yourFormID
-    method: 'POST',
-    headers: { 'Accept': 'application/json' },
-    body: formData
-  });
-  if (res.ok) {
-    formStatus.textContent = 'Message sent! Thank you.';
-    commentForm.reset();
-  } else {
-    formStatus.textContent = 'Failed to send message.';
-  }
-} catch {
-  formStatus.textContent = 'Error sending message.';
-}
-});
-
-// On load
-fetchVideos();
-</script>
-<footer>© 2025 Abu Yusuf Alhamdy</footer> </body> </html> 
