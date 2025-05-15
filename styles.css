@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+    font-family: 'Cinzel', serif;
+    background: linear-gradient(to bottom, #000000, #ffffff);
+    color: #000;
+    text-align: center;
+}
+
+header {
+    padding: 20px;
+}
+
+.logo {
+    max-width: 200px;
+}
+
+nav button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #ffffffcc;
+    border: 1px solid #000;
+    transition: all 0.3s ease-in-out;
+}
+
+nav button:hover {
+    transform: scale(1.05);
+    background-color: #eee;
+}
+
+.youtube-feed {
+    margin: 20px auto;
+    max-width: 90%;
+}
+
+footer {
+    margin-top: 40px;
+    padding: 10px;
+    background-color: #00000022;
+}
