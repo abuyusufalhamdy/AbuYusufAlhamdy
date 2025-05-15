@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Abu Yusuf Alhamdy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="style.css" rel="stylesheet">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo-mode">
+      <img src="logo.png" alt="Logo" class="logo">
+      <button id="mode-toggle">🌙</button>
+    </div>
+    <ul>
+      <li onclick="showTab('home')">Home</li>
+      <li onclick="showTab('articles')">Articles</li>
+      <li onclick="showTab('videos')">Videos</li>
+      <li onclick="showTab('contact')">Contact Us</li>
+    </ul>
+  </div>
+  <div class="main">
+    <section id="home" class="tab active">
+      <h1>Welcome to the official website of Abu Yusuf Alhamdy</h1>
+      <p>This is a Salafi website strictly based on the science of Hadith.</p>
+      <a href="https://youtube.com/@abuyusufaalhamdy" target="_blank">Subscribe to our YouTube Channel</a>
+    </section>
+    <section id="articles" class="tab">
+      <h1>Articles</h1>
+      <p>Articles will appear here, styled similarly to Medium.com.</p>
+    </section>
+    <section id="videos" class="tab">
+      <h1>YouTube Videos</h1>
+      <select id="speaker-filter"><option>All Speakers</option></select>
+      <select id="language-filter"><option>All Languages</option><option>Arabic</option><option>English</option></select>
+      <div id="video-grid"></div>
+    </section>
+    <section id="contact" class="tab">
+      <h1>Contact Us</h1>
+      <p>Email: abuyusufalhamdy@gmail.com</p>
+      <form id="contact-form">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <textarea name="message" placeholder="Message" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </section>
+  </div>
+</body>
+</html>
