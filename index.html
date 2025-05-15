@@ -3,46 +3,58 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Abu Yusuf Alhamdy Channel</title>
+<title>Abu Yusuf Alhamdy YouTube Channel</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
-<header>
-  <img src="logo.png" alt="Abu Yusuf Alhamdy logo" class="logo" />
-  <nav>
-    <ul class="tabs">
-      <li><a href="index.html" class="active">Home</a></li>
-      <li><a href="all-videos.html">All Videos</a></li>
-      <li><a href="#about">About</a></li>
-    </ul>
-  </nav>
-</header>
-
-<main>
-  <section id="featured-videos" class="video-grid"></section>
-
-  <section class="subscribe-prompt">
-    <h2>Like what you see?</h2>
-    <p>Don't forget to <strong>like</strong> and <strong>subscribe</strong> to Abu Yusuf Alhamdy's channel for regular updates.</p>
-    <a href="https://www.youtube.com/channel/UCoXzWPTne8dHYrftHpdIopw?sub_confirmation=1" target="_blank" class="subscribe-button">Subscribe Now</a>
-  </section>
-</main>
-
-<footer>
-  <p>&copy; 2025 Abu Yusuf Alhamdy</p>
-</footer>
+<div id="container">
+  <aside id="sidebar" class="sidebar-expanded">
+    <button id="toggleSidebar" aria-label="Toggle Sidebar">☰</button>
+    <img src="logo.png" alt="Abu Yusuf Alhamdy logo" class="logo-small" />
+    <nav>
+      <ul>
+        <li><button class="tab-button active" data-tab="home">Home</button></li>
+        <li><button class="tab-button" data-tab="allVideos">All Videos</button></li>
+        <li><button class="tab-button" data-tab="latest">Latest Video</button></li>
+        <li><button class="tab-button" data-tab="comments">Comments</button></li>
+        <li><button class="tab-button" data-tab="about">About</button></li>
+      </ul>
+    </nav>
+  </aside>
+  <main id="content">
+    <section id="home" class="tab-content active">
+      <h1>Welcome to Abu Yusuf Alhamdy YouTube Channel</h1>
+      <div id="homeVideos" class="video-list"></div>
+    </section>
+    <section id="allVideos" class="tab-content">
+      <h1>All Videos</h1>
+      <div id="allVideosList" class="video-list"></div>
+    </section>
+    <section id="latest" class="tab-content">
+      <h1>Latest Video</h1>
+      <div id="latestVideoContainer"></div>
+    </section>
+    <section id="comments" class="tab-content">
+      <h1>Comments & Questions</h1>
+      <form id="commentForm" method="POST" action="https://formspree.io/f/xqknvazr">
+        <label for="name">Name:</label><br />
+        <input type="text" id="name" name="name" required /><br />
+        <label for="email">Email:</label><br />
+        <input type="email" id="email" name="_replyto" required /><br />
+        <label for="message">Message:</label><br />
+        <textarea id="message" name="message" rows="5" required></textarea><br />
+        <button type="submit">Send</button>
+      </form>
+      <p><small>Your message will be sent to Abu Yusuf Alhamdy's email.</small></p>
+    </section>
+    <section id="about" class="tab-content">
+      <h1>About This Page</h1>
+      <p>This website features the Salafi YouTube channel of Abu Yusuf Alhamdy, sharing Islamic knowledge and teachings.</p>
+    </section>
+  </main>
+</div>
 
 <script src="script.js"></script>
-<script>
-  // Initialize page for home with limited videos (e.g., last 6)
-  initYoutubePage({
-    apiKey: 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng',
-    channelId: 'UCoXzWPTne8dHYrftHpdIopw',
-    maxResults: 6,
-    targetElementId: 'featured-videos'
-  });
-</script>
-
 </body>
 </html>
