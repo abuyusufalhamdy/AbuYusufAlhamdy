@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo-toggle">
+      <img src="logo.png" alt="Logo" class="logo"/>
+      <button id="mode-toggle">🌓</button>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="articles.html">Articles</a>
+      <a href="videos.html">Videos</a>
+      <a href="contact.html" class="active">Contact Us</a>
+    </nav>
+  </div>
+  <main>
+    <h2>Contact Us</h2>
+    <form action="mailto:abuyusufalhamdy@gmail.com" method="POST" enctype="text/plain">
+      <input type="text" name="name" placeholder="Your Name" required><br>
+      <input type="email" name="email" placeholder="Your Email" required><br>
+      <textarea name="message" placeholder="Your Message" required></textarea><br>
+      <button type="submit">Send</button>
+    </form>
+  </main>
+</body>
+</html>
