@@ -5,6 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Abu Yusuf Alhamdy - Official Website</title>
 <style>
+ <body>
+  <button id="modeToggle" class="toggle-button">Night Mode</button>
+
+  <div class="header-container">
+    <h3 class="header-small">welcome to</h3>
+    <h1 class="header-large">Abu Yusuf Alhamdy</h1>
+    <h3 class="header-small">website</h3>
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById('modeToggle');
+    const body = document.body;
+
+    function updateButtonText() {
+      toggleBtn.textContent = body.classList.contains('night-mode') ? 'Day Mode' : 'Night Mode';
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      body.classList.toggle('night-mode');
+      updateButtonText();
+    });
+
+    // Initialize button text
+    updateButtonText();
+  </script>
+</body>
+
   *{margin:0;padding:0;box-sizing:border-box;}
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
