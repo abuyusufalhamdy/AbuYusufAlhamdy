@@ -1,65 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Abu Yusuf Alhamdy - Salafi YouTube Channel</title>
-  <style>
-    body {
-      margin: 0;
-      background-color: #f0f0f0; /* light gray */
-      color: #000; /* black */
-      font-family: 'Cinzel', serif;
-    }
-    header {
-      background-color: #000; /* black */
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-    }
-    header img {
-      height: 40px;
-      width: auto;
-      margin-right: 20px;
-    }
-    nav {
-      background-color: #fff; /* white */
-      padding: 20px;
-      width: 200px;
-      height: 100vh;
-      box-sizing: border-box;
-      float: left;
-      border-right: 1px solid #ccc;
-    }
-    nav a {
-      display: block;
-      margin-bottom: 15px;
-      color: #000;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    main {
-      margin-left: 220px;
-      padding: 20px;
-    }
-  </style>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Abu Yusuf Alhamdy - Salafi YouTube Channel</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Cinzel', serif;
+    background-color: #f0f0f0;
+    color: #222;
+    display: flex;
+    min-height: 100vh;
+  }
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 60px;
+    width: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+    box-sizing: border-box;
+  }
+  header img {
+    height: 40px;
+  }
+  main {
+    margin-top: 60px;
+    flex: 1;
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+  }
+  #video-list {
+    width: 300px;
+    background: #fff;
+    padding: 15px;
+    box-shadow: 0 0 10px #ccc;
+    overflow-y: auto;
+    max-height: calc(100vh - 100px);
+  }
+  #video-list h2 {
+    margin-top: 0;
+    font-size: 1.3rem;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+  }
+  #video-list a {
+    display: block;
+    margin: 10px 0;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+  }
+  #video-list a:hover {
+    text-decoration: underline;
+  }
+  #video-player {
+    flex: 1;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px #ccc;
+  }
+  #video-player iframe {
+    width: 100%;
+    max-width: 800px;
+    height: 450px;
+    border: none;
+  }
+</style>
 </head>
 <body>
-  <header>
-    <img src="logo.png" alt="Abu Yusuf Alhamdy logo" />
-    <h1>Abu Yusuf Alhamdy - Salafi YouTube Channel</h1>
-  </header>
-  <nav>
-    <a href="#">About This Page</a>
-    <a href="#">All Videos</a>
-    <a href="#">Latest Uploaded Video</a>
-  </nav>
-  <main>
-    <p>Welcome to the official Salafi YouTube channel website.</p>
-  </main>
+
+<header>
+  <img src="logo.png" alt="Abu Yusuf Alhamdy logo" />
+</header>
+
+<main>
+  <div id="video-list">
+    <h2>Latest Videos</h2>
+    <div id="videos"></div>
+  </div>
+  <div id="video-player">
+    <iframe id="player" src="" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+  </div>
+</main>
+
+<script>
+  const apiKey = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng'; // replace with your actual API key
+  const channelId = 'UCXZpmb3LM-OvdqLCyZWc7FA'; // your channel ID starting with UC
+
+  const videosContainer = document.getElementById('videos');
+  const player = document.getElementById('player');
+
+  async function fetchVideos() {
+    try {
+      const response = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=10&type=video`);
+      const data = await response.json();
+
+      if (data.error) {
+        videosContainer.innerHTML = 'Error loading videos: ' + data.error.message;
+        return;
+      }
+
+      if (!data.items || data.items.length === 0) {
+        videosContainer.innerHTML = 'No videos found.';
+        return;
+      }
+
+      // Clear container
+      videosContainer.innerHTML = '';
+
+      data.items.forEach((item, index) => {
+        const videoId = item.id.videoId;
+        const title = item.snippet.title;
+
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = title;
+        link.dataset.videoId = videoId;
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          loadVideo(e.target.dataset.videoId);
+        });
+
+        videosContainer.appendChild(link);
+
+        // Auto-load the first video
+        if (index === 0) loadVideo(videoId);
+      });
+    } catch (err) {
+      videosContainer.innerHTML = 'Failed to fetch videos.';
+      console.error(err);
+    }
+  }
+
+  function loadVideo(id) {
+    player.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+  }
+
+  fetchVideos();
+</script>
+
 </body>
 </html>
+
