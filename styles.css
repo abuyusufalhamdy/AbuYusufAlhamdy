@@ -1,38 +1,187 @@
-<script>
-  const apiKey = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng';
-  const channelId = 'UCoXzWPTne8dHYrftHpdIopw';
-  const maxResults = 6;
+/* Basic reset & font */
+body, html {
+  margin: 0; padding: 0;
+  font-family: 'Cinzel', serif;
+  background: #f5f5f5;
+  color: #333;
+}
 
-  const latestVideoContainer = document.getElementById('latest-video');
-  const videosContainer = document.getElementById('videos-container');
+.logo {
+  height: 50px;
+  margin: 10px 20px;
+  float: left;
+}
 
-  fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&type=video&order=date&maxResults=${maxResults}`)
-    .then(response => response.json())
-    .then(data => {
-      if (!data.items || data.items.length === 0) {
-        latestVideoContainer.innerHTML = '<p>No videos found.</p>';
-        return;
-      }
+header {
+  background-color: #222;
+  color: #eee;
+  padding: 10px 20px;
+  overflow: auto;
+}
 
-      data.items.forEach((item, index) => {
-        const videoId = item.id.videoId;
-        const title = item.snippet.title;
-        const embedHTML = `
-          <div class="video">
-            <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
-            <p>${title}</p>
-          </div>
-        `;
+nav ul.tabs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  float: right;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
 
-        if (index === 0) {
-          latestVideoContainer.innerHTML = embedHTML;
-        } else {
-          videosContainer.innerHTML += embedHTML;
-        }
-      });
-    })
-    .catch(err => {
-      console.error('Failed to fetch videos:', err);
-      latestVideoContainer.innerHTML = '<p>Error loading videos.</p>';
-    });
-</script>
+nav ul.tabs li a {
+  text-decoration: none;
+  color: #bbb;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+nav ul.tabs li a.active,
+nav ul.tabs li a:hover {
+  color: #fff;
+  background-color: #444;
+}
+
+main {
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 0 20px 60px 20px;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+  gap: 25px;
+}
+
+.video-item {
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.video-item:hover {
+  border-color: #888;
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.video-title {
+  padding: 10px;
+  font-size: 1rem;
+  color: #222;
+  font-weight: 700;
+}
+
+.subscribe-prompt {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.subscribe-button {
+  display: inline-block;
+  margin-top: 10px;
+  background: #222;
+  color: #fff;
+  text-decoration: none;
+  padding: 12px 25px;
+  font-weight: 700;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.subscribe-button:hover {
+  background: #555;
+}
+
+/* Modal Styles */
+#videoModal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+#videoModal.active {
+  display: flex;
+}
+
+#videoModal iframe {
+  width: 80vw;
+  height: 45vw;
+  max-width: 960px;
+  max-height: 540px;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(255,255,255,0.7);
+  animation: zoomIn 0.3s ease forwards;
+}
+
+#videoModal .close-btn {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 900;
+}
+
+/* Animations */
+@keyframes zoomIn {
+  0% {transform: scale(0.7); opacity: 0;}
+  100% {transform: scale(1); opacity: 1;}
+}
+
+@keyframes zoomOut {
+  0% {transform: scale(1); opacity: 1;}
+  100% {transform: scale(0.7); opacity: 0;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.pagination-controls {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.pagination-controls button {
+  background: #222;
+  border: none;
+  color: white;
+  padding: 10px 18px;
+  font-size: 1rem;
+  margin: 0 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.pagination-controls button:disabled {
+  background: #999;
+  cursor: default;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+  background: #555;
+}
