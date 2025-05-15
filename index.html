@@ -53,7 +53,7 @@
   #sidebar {
     width: var(--sidebar-width);
     background: #0a0b10;
-    color: #0ff;
+    color: var(--color-accent);
     display: flex;
     flex-direction: column;
     padding: 1rem 0;
@@ -101,8 +101,14 @@
     border-radius: 4px;
     cursor: pointer;
     margin: 0 1rem 1rem auto;
-    display: block;
-    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  #toggleMode svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--color-accent);
   }
 
   /* Sections */
@@ -181,7 +187,6 @@
     margin-top: 0.5rem;
     font-weight: 600;
   }
-
 </style>
 </head>
 <body>
@@ -193,7 +198,12 @@
       <button data-target="videos">Videos</button>
       <button data-target="contact">Contact Us</button>
     </nav>
-    <button id="toggleMode" aria-label="Toggle Day Night Mode">Night Mode</button>
+    <button id="toggleMode" aria-label="Toggle Day Night Mode" title="Toggle Day/Night Mode">
+      <svg id="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="12" r="5" />
+      </svg>
+      Night Mode
+    </button>
   </div>
   <main id="main">
     <section id="home" class="active">
@@ -238,7 +248,6 @@
       btn.classList.add('active');
       const target = btn.getAttribute('data-target');
       sections.forEach(s => s.classList.toggle('active', s.id === target));
-      // Reset video search on videos tab switch
       if (target === 'videos') {
         document.getElementById('video-search').value = '';
         fetchVideos();
@@ -246,89 +255,8 @@
     });
   });
 
-  // Day/Night mode toggle
+  // Day/Night mode toggle with sun/moon icon
   const toggleBtn = document.getElementById('toggleMode');
-  toggleBtn.addEventListener('click', () => {
-    document.body.classList.toggle('night');
-    toggleBtn.textContent = document.body.classList.contains('night') ? 'Day Mode' : 'Night Mode';
-  });
+  const iconSvg = document.getElementById('icon');
 
-  // Fetch latest video and embed
-  async function fetchLatestVideo() {
-    const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=1&type=video`;
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      if (data.items && data.items.length > 0) {
-        const videoId = data.items[0].id.videoId;
-        document.getElementById('latest-video').innerHTML =
-          `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-      }
-    } catch (err) {
-      document.getElementById('latest-video').textContent = 'Failed to load latest video.';
-    }
-  }
-
-  // Fetch multiple videos for videos tab
-  let videosCache = [];
-  const videosList = document.getElementById('videos-list');
-  const videoSearch = document.getElementById('video-search');
-
-  async function fetchVideos() {
-    const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=20&type=video`;
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      videosCache = data.items || [];
-      renderVideos(videosCache);
-    } catch {
-      videosList.innerHTML = '<p>Failed to load videos.</p>';
-    }
-  }
-
-  function renderVideos(videos) {
-    if (!videos.length) {
-      videosList.innerHTML = '<p>No videos found.</p>';
-      return;
-    }
-    videosList.innerHTML = videos.map(v => {
-      const vidId = v.id.videoId;
-      const title = v.snippet.title;
-      return `
-        <div class="video-item">
-          <iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe>
-          <div class="title">${title}</div>
-        </div>`;
-    }).join('');
-  }
-
-  videoSearch.addEventListener('input', () => {
-    const term = videoSearch.value.trim().toLowerCase();
-    if (!term) {
-      renderVideos(videosCache);
-      return;
-    }
-    const filtered = videosCache.filter(v => v.snippet.title.toLowerCase().includes(term));
-    renderVideos(filtered);
-  });
-
-  // Contact form dummy submit
-  const form = document.getElementById('contact-form');
-  const formStatus = document.getElementById('form-status');
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    formStatus.style.color = '#0ff';
-    formStatus.textContent = 'Sending message...';
-    setTimeout(() => {
-      formStatus.style.color = '#0f0';
-      formStatus.textContent = 'Message sent successfully (dummy).';
-      form.reset();
-    }, 1500);
-  });
-
-  // Initial load
-  fetchLatestVideo();
-  fetchVideos();
-</script>
-</body>
-</html>
+  const sunIcon = '<circle cx="12" cy="12" r="5" /><g stroke="#0ff" stroke-width="2"><line x1="12" y1
