@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Abu Yusuf Alhamdy Official</title>
 <style>
-  /* Reset and base */
+  /* Base reset */
   * {
     box-sizing: border-box;
   }
@@ -13,112 +13,119 @@
     margin: 0; padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #eaeff4;
-    color: #000;
+    color: #111;
     transition: background-color 0.5s, color 0.5s;
     overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
   }
-  /* Neon teal accents and futuristic */
+
+  /* Neon teal variables */
   :root {
-    --neon-teal: #00ffcc;
-    --dark-blue: #0a1e3b;
-    --tab-bg: #0a1e3b;
-    --tab-hover-bg: #004d40;
+    --neon-teal: #00fff7;
+    --dark-bg: #0b1e2d;
+    --dark-tab-bg: #012229;
+    --dark-tab-hover: #014d4d;
   }
+
+  /* Night mode */
   body.night {
-    background-color: #0a1e3b;
-    color: #eee;
+    background-color: var(--dark-bg);
+    color: #e0f7f7;
   }
-  body.night .tab {
-    background-color: var(--tab-bg);
-    color: #eee;
-    border-left: 4px solid var(--neon-teal);
+
+  body.night a {
+    color: var(--neon-teal);
   }
-  body.night .tab:hover {
-    background-color: var(--tab-hover-bg);
-  }
+
   /* Sidebar */
   #sidebar {
     position: fixed;
     top: 0; left: 0;
     width: 220px;
     height: 100vh;
-    background-color: #111;
+    background: linear-gradient(145deg, #00181f, #00363f);
+    border-right: 3px solid var(--neon-teal);
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-right: 3px solid var(--neon-teal);
+    padding: 20px 0;
+    box-shadow: 0 0 15px var(--neon-teal);
+    z-index: 1000;
   }
+
   #logo {
-    margin: 20px 0;
-    width: 140px;
+    width: 130px;
     height: auto;
+    margin-bottom: 25px;
+    filter: drop-shadow(0 0 5px var(--neon-teal));
   }
+
   #toggle-btn {
     cursor: pointer;
-    margin-bottom: 20px;
-    font-size: 28px;
+    font-size: 30px;
     color: var(--neon-teal);
-    transition: color 0.3s;
+    margin-bottom: 25px;
+    user-select: none;
+    transition: color 0.3s ease;
   }
   #toggle-btn:hover {
-    color: #00e6b8;
+    color: #00d7cc;
   }
+
   .tabs {
     width: 100%;
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
   }
+
   .tab {
     padding: 15px 25px;
-    cursor: pointer;
-    color: var(--neon-teal);
     font-weight: 600;
+    color: var(--neon-teal);
+    cursor: pointer;
     border-left: 4px solid transparent;
+    transition: background-color 0.3s ease, border-left 0.3s ease;
     user-select: none;
-    transition: background-color 0.3s, border-left 0.3s;
   }
+
   .tab:hover {
-    background-color: #001f2f;
+    background-color: rgba(0, 255, 255, 0.15);
     border-left: 4px solid var(--neon-teal);
   }
+
   .tab.active {
-    background-color: #002933;
+    background-color: rgba(0, 255, 255, 0.3);
     border-left: 4px solid var(--neon-teal);
     font-weight: 700;
   }
+
   /* Content area */
   #content {
     margin-left: 220px;
-    padding: 30px 40px;
+    padding: 40px 50px;
     min-height: 100vh;
-    transition: color 0.5s;
+    transition: color 0.5s ease;
   }
+
   body.night #content {
-    color: #eee;
+    color: #a0f7f7;
   }
-  /* Neon lights corners for night mode */
+
+  /* Neon glowing corners on night mode */
   body.night::before,
   body.night::after,
-  body.night #content::before,
-  body.night #content::after {
+  #content.night-corners::before,
+  #content.night-corners::after {
     content: '';
     position: fixed;
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     border: 3px solid var(--neon-teal);
-    border-radius: 12px;
+    border-radius: 15px;
     box-shadow:
-      0 0 20px var(--neon-teal),
+      0 0 15px var(--neon-teal),
       0 0 40px var(--neon-teal),
-      0 0 60px var(--neon-teal);
+      0 0 70px var(--neon-teal);
     z-index: 9999;
-    animation: neonGlow 2s ease-in-out infinite alternate;
-  }
-  body.night::before {
-    top: 10px; left: 10px;
-    border-right: none; border-bottom: none;
-  }
-  body.night::after {
-    top: 10px; right: 10px;
-    border-left
+    animation: neonGlow 2
