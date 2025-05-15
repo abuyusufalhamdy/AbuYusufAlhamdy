@@ -1,393 +1,411 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Abu Yusuf Alhamdy Official</title>
-<style>
-  /* Reset */
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #0a0f1a;
-    color: #e0e6f1;
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-  }
-  /* Neon corners on night mode */
-  body.night-mode::before,
-  body.night-mode::after,
-  body.night-mode > div::before,
-  body.night-mode > div::after {
-    content: "";
-    position: fixed;
-    width: 80px;
-    height: 80px;
-    border: 3px solid #00fff7;
-    border-radius: 12px;
-    box-shadow: 0 0 20px #00fff7, 0 0 40px #00fff7, 0 0 60px #00fff7;
-    z-index: 9999;
-  }
-  body.night-mode::before {
-    top: 10px; left: 10px;
-    border-right: none; border-bottom: none;
-  }
-  body.night-mode::after {
-    top: 10px; right: 10px;
-    border-left: none; border-bottom: none;
-  }
-  body.night-mode > div::before {
-    bottom: 10px; left: 10px;
-    border-top: none; border-right: none;
-  }
-  body.night-mode > div::after {
-    bottom: 10px; right: 10px;
-    border-top: none; border-left: none;
-  }
-  /* Sidebar */
-  #sidebar {
-    background: #101828;
-    width: 220px;
-    display: flex;
-    flex-direction: column;
-    border-right: 4px solid #1f40ff;
-    box-shadow: inset 0 0 20px #1f40ff;
-  }
-  #logo-container {
-    padding: 15px;
-    text-align: center;
-    border-bottom: 2px solid #1f40ff;
-  }
-  #logo-container img {
-    max-width: 120px;
-    height: auto;
-    cursor: pointer;
-  }
-  nav {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  nav a {
-    color: #e0e6f1;
-    text-decoration: none;
-    padding: 18px 20px;
-    font-size: 1.1rem;
-    border-left: 4px solid transparent;
-    transition: all 0.3s ease;
-    cursor: pointer;
-  }
-  nav a:hover, nav a.active {
-    background: #1f40ff;
-    border-left-color: #00fff7;
-    color: #00fff7;
-  }
-  /* Night mode toggle container */
-  #modeToggleContainer {
-    padding: 10px 20px;
-    border-top: 2px solid #1f40ff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  #modeToggle {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #00fff7;
-    font-size: 1.8rem;
-  }
-  #modeToggle:hover {
-    color: #66fff9;
-  }
-  /* Main content */
-  #main {
-    flex: 1;
-    padding: 30px;
-    overflow-y: auto;
-    background: #0a0f1a;
-    color: #e0e6f1;
-  }
-  /* Tab content */
-  .tab-content {
-    display: none;
-  }
-  .tab-content.active {
-    display: block;
-  }
-  /* Home Page */
-  #home h1 {
-    font-size: 2.8rem;
-    margin-bottom: 10px;
-    color: #00fff7;
-  }
-  #home p {
-    font-size: 1.1rem;
-    line-height: 1.5;
-    margin-bottom: 15px;
-  }
-  #home a {
-    color: #1f40ff;
-    font-weight: bold;
-  }
-  #home a:hover {
-    color: #00fff7;
-  }
-  #latestVideo iframe {
-    width: 100%;
-    height: 360px;
-    border-radius: 8px;
-  }
-  /* Articles page (blank) */
-  #articles {
-    font-size: 1.1rem;
-    color: #d0d5dd;
-  }
-  /* Videos Page */
-  #videos {
-    display: flex;
-    flex-direction: column;
-  }
-  #videoSearch {
-    margin-bottom: 20px;
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1.5px solid #00fff7;
-    background: #101828;
-    color: #e0e6f1;
-  }
-  #videoSearch::placeholder {
-    color: #66fff9;
-  }
-  #videoList {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
-    gap: 18px;
-  }
-  .video-item {
-    background: #101828;
-    border: 2px solid #00fff7;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 0 10px #00fff7;
-    transition: transform 0.3s ease;
-  }
-  .video-item:hover {
-    transform: scale(1.05);
-  }
-  .video-item iframe {
-    width: 100%;
-    height: 180px;
-    display: block;
-  }
-  .video-title {
-    padding: 8px 12px;
-    font-size: 1rem;
-    color: #00fff7;
-    font-weight: 600;
-    text-align: center;
-  }
-  /* Contact Page */
-  #contact form {
-    max-width: 500px;
-    display: flex;
-    flex-direction: column;
-  }
-  #contact input, #contact textarea {
-    margin-bottom: 15px;
-    padding: 12px;
-    font-size: 1rem;
-    border-radius: 6px;
-    border: 1.5px solid #00fff7;
-    background: #101828;
-    color: #e0e6f1;
-  }
-  #contact input::placeholder, #contact textarea::placeholder {
-    color: #66fff9;
-  }
-  #contact button {
-    padding: 12px;
-    font-size: 1.1rem;
-    background: #00fff7;
-    border: none;
-    border-radius: 6px;
-    color: #0a0f1a;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s ease;
-  }
-  #contact button:hover {
-    background: #1f40ff;
-    color: white;
-  }
-  #statusMessage {
-    margin-top: 10px;
-    font-weight: bold;
-  }
-  #contact a {
-    color: #00fff7;
-  }
-  /* Scrollbar Styling */
-  #main::-webkit-scrollbar {
-    width: 12px;
-  }
-  #main::-webkit-scrollbar-track {
-    background: #0a0f1a;
-  }
-  #main::-webkit-scrollbar-thumb {
-    background-color: #00fff7;
-    border-radius: 20px;
-    border: 3px solid #0a0f1a;
-  }
-  /* Responsive */
-  @media (max-width: 700px) {
-    #sidebar {
-      width: 60px;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Abu Yusuf Alhamdy</title>
+  <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    nav a {
-      padding: 14px 10px;
-      font-size: 0;
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      background: #f0f0f0;
+      color: #222;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.night-mode {
+      background: #121212;
+      color: #ddd;
+    }
+
+    #sidebar {
+      width: 220px;
+      background: #1a1a2e;
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      border-right: 3px solid #16213e;
       position: relative;
     }
-    nav a::before {
-      content: attr(data-tooltip);
+
+    #sidebar nav {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #sidebar nav a {
+      padding: 18px 24px;
+      color: #eee;
+      text-decoration: none;
+      border-left: 4px solid transparent;
+      cursor: pointer;
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    #sidebar nav a:hover,
+    #sidebar nav a.active {
+      background: #0f3460;
+      border-left-color: #e94560;
+    }
+
+    #modeToggleContainer {
+      padding: 12px 24px;
+      border-top: 1px solid #333;
+    }
+
+    #modeToggle {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: #eee;
+      font-size: 20px;
+      cursor: pointer;
+      user-select: none;
+      outline: none;
+    }
+
+    #modeToggle:hover {
+      color: #e94560;
+    }
+
+    #main {
+      flex-grow: 1;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    section.tab-content {
+      display: none;
+    }
+
+    section.tab-content.active {
+      display: block;
+    }
+
+    iframe {
+      width: 100%;
+      height: 360px;
+      border: none;
+      margin-top: 12px;
+    }
+
+    #videoList {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .video-item iframe {
+      height: 180px;
+    }
+
+    .video-title {
+      margin-top: 6px;
       font-size: 14px;
-      position: absolute;
-      left: 70px;
-      white-space: nowrap;
-      color: #00fff7;
-      background: #101828;
-      padding: 5px 10px;
+      color: inherit;
+      font-weight: bold;
+    }
+
+    #videoSearch {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
       border-radius: 4px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
+      margin-bottom: 12px;
     }
-    nav a:hover::before {
-      opacity: 1;
+
+    #videoSearch:focus {
+      outline-color: #e94560;
+      border-color: #e94560;
     }
-    #logo-container img {
-      max-width: 50px;
+
+    form input, form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
     }
-  }
-</style>
+
+    form input:focus, form textarea:focus {
+      outline-color: #e94560;
+      border-color: #e94560;
+    }
+
+    form button {
+      background: #e94560;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    form button:hover {
+      background: #b62e46;
+    }
+
+    #statusMessage {
+      margin-top: 12px;
+      font-weight: bold;
+      color: #e94560;
+    }
+
+    /* Night mode adjustments */
+    body.night-mode #sidebar {
+      background: #0a0a14;
+      border-right-color: #0f0f2f;
+    }
+
+    body.night-mode #sidebar nav a:hover,
+    body.night-mode #sidebar nav a.active {
+      background: #16213e;
+      border-left-color: #ff3e57;
+      color: #fff;
+    }
+
+    body.night-mode form input, 
+    body.night-mode form textarea, 
+    body.night-mode #videoSearch {
+      background: #222;
+      color: #ddd;
+      border-color: #444;
+    }
+
+    body.night-mode form input:focus, 
+    body.night-mode form textarea:focus, 
+    body.night-mode #videoSearch:focus {
+      outline-color: #ff3e57;
+      border-color: #ff3e57;
+    }
+  </style>
 </head>
 <body>
-  <div id="sidebar">
-    <div id="logo-container">
-      <img src="logo.png" alt="Abu Yusuf Alhamdy Logo" />
+  <div id="sidebar" role="navigation" aria-label="Main Navigation">
+    <nav>
+      <a href="#" data-tab="home" class="active" aria-current="page">Home</a>
+      <a href="#" data-tab="articles">Articles</a>
+      <a href="#" data-tab="videos">Videos</a>
+      <a href="#" data-tab="contact">Contact Us</a>
+    </nav>
+    <div id="modeToggleContainer">
+      <button id="modeToggle" aria-label="Toggle Day/Night mode" title="Toggle Day/Night mode">🌙</button>
     </div>
-   
-<nav> <a href="#" data-tooltip="Home" class="active" data-tab="home">Home</a> <a href="#" data-tooltip="Articles" data-tab="articles">Articles</a> <a href="#" data-tooltip="Videos" data-tab="videos">Videos</a> <a href="#" data-tooltip="Contact Us" data-tab="contact">Contact Us</a> </nav> <div id="modeToggleContainer"> <button id="modeToggle" title="Toggle Day/Night mode" aria-label="Toggle Day/Night mode">🌙</button> </div> </div> <div id="main"> <section id="home" class="tab-content active" aria-label="Home"> <h1>Welcome to Abu Yusuf Alhamdy</h1> <p>Your source for authentic Islamic knowledge with the Salafi manhaj.</p> <p>Check out the latest video below:</p> <div id="latestVideo"></div> </section> <section id="articles" class="tab-content" aria-label="Articles"> <h2>Articles</h2> <p>Articles coming soon.</p> </section> <section id="videos" class="tab-content" aria-label="Videos"> <input type="text" id="videoSearch" placeholder="Search videos..." aria-label="Search videos" /> <div id="videoList" aria-live="polite" aria-atomic="true"></div> </section> <section id="contact" class="tab-content" aria-label="Contact Us"> <h2>Contact Us</h2> <form id="contactForm" action="https://formspree.io/f/yourformid" method="POST"> <input type="text" name="name" placeholder="Your Name" required aria-required="true" /> <input type="email" name="_replyto" placeholder="Your Email" required aria-required="true" /> <textarea name="message" rows="5" placeholder="Your Message" required aria-required="true"></textarea> <button type="submit">Send</button> </form> <div id="statusMessage" role="alert" aria-live="assertive"></div> </section> </div> <script> // Tab switching logic const tabs = document.querySelectorAll('#sidebar nav a'); const contents = document.querySelectorAll('.tab-content'); tabs.forEach(tab => { tab.addEventListener('click', e => { e.preventDefault(); tabs.forEach(t => t.classList.remove('active')); tab.classList.add('active'); const tabName = tab.dataset.tab; contents.forEach(c => c.classList.toggle('active', c.id === tabName)); if(tabName === 'videos') loadVideos(); // load videos only when tab is opened if(tabName === 'home') loadLatestVideo(); }); });
+  </div>
 
-// Day/night toggle
-const modeToggle = document.getElementById('modeToggle');
-modeToggle.addEventListener('click', () => {
-document.body.classList.toggle('night-mode');
-const isNight = document.body.classList.contains('night-mode');
-modeToggle.textContent = isNight ? '🌞' : '🌙';
-});
+  <main id="main" tabindex="-1">
+    <section id="home" class="tab-content active" aria-label="Home section">
+      <h1>Welcome to Abu Yusuf Alhamdy</h1>
+      <p>Your source for authentic Islamic knowledge with the Salafi manhaj.</p>
+      <p>Check out the latest video below:</p>
+      <div id="latestVideo" aria-live="polite" aria-busy="false">Loading latest video...</div>
+    </section>
 
-// YouTube API info
-const apiKey = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng';
-const channelId = 'UCoXzWPTne8dHYrftHpdIopw';
+    <section id="articles" class="tab-content" aria-label="Articles section">
+      <h2>Articles</h2>
+      <p>Articles coming soon.</p>
+    </section>
 
-// Fetch latest video for home tab
-async function loadLatestVideo() {
-const container = document.getElementById('latestVideo');
-container.innerHTML = 'Loading latest video...';
-try {
-const res = await fetch(https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=1);
-const data = await res.json();
-if(data.items && data.items.length > 0) {
-const videoId = data.items[0].id.videoId;
-container.innerHTML = <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen title="Latest Video"></iframe>;
-} else {
-container.innerHTML = 'No videos found.';
-}
-} catch {
-container.innerHTML = 'Failed to load video.';
-}
-}
+    <section id="videos" class="tab-content" aria-label="Videos section">
+      <input type="text" id="videoSearch" placeholder="Search videos..." aria-label="Search videos" autocomplete="off" />
+      <div id="videoList" aria-live="polite" aria-atomic="true">Loading videos...</div>
+    </section>
 
-// Video list and search
-let videoCache = [];
-async function loadVideos() {
-if(videoCache.length > 0) {
-displayVideos(videoCache);
-return;
-}
-const list = document.getElementById('videoList');
-list.innerHTML = 'Loading videos...';
-try {
-// Get playlist id of uploads
-let res = await fetch(https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${apiKey});
-let data = await res.json();
-const playlistId = data.items[0].contentDetails.relatedPlaylists.uploads;
-    // Fetch videos from playlist
-  res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=50&key=${apiKey}`);
-  data = await res.json();
-  videoCache = data.items.map(item => ({
-    id: item.snippet.resourceId.videoId,
-    title: item.snippet.title
-  }));
-  displayVideos(videoCache);
-} catch {
-  list.innerHTML = 'Failed to load videos.';
-}
-}
+    <section id="contact" class="tab-content" aria-label="Contact Us section">
+      <h2>Contact Us</h2>
+      <form id="contactForm" action="https://formspree.io/f/yourformid" method="POST" novalidate>
+        <input type="text" name="name" placeholder="Your Name" required aria-required="true" autocomplete="name" />
+        <input type="email" name="_replyto" placeholder="Your Email" required aria-required="true" autocomplete="email" />
+        <textarea name="message" rows="5" placeholder="Your Message" required aria-required="true"></textarea>
+        <button type="submit">Send</button>
+      </form>
+      <div id="statusMessage" role="alert" aria-live="assertive"></div>
+    </section>
+  </main>
 
-function displayVideos(videos) {
-const list = document.getElementById('videoList');
-list.innerHTML = '';
-if(videos.length === 0) {
-list.textContent = 'No videos found.';
-return;
-}
-videos.forEach(video => {
-const div = document.createElement('div');
-div.className = 'video-item';
-div.innerHTML = <iframe src="https://www.youtube.com/embed/${video.id}" frameborder="0" allowfullscreen title="${video.title}"></iframe> <div class="video-title">${video.title}</div> ;
-list.appendChild(div);
-});
-}
+  <script>
+    // Sidebar tabs switching
+    const tabs = document.querySelectorAll('#sidebar nav a');
+    const contents = document.querySelectorAll('section.tab-content');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', e => {
+        e.preventDefault();
+        const target = tab.dataset.tab;
 
-// Search filtering on videos tab
-document.getElementById('videoSearch').addEventListener('input', e => {
-const search = e.target.value.toLowerCase();
-const filtered = videoCache.filter(v => v.title.toLowerCase().includes(search));
-displayVideos(filtered);
-});
+        // Remove active from all tabs and contents
+        tabs.forEach(t => {
+          t.classList.remove('active');
+          t.removeAttribute('aria-current');
+        });
+        contents.forEach(c => c.classList.remove('active'));
 
-// Contact form submission via Formspree
-const contactForm = document.getElementById('contactForm');
-const statusMessage = document.getElementById('statusMessage');
-contactForm.addEventListener('submit', async (e) => {
-e.preventDefault();
-statusMessage.textContent = 'Sending...';
-const formData = new FormData(contactForm);
-try {
-const res = await fetch(contactForm.action, {
-method: 'POST',
-body: formData,
-headers: {
-'Accept': 'application/json'
-}
-});
-if(res.ok) {
-statusMessage.textContent = 'Message sent successfully!';
-contactForm.reset();
-} else {
-statusMessage.textContent = 'Failed to send message.';
-}
-} catch {
-statusMessage.textContent = 'Network error. Try again later.';
-}
-});
+        // Activate clicked tab and matching content
+        tab.classList.add('active');
+        tab.setAttribute('aria-current', 'page');
+        const content = document.getElementById(target);
+        content.classList.add('active');
+        content.focus();
 
-// Load latest video on page load
-loadLatestVideo();
-</script>
-</body> </html>
+        // Load videos or latest video on demand
+        if (target === 'videos') loadVideos();
+        if (target === 'home') loadLatestVideo();
+      });
+    });
+
+    // Day/night mode toggle
+    const modeToggle = document.getElementById('modeToggle');
+    modeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('night-mode');
+      const isNight = document.body.classList.contains('night-mode');
+      modeToggle.textContent = isNight ? '🌞' : '🌙';
+    });
+
+    // YouTube API info
+    const apiKey = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng';
+    const channelId = 'UCoXzWPTne8dHYrftHpdIopw';
+
+    // Latest video container
+    const latestVideoContainer = document.getElementById('latestVideo');
+
+    async function loadLatestVideo() {
+      latestVideoContainer.setAttribute('aria-busy', 'true');
+      latestVideoContainer.textContent = 'Loading latest video...';
+      try {
+        const res = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=1&type=video`);
+        const data = await res.json();
+        if (data.items && data.items.length > 0) {
+          const videoId = data.items[0].id.videoId;
+          latestVideoContainer.innerHTML = `
+            <iframe 
+              src="https://www.youtube.com/embed/${videoId}" 
+              allowfullscreen 
+              title="Latest Video"
+              loading="lazy"
+            ></iframe>`;
+        } else {
+          latestVideoContainer.textContent = 'No videos found.';
+        }
+      } catch (error) {
+        latestVideoContainer.textContent = 'Failed to load latest video.';
+        console.error('Latest video error:', error);
+      }
+      latestVideoContainer.setAttribute('aria-busy', 'false');
+    }
+
+    // Video list & search
+    const videoList = document.getElementById('videoList');
+    const videoSearchInput = document.getElementById('videoSearch');
+    let videoCache = [];
+
+    async function loadVideos() {
+      if (videoCache.length) {
+        displayVideos(videoCache);
+        return;
+      }
+
+      videoList.textContent = 'Loading videos...';
+
+      try {
+        // Get uploads playlist ID
+        let res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${apiKey}`);
+        let data = await res.json();
+        const playlistId = data.items[0].contentDetails.relatedPlaylists.uploads;
+
+        // Get videos from uploads playlist
+        res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=50&key=${apiKey}`);
+        data = await res.json();
+
+        videoCache = data.items.map(item => ({
+          id: item.snippet.resourceId.videoId,
+          title: item.snippet.title
+        }));
+
+        displayVideos(videoCache);
+      } catch (error) {
+        videoList.textContent = 'Failed to load videos.';
+        console.error('Videos load error:', error);
+      }
+    }
+
+    function displayVideos(videos) {
+      videoList.innerHTML = '';
+      if (!videos.length) {
+        videoList.textContent = 'No videos found.';
+        return;
+      }
+      videos.forEach(video => {
+        const div = document.createElement('div');
+        div.className = 'video-item';
+        div.innerHTML = `
+          <iframe 
+            src="https://www.youtube.com/embed/${video.id}" 
+            allowfullscreen 
+            title="${video.title}"
+            loading="lazy"
+          ></iframe>
+          <div class="video-title">${video.title}</div>
+        `;
+        videoList.appendChild(div);
+      });
+    }
+
+    videoSearchInput.addEventListener('input', () => {
+      const searchTerm = videoSearchInput.value.trim().toLowerCase();
+      if (!searchTerm) {
+        displayVideos(videoCache);
+        return;
+      }
+      const filtered = videoCache.filter(v => v.title.toLowerCase().includes(searchTerm));
+      displayVideos(filtered);
+    });
+
+    // Contact form submit handler
+    const contactForm = document.getElementById('contactForm');
+    const statusMessage = document.getElementById('statusMessage');
+
+    contactForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      statusMessage.style.color = '#e94560';
+      statusMessage.textContent = 'Sending...';
+
+      const formData = new FormData(contactForm);
+      try {
+        const res = await fetch(contactForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          statusMessage.style.color = 'limegreen';
+          statusMessage.textContent = 'Message sent successfully!';
+          contactForm.reset();
+        } else {
+          statusMessage.textContent = 'Failed to send message.';
+        }
+      } catch (error) {
+        statusMessage.textContent = 'Network error. Try again later.';
+        console.error('Contact form error:', error);
+      }
+    });
+
+    // Load latest video immediately on page load
+    loadLatestVideo();
+  </script>
+</body>
+</html>
