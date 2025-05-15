@@ -1,6 +1,6 @@
 <script>
   const apiKey = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng';
-  const channelId = 'UUoXzWPTne8dHYrftHpdIopw';
+  const channelId = 'UCoXzWPTne8dHYrftHpdIopw';
   const maxResults = 6;
 
   async function fetchLatestVideos() {
