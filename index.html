@@ -1,13 +1,117 @@
-<div id="sidebar" class="sidebar">
-  <button id="toggleBtn">☰</button> <!-- hamburger icon -->
-  <ul class="menu">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="all-videos.html">All Videos</a></li>
-    <li><a href="comments.html">Comments</a></li>
-    <li><a href="#about">About</a></li>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sidebar Toggle Example</title>
+<style>
+  /* Reset some default */
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+  }
+
+  /* Sidebar styles */
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100%;
+    background: #222;
+    color: white;
+    padding: 20px 10px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+  }
+  
+  #sidebar.hidden {
+    transform: translateX(-100%);
+  }
+
+  #sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #sidebar ul li {
+    margin: 15px 0;
+  }
+
+  #sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+  }
+
+  #sidebar ul li a:hover {
+    text-decoration: underline;
+  }
+
+  /* Main content */
+  #content {
+    margin-left: 220px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+  }
+
+  #content.fullwidth {
+    margin-left: 0;
+  }
+
+  /* Toggle button */
+  #toggle-btn {
+    position: fixed;
+    top: 15px;
+    left: 230px;
+    background: #444;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: left 0.3s ease;
+  }
+
+  #sidebar.hidden + #toggle-btn {
+    left: 15px;
+  }
+</style>
+</head>
+<body>
+
+<div id="sidebar">
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About This Page</a></li>
+    <li><a href="#">All Videos</a></li>
+    <li><a href="#">Latest Video</a></li>
+    <li><a href="#">Comments</a></li>
   </ul>
 </div>
 
-<div id="mainContent">
-  <!-- your main page content goes here -->
+<button id="toggle-btn">☰</button>
+
+<div id="content">
+  <h1>Welcome to the Channel</h1>
+  <p>This is the main content area.</p>
 </div>
+
+<script>
+  const sidebar = document.getElementById('sidebar');
+  const toggleBtn = document.getElementById('toggle-btn');
+  const content = document.getElementById('content');
+
+  toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('hidden');
+    content.classList.toggle('fullwidth');
+  });
+</script>
+
+</body>
+</html>
