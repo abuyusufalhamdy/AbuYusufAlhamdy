@@ -1,41 +1,113 @@
-<script>
-  const apiKey = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng';
-  const channelId = 'UCoXzWPTne8dHYrftHpdIopw';
-  const maxResults = 6;
+const YT_API_BASE = 'https://www.googleapis.com/youtube/v3';
 
-  async function fetchLatestVideos() {
-    try {
-      const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=${maxResults}`
-      );
-      const data = await response.json();
+let currentPageToken = '';
+let nextPageToken = '';
+let prevPageToken = '';
 
-      const videoListDiv = document.getElementById('videoList');
-      videoListDiv.innerHTML = '';
+function createVideoItem(video, openModalCallback) {
+  const container = document.createElement('div');
+  container.className = 'video-item';
 
-      if (data.items && data.items.length > 0) {
-        data.items.forEach(item => {
-          if (item.id.kind === 'youtube#video') {
-            const videoId = item.id.videoId;
-            const iframe = document.createElement('iframe');
-            iframe.width = '100%';
-            iframe.height = '315';
-            iframe.src = `https://www.youtube.com/embed/${videoId}`;
-            iframe.title = item.snippet.title;
-            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-            iframe.allowFullscreen = true;
-            iframe.style.marginBottom = '20px';
-            videoListDiv.appendChild(iframe);
-          }
-        });
-      } else {
-        videoListDiv.innerHTML = '<p>No videos found for this channel.</p>';
-      }
-    } catch (error) {
-      console.error('Error fetching videos:', error);
-      document.getElementById('videoList').innerHTML = '<p>Error loading videos. Please try again later.</p>';
+  const thumbnail = document.createElement('img');
+  thumbnail.className = 'video-thumbnail';
+  thumbnail.src = video.snippet.thumbnails.medium.url;
+  thumbnail.alt = video.snippet.title;
+  container.appendChild(thumbnail);
+
+  const title = document.createElement('div');
+  title.className = 'video-title';
+  title.textContent = video.snippet.title;
+  container.appendChild(title);
+
+  container.addEventListener('click', () => {
+    openModalCallback(video.id.videoId);
+  });
+
+  return container;
+}
+
+function openVideoModal(videoId) {
+  const modal = document.getElementById('videoModal');
+  const iframe = modal.querySelector('iframe');
+  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+  modal.classList.add('active');
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById('videoModal');
+  const iframe = modal.querySelector('iframe');
+  // Animation zoomOut
+  iframe.style.animation = 'zoomOut 0.3s ease forwards';
+  setTimeout(() => {
+    iframe.src = '';
+    iframe.style.animation = 'zoomIn 0.3s ease forwards';
+    modal.classList.remove('active');
+  }, 300);
+}
+
+async function fetchVideos(apiKey, channelId, maxResults = 6, pageToken = '') {
+  const url = new URL(`${YT_API_BASE}/search`);
+  url.searchParams.set('key', apiKey);
+  url.searchParams.set('channelId', channelId);
+  url.searchParams.set('part', 'snippet,id');
+  url.searchParams.set('order', 'date');
+  url.searchParams.set('maxResults', maxResults);
+  if (pageToken) url.searchParams.set('pageToken', pageToken);
+  url.searchParams.set('type', 'video');
+
+  const response = await fetch(url.toString());
+  if (!response.ok) throw new Error(`API error: ${response.statusText}`);
+
+  return response.json();
+}
+
+function updatePaginationButtons(pageTokens, paginationControls) {
+  const { prevBtnId, nextBtnId, pageInfoId } = paginationControls;
+  const prevBtn = document.getElementById(prevBtnId);
+  const nextBtn = document.getElementById(nextBtnId);
+  const pageInfo = document.getElementById(pageInfoId);
+
+  prevBtn.disabled = !pageTokens.prevPageToken;
+  nextBtn.disabled = !pageTokens.nextPageToken;
+  pageInfo.textContent = `Page`;
+
+  prevBtn.onclick = () => {
+    if (pageTokens.prevPageToken) {
+      currentPageToken = pageTokens.prevPageToken;
+      loadVideos();
     }
-  }
+  };
 
-  window.onload = fetchLatestVideos;
-</script>
+  nextBtn.onclick = () => {
+    if (pageTokens.nextPageToken) {
+      currentPageToken = pageTokens.nextPageToken;
+      loadVideos();
+    }
+  };
+}
+
+function createVideoModal() {
+  if (document.getElementById('videoModal')) return; // already exists
+  const modal = document.createElement('div');
+  modal.id = 'videoModal';
+
+  modal.innerHTML = `
+    <div class="close-btn" id="modalClose">&times;</div>
+    <iframe frameborder="0" allowfullscreen allow="autoplay"></iframe>
+  `;
+
+  modal.addEventListener('click', (e) => {
+    if (e.target.id === 'videoModal' || e.target.id === 'modalClose') {
+      closeVideoModal();
+    }
+  });
+
+  document.body.appendChild(modal);
+}
+
+async function initYoutubePage({
+  apiKey,
+  channelId,
+  maxResults = 6,
+  totalMaxResults = null,
+  targetElement
