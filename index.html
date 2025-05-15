@@ -393,3 +393,46 @@
     e.preventDefault();
     // You’ll need to hook this to a backend or email service for real functionality.
     document.getElementById('form-status
+            const videoId = item.id.videoId;
+            const title = item.snippet.title;
+            const videoDiv = document.createElement("div");
+            videoDiv.className = "video-item";
+            videoDiv.innerHTML = `
+              <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
+              <div class="video-title">${title}</div>
+            `;
+            videoList.appendChild(videoDiv);
+          }
+        });
+
+        // Enable search filter
+        const searchInput = document.getElementById("video-search");
+        searchInput.addEventListener("input", () => {
+          const query = searchInput.value.toLowerCase();
+          const allVideos = document.querySelectorAll(".video-item");
+          allVideos.forEach(video => {
+            const title = video.querySelector(".video-title").innerText.toLowerCase();
+            video.style.display = title.includes(query) ? "block" : "none";
+          });
+        });
+      })
+      .catch(() => {
+        videoList.innerHTML = "<p>Unable to load videos.</p>";
+      });
+  }
+
+  // Contact form (no backend logic)
+  const contactForm = document.getElementById("contact-form");
+  const formStatus = document.getElementById("form-status");
+
+  contactForm.addEventListener("submit", e => {
+    e.preventDefault();
+    formStatus.textContent = "Message sent (simulated).";
+    contactForm.reset();
+  });
+
+  // Initial load
+  loadLatestVideo();
+</script>
+</body>
+</html>
