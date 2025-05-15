@@ -3,59 +3,225 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Abu Yusuf Alhamdy</title>
-  <link rel="stylesheet" href="styles.css"/>
-  <script defer src="script.js"></script>
+  <title>Abu Yusuf Alhamdy - Official Salafi Site</title>
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --text: #111;
+      --accent: darkblue;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .night {
+      --bg: #000;
+      --text: #fff;
+      background-image: radial-gradient(circle at top left, #0ff 1px, transparent 1px),
+                        radial-gradient(circle at top right, #0ff 1px, transparent 1px),
+                        radial-gradient(circle at bottom left, #0ff 1px, transparent 1px),
+                        radial-gradient(circle at bottom right, #0ff 1px, transparent 1px);
+      background-size: 100px 100px;
+      background-repeat: no-repeat;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: #111;
+      color: white;
+      padding: 20px;
+      border-right: 5px solid darkblue;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .sidebar img {
+      width: 80px;
+      margin-bottom: 20px;
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      border-bottom: 2px solid transparent;
+      padding: 5px;
+      display: block;
+    }
+
+    .sidebar a:hover {
+      border-bottom: 2px solid darkblue;
+    }
+
+    .mode-toggle {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      background: darkblue;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .content {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 200px;
+    }
+
+    .search-bar {
+      margin-bottom: 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    input, textarea, button {
+      display: block;
+      margin: 10px 0;
+      width: 100%;
+      padding: 8px;
+    }
+
+    .brush-border {
+      border: 3px solid darkblue;
+      border-style: dashed;
+    }
+
+  </style>
 </head>
-<body class="light-mode">
-  <aside class="sidebar">
-    <div class="logo-container">
-      <img src="logo.png" alt="Logo" class="logo">
-      <button id="themeToggle">🌙</button>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <img src="logo.png" alt="Logo" />
+      <button class="mode-toggle" onclick="toggleMode()">Toggle Mode</button>
+      <a href="#home">Home</a>
+      <a href="#articles">Articles</a>
+      <a href="#videos">Videos</a>
+      <a href="#contact">Contact</a>
     </div>
-    <nav>
-      <ul>
-        <li class="tab-link active" data-tab="home">Home</li>
-        <li class="tab-link" data-tab="articles">Articles</li>
-        <li class="tab-link" data-tab="videos">Videos</li>
-        <li class="tab-link" data-tab="contact">Contact Us</li>
-      </ul>
-    </nav>
-  </aside>
 
-  <main>
-    <section id="home" class="tab-content active">
-      <h1>Welcome to Abu Yusuf Alhamdy’s Official Website</h1>
-      <p>This is a Salafi website dedicated to delivering authentic knowledge according to the science of Hadith.</p>
-      <div id="latest-video">Loading latest video...</div>
-      <p><a href="https://youtube.com/@abuyusufalhamdy" target="_blank">Subscribe to our YouTube channel</a></p>
-    </section>
+    <div class="content">
+      <section id="home">
+        <h1>Welcome to Abu Yusuf Alhamdy's Official Website</h1>
+        <p>This is a Salafi website committed to strict authentic knowledge based on the science of Hadiths.</p>
+        <div id="latest-video" class="video-grid"></div>
+        <p>Subscribe on YouTube: <a href="https://youtube.com/@abuyusufalhamdy" target="_blank">youtube.com/@abuyusufalhamdy</a></p>
+      </section>
 
-    <section id="articles" class="tab-content">
-      <h2>Articles</h2>
-      <p><strong>Note:</strong> Live article scraping from abukhadeejah.com and salafipublications.com requires a backend proxy or RSS feed reader. This section currently uses placeholders.</p>
-      <ul>
-        <li><a href="https://www.abukhadeejah.com/" target="_blank">Visit Abu Khadeejah’s site</a></li>
-        <li><a href="https://www.salafipublications.com/" target="_blank">Visit Salafi Publications</a></li>
-      </ul>
-    </section>
+      <section id="articles" class="hidden">
+        <h2>Articles</h2>
+        <p>Articles will be automatically pulled from <a href="https://www.abukhadeejah.com" target="_blank">Abu Khadeejah</a> and <a href="https://www.salafipublications.com" target="_blank">Salafi Publications</a> soon.</p>
+      </section>
 
-    <section id="videos" class="tab-content">
-      <h2>All Videos</h2>
-      <input type="text" id="searchInput" placeholder="Search videos..." />
-      <div id="video-grid"></div>
-    </section>
+      <section id="videos" class="hidden">
+        <h2>Videos</h2>
+        <input class="search-bar" type="text" id="videoSearch" placeholder="Search for a video..." oninput="filterVideos()"/>
+        <div id="videoGrid" class="video-grid"></div>
+      </section>
 
-    <section id="contact" class="tab-content">
-      <h2>Contact Us</h2>
-      <p>Email: <a href="mailto:abuyusufalhamdy@gmail.com">abuyusufalhamdy@gmail.com</a></p>
-      <form action="mailto:abuyusufalhamdy@gmail.com" method="POST" enctype="text/plain">
-        <input type="text" name="name" placeholder="Your Name" required />
-        <input type="email" name="email" placeholder="Your Email" required />
-        <textarea name="message" placeholder="Your Message" required></textarea>
-        <button type="submit">Send</button>
-      </form>
-    </section>
-  </main>
+      <section id="contact" class="hidden">
+        <h2>Contact Us</h2>
+        <form action="mailto:abuyusufalhamdy@gmail.com" method="POST" enctype="text/plain">
+          <input type="text" name="name" placeholder="Your name" required />
+          <input type="email" name="email" placeholder="Your email" required />
+          <textarea name="message" placeholder="Your message" rows="5"></textarea>
+          <button type="submit">Send</button>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const apiKey = "AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng";
+    const channelId = "UCoXzWPTne8dHYrftHpdIopw";
+
+    function toggleMode() {
+      document.body.classList.toggle("night");
+    }
+
+    function showSection(id) {
+      document.querySelectorAll("section").forEach(sec => sec.classList.add("hidden"));
+      document.getElementById(id).classList.remove("hidden");
+    }
+
+    document.querySelectorAll(".sidebar a").forEach(link => {
+      link.addEventListener("click", e => {
+        e.preventDefault();
+        const id = link.getAttribute("href").substring(1);
+        showSection(id);
+      });
+    });
+
+    // Fetch latest video for homepage
+    fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=1`)
+      .then(res => res.json())
+      .then(data => {
+        const video = data.items[0];
+        const vidId = video.id.videoId;
+        document.getElementById("latest-video").innerHTML = `
+          <iframe src="https://www.youtube.com/embed/${vidId}" frameborder="0" allowfullscreen></iframe>
+        `;
+      });
+
+    // Load all videos
+    function loadVideos() {
+      fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=25`)
+        .then(res => res.json())
+        .then(data => {
+          const grid = document.getElementById("videoGrid");
+          grid.innerHTML = "";
+          data.items.forEach(item => {
+            if (item.id.kind === "youtube#video") {
+              const div = document.createElement("div");
+              div.classList.add("video-item");
+              div.innerHTML = `
+                <iframe src="https://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
+                <p>${item.snippet.title}</p>
+              `;
+              grid.appendChild(div);
+            }
+          });
+        });
+    }
+
+    function filterVideos() {
+      const term = document.getElementById("videoSearch").value.toLowerCase();
+      document.querySelectorAll("#videoGrid .video-item").forEach(el => {
+        el.style.display = el.textContent.toLowerCase().includes(term) ? "block" : "none";
+      });
+    }
+
+    window.onload = () => {
+      showSection("home");
+      loadVideos();
+    };
+  </script>
 </body>
 </html>
