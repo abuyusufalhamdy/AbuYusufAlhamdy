@@ -1,234 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Abu Yusuf Alhamdy - Official Salafi Site</title>
-  <style>
-    :root {
-      --bg: #f5f5f5;
-      --text: #111;
-      --accent: #0ff;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Abu Yusuf Alhamdy Official</title>
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #eaeff4;
+    color: #000;
+    transition: background-color 0.5s, color 0.5s;
+    overflow-x: hidden;
+  }
+  /* Neon teal accents and futuristic */
+  :root {
+    --neon-teal: #00ffcc;
+    --dark-blue: #0a1e3b;
+    --tab-bg: #0a1e3b;
+    --tab-hover-bg: #004d40;
+  }
+  body.night {
+    background-color: #0a1e3b;
+    color: #eee;
+  }
+  body.night .tab {
+    background-color: var(--tab-bg);
+    color: #eee;
+    border-left: 4px solid var(--neon-teal);
+  }
+  body.night .tab:hover {
+    background-color: var(--tab-hover-bg);
+  }
+  /* Sidebar */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 220px;
+    height: 100vh;
+    background-color: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 3px solid var(--neon-teal);
+  }
+  #logo {
+    margin: 20px 0;
+    width: 140px;
+    height: auto;
+  }
+  #toggle-btn {
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: var(--neon-teal);
+    transition: color 0.3s;
+  }
+  #toggle-btn:hover {
+    color: #00e6b8;
+  }
+  .tabs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+  }
+  .tab {
+    padding: 15px 25px;
+    cursor: pointer;
+    color: var(--neon-teal);
+    font-weight: 600;
+    border-left: 4px solid transparent;
+    user-select: none;
+    transition: background-color 0.3s, border-left 0.3s;
+  }
+  .tab:hover {
+    background-color: #001f2f;
+    border-left: 4px solid var(--neon-teal);
+  }
+  .tab.active {
+    background-color: #002933;
+    border-left: 4px solid var(--neon-teal);
+    font-weight: 700;
+  }
+  /* Content area */
+  #content {
+    margin-left: 220px;
+    padding: 30px 40px;
+    min-height: 100vh;
+    transition: color 0.5s;
+  }
+  body.night #content {
+    color: #eee;
+  }
+  /* Neon lights corners for night mode */
+  body.night::before,
+  body.night::after,
+  body.night #content::before,
+  body.night #content::after {
+    content: '';
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    border: 3px solid var(--neon-teal);
+    border-radius: 12px;
+    box-shadow:
+      0 0 20px var(--neon-teal),
+      0 0 40px var(--neon-teal),
+      0 0 60px var(--neon-teal);
+    z-index: 9999;
+    animation: neonGlow 2s ease-in-out infinite alternate;
+  }
+  body.night::before {
+    top: 10px; left: 10px;
+    border-right: none; border-bottom: none;
+  }
+  body.night::after {
+    top: 10px; right: 10px;
+    border-left: none; border-bottom: none;
+  }
+  body.night #content::before {
+    bottom: 10px; left: 10px;
+    border-top: none; border-right: none;
+  }
+  body.night #content::after {
+    bottom: 10px; right: 10px;
+    border-top: none; border-left: none;
+  }
+  @keyframes neonGlow {
+    from {
+      box-shadow:
+        0 0 10px var(--neon-teal),
+        0 0 20px var(--neon-teal),
+        0 0 30px var(--neon-teal);
     }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      transition: background 0.3s, color 0.3s;
+    to {
+      box-shadow:
+        0 0 30px var(--neon-teal),
+        0 0 50px var(--neon-teal),
+        0 0 80px var(--neon-teal);
     }
-
-    .night {
-      --bg: #000;
-      --text: #fff;
-      background-image: radial-gradient(circle at top left, var(--accent) 2px, transparent 2px),
-                        radial-gradient(circle at top right, var(--accent) 2px, transparent 2px),
-                        radial-gradient(circle at bottom left, var(--accent) 2px, transparent 2px),
-                        radial-gradient(circle at bottom right, var(--accent) 2px, transparent 2px);
-      background-size: 100px 100px;
-      background-repeat: no-repeat;
-    }
-
-    .container {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    .sidebar {
-      width: 220px;
-      background-color: #111;
-      color: white;
-      padding: 20px;
-      border-right: 5px solid var(--accent);
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      align-items: flex-start;
-      position: relative;
-    }
-
-    .sidebar img {
-      width: 80px;
-      margin-bottom: 20px;
-    }
-
-    .sidebar a {
-      color: white;
-      text-decoration: none;
-      font-size: 16px;
-      border-bottom: 2px solid transparent;
-      padding: 5px;
-      display: block;
-    }
-
-    .sidebar a:hover {
-      border-bottom: 2px solid var(--accent);
-    }
-
-    .mode-toggle {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-size: 24px;
-      color: var(--accent);
-      transition: transform 0.3s;
-    }
-
-    .mode-toggle:hover {
-      transform: rotate(20deg);
-    }
-
-    .content {
-      flex: 1;
-      padding: 40px;
-    }
-
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    iframe {
-      width: 100%;
-      height: 200px;
-    }
-
-    .search-bar {
-      margin-bottom: 20px;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    input, textarea, button {
-      display: block;
-      margin: 10px 0;
-      width: 100%;
-      padding: 8px;
-    }
-
-    .brush-border {
-      border: 3px solid var(--accent);
-      border-style: dashed;
-    }
-
-  </style>
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="sidebar">
-      <img src="logo.png" alt="Logo" />
-      <button class="mode-toggle" id="toggleMode"><span id="modeIcon">☀️</span></button>
-      <a href="#home">Home</a>
-      <a href="#articles">Articles</a>
-      <a href="#videos">Videos</a>
-      <a href="#contact">Contact</a>
-    </div>
-
-    <div class="content">
-      <section id="home">
-        <h1>Welcome to Abu Yusuf Alhamdy's Official Website</h1>
-        <p>This is a Salafi website committed to strict authentic knowledge based on the science of Hadiths.</p>
-        <div id="latest-video" class="video-grid"></div>
-        <p>Subscribe on YouTube: <a href="https://youtube.com/@abuyusufalhamdy" target="_blank">youtube.com/@abuyusufalhamdy</a></p>
-      </section>
-
-      <section id="articles" class="hidden">
-        <h2>Articles</h2>
-        <p>Articles will be automatically pulled from <a href="https://www.abukhadeejah.com" target="_blank">Abu Khadeejah</a> and <a href="https://www.salafipublications.com" target="_blank">Salafi Publications</a> soon.</p>
-      </section>
-
-      <section id="videos" class="hidden">
-        <h2>Videos</h2>
-        <input class="search-bar" type="text" id="videoSearch" placeholder="Search for a video..." oninput="filterVideos()"/>
-        <div id="videoGrid" class="video-grid"></div>
-      </section>
-
-      <section id="contact" class="hidden">
-        <h2>Contact Us</h2>
-        <form action="mailto:abuyusufalhamdy@gmail.com" method="POST" enctype="text/plain">
-          <input type="text" name="name" placeholder="Your name" required />
-          <input type="email" name="email" placeholder="Your email" required />
-          <textarea name="message" placeholder="Your message" rows="5"></textarea>
-          <button type="submit">Send</button>
-        </form>
-      </section>
-    </div>
-  </div>
-
-  <script>
-    const apiKey = "AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng";
-    const channelId = "UCoXzWPTne8dHYrftHpdIopw";
-
-    function toggleMode() {
-      const body = document.body;
-      const icon = document.getElementById("modeIcon");
-      body.classList.toggle("night");
-      icon.textContent = body.classList.contains("night") ? "🌙" : "☀️";
-    }
-
-    function showSection(id) {
-      document.querySelectorAll("section").forEach(sec => sec.classList.add("hidden"));
-      document.getElementById(id).classList.remove("hidden");
-    }
-
-    document.querySelectorAll(".sidebar a").forEach(link => {
-      link.addEventListener("click", e => {
-        e.preventDefault();
-        const id = link.getAttribute("href").substring(1);
-        showSection(id);
-      });
-    });
-
-    document.getElementById("toggleMode").addEventListener("click", toggleMode);
-
-    fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=1`)
-      .then(res => res.json())
-      .then(data => {
-        const video = data.items[0];
-        const vidId = video.id.videoId;
-        document.getElementById("latest-video").innerHTML = `
-          <iframe src="https://www.youtube.com/embed/${vidId}" frameborder="0" allowfullscreen></iframe>
-        `;
-      });
-
-    function loadVideos() {
-      fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=25`)
-        .then(res => res.json())
-        .then(data => {
-          const grid = document.getElementById("videoGrid");
-          grid.innerHTML = "";
-          data.items.forEach(item => {
-            if (item.id.kind === "youtube#video") {
-              const div = document.createElement("div");
-              div.classList.add("video-item");
-              div.innerHTML = `
-                <iframe src="https://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
-                <p>${item.snippet.title}</p>
-              `;
-              grid.appendChild(div);
-            }
-          });
-        });
-    }
-
-    function filterVideos() {
-      const term = document.getElementById("videoSearch").value.toLowerCase();
-      document.querySelectorAll("#videoGrid .video-item").forEach(el => {
-        el.style.display = el.textContent.toLowerCase().includes(term) ? "block" : "none";
-      });
-    }
-
-    window.onload = () => {
-      showSection("home");
-      loadVideos();
-    };
-  </script>
-</body>
-</html>
+  <div id="sidebar">
+    <img src="logo.png" alt="Abu Yusuf Alhamdy Logo" id="logo" />
+    <div id="toggle-btn" title="Toggle Day/Night Mode">☀️</div>
+    <div class="tabs">
+      <div class="tab active" data-tab="home">Home</div>
+      <div class="tab" data-tab="articles
