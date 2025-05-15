@@ -3,317 +3,408 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Abu Yusuf Alhamdy - Salafi YouTube Channel</title>
+<title>Your YouTube Channel</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap');
   body {
-    margin: 0; 
-    font-family: 'Cinzel', serif; 
-    background: #f5f5f5;
-    color: #222;
+    margin: 0; font-family: Arial, sans-serif;
+    background: #f7f7f7; color: #222;
     display: flex;
     height: 100vh;
     overflow: hidden;
   }
-  /* Sidebar */
   #sidebar {
-    width: 250px;
+    width: 220px;
     background: #222;
-    color: white;
+    color: #eee;
     display: flex;
     flex-direction: column;
-    transition: width 0.3s ease;
-    overflow: auto;
+    transition: transform 0.3s ease;
   }
-  #sidebar.hide {
-    width: 50px;
+  #sidebar.hidden {
+    transform: translateX(-220px);
   }
   #sidebar header {
+    padding: 20px;
+    font-size: 1.2em;
+    border-bottom: 1px solid #444;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    border-bottom: 1px solid #444;
   }
   #sidebar header img {
+    width: 40px;
     height: 40px;
+    margin-right: 10px;
   }
-  #sidebar header button {
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 1.4rem;
-    cursor: pointer;
-    outline: none;
-  }
-  #sidebar nav {
-    flex: 1;
-    padding: 1rem 0;
-  }
-  #sidebar nav button {
-    width: 100%;
-    background: none;
-    border: none;
-    color: white;
+  #sidebar nav a {
     padding: 15px 20px;
-    text-align: left;
-    font-size: 1.1rem;
+    color: #eee;
+    text-decoration: none;
+    border-bottom: 1px solid #444;
     cursor: pointer;
-    border-left: 4px solid transparent;
-    transition: background 0.2s, border-left 0.2s;
   }
-  #sidebar nav button:hover,
-  #sidebar nav button.active {
+  #sidebar nav a.active, #sidebar nav a:hover {
     background: #444;
-    border-left: 4px solid #ccc;
   }
-  /* Main content */
-  #main-content {
+  #toggleBtn {
+    background: #111; color: #eee;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1em;
+  }
+
+  #mainContent {
     flex: 1;
     overflow-y: auto;
-    padding: 1rem 1.5rem;
-    background: white;
-    display: flex;
-    flex-direction: column;
+    padding: 20px;
+    background: #fff;
+    position: relative;
   }
-  h1, h2 {
-    margin-top: 0;
+
+  .page {
+    display: none;
   }
-  /* Video container */
-  .video-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-  .video-card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-    background: #fafafa;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  .video-card:hover {
-    transform: scale(1.03);
-  }
-  .video-thumb {
-    width: 100%;
-    height: auto;
+  .page.active {
     display: block;
+  }
+
+  #latestVideo iframe {
+    width: 100%;
+    max-width: 720px;
+    height: 405px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 0 8px #aaa;
+  }
+  #latestVideo p {
+    margin-top: 8px;
+    font-weight: bold;
+  }
+
+  #videosGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+    gap: 15px;
+  }
+  .video-item {
+    background: #eee;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+  }
+  .video-item:hover {
+    transform: scale(1.05);
+  }
+  .video-item img {
+    width: 100%;
+    border-radius: 6px;
   }
   .video-title {
-    padding: 0.5rem 0.75rem;
-    font-size: 1rem;
-    color: #222;
+    margin-top: 6px;
+    font-size: 0.9em;
+    color: #333;
   }
-  /* Modal */
+
   #videoModal {
     position: fixed;
-    top:0; left:0; right:0; bottom:0;
-    background: rgba(0,0,0,0.75);
+    top: 0; left: 0; right:0; bottom:0;
+    background: rgba(0,0,0,0.8);
     display: none;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     z-index: 9999;
   }
-  #videoModal.show {
+  #videoModal.active {
     display: flex;
-    animation: zoomIn 0.3s forwards;
-  }
-  #videoModal .modal-content {
-    position: relative;
-    background: #111;
-    border-radius: 8px;
-    max-width: 90vw;
-    max-height: 80vh;
-    box-shadow: 0 0 20px #000;
+    animation: zoomIn 0.3s ease forwards;
   }
   #videoModal iframe {
-    display: block;
-    width: 100vw;
-    max-width: 800px;
-    height: 450px;
+    width: 80vw;
+    height: 45vw;
+    max-width: 900px;
+    max-height: 506px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #000;
   }
-  #videoModal .close-btn {
+  #closeModalBtn {
     position: absolute;
-    top: 8px;
-    right: 10px;
-    background: #ff4444;
+    top: 20px; right: 20px;
+    background: #fff;
     border: none;
-    color: white;
-    font-size: 1.6rem;
-    font-weight: bold;
-    padding: 0 10px;
+    font-size: 1.5em;
+    padding: 5px 12px;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   }
+
   @keyframes zoomIn {
-    from {transform: scale(0.7); opacity: 0;}
+    from {transform: scale(0.8); opacity: 0;}
     to {transform: scale(1); opacity: 1;}
   }
-  @keyframes zoomOut {
-    from {transform: scale(1); opacity: 1;}
-    to {transform: scale(0.7); opacity: 0;}
+
+  #commentForm {
+    max-width: 500px;
+    margin-top: 20px;
   }
-  /* Footer */
-  footer {
-    background: #222;
-    color: #ccc;
-    padding: 0.75rem 1rem;
-    text-align: center;
-    font-size: 0.9rem;
-    border-top: 1px solid #444;
-    flex-shrink: 0;
-  }
-  /* Comment form */
-  #comments form {
-    max-width: 600px;
-    margin-top: 1rem;
-  }
-  #comments label {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-weight: 600;
-  }
-  #comments input[type="text"],
-  #comments input[type="email"],
-  #comments textarea {
+  #commentForm input, #commentForm textarea {
     width: 100%;
-    padding: 0.4rem 0.6rem;
-    margin-bottom: 1rem;
-    border: 1px solid #aaa;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-family: 'Cinzel', serif;
-  }
-  #comments textarea {
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1em;
     resize: vertical;
   }
-  #comments button {
+  #commentForm button {
+    margin-top: 15px;
+    padding: 10px 20px;
     background: #222;
-    color: white;
+    color: #eee;
     border: none;
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
+    border-radius: 6px;
     cursor: pointer;
-    border-radius: 4px;
+    font-size: 1em;
   }
-  /* Scrollbar for sidebar and main */
-  #sidebar::-webkit-scrollbar,
-  #main-content::-webkit-scrollbar {
-    width: 8px;
+  #formStatus {
+    margin-top: 10px;
+    font-weight: bold;
   }
-  #sidebar::-webkit-scrollbar-thumb {
-    background-color: #555;
-    border-radius: 4px;
+
+  footer {
+    position: fixed;
+    bottom: 0; left: 220px; right: 0;
+    background: #222;
+    color: #eee;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.8em;
   }
-  #main-content::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 4px;
-  }
-  /* Responsive tweaks */
+
   @media(max-width: 700px) {
     #sidebar {
       position: fixed;
       height: 100vh;
-      z-index: 1000;
-      transform: translateX(-250px);
-      transition: transform 0.3s ease;
-      width: 250px !important;
+      z-index: 10000;
+      transform: translateX(-220px);
     }
-    #sidebar.show {
+    #sidebar.expanded {
       transform: translateX(0);
     }
-    #main-content {
-      padding: 1rem;
+    #toggleBtn {
+      position: fixed;
+      top: 10px; left: 10px;
+      z-index: 11000;
     }
-    #sidebar header button {
-      font-size: 2rem;
+    footer {
+      left: 0;
     }
   }
 </style>
 </head>
 <body>
-<div id="sidebar">
+
+<div id="sidebar" class="hidden">
   <header>
-    <img src="logo.png" alt="Abu Yusuf Alhamdy logo" />
-    <button id="toggleBtn" aria-label="Toggle sidebar">&laquo;</button>
+    <img src="logo.png" alt="Logo" />
+    <span>My Channel</span>
   </header>
   <nav>
-    <button id="tabHome" class="active">Home</button>
-    <button id="tabAllVideos">All Videos</button>
-    <button id="tabComments">Comments</button>
+    <a href="#" id="homeTab" class="active">Home</a>
+    <a href="#" id="allVideosTab">All Videos</a>
+    <a href="#" id="aboutTab">About</a>
+    <a href="#" id="commentsTab">Comments</a>
   </nav>
 </div>
-<div id="main-content">
-  <section id="home" class="tab-section">
-    <h1>Welcome to Abu Yusuf Alhamdy Channel</h1>
-    <p>Salafi YouTube Channel sharing knowledge, dawah, and lectures.</p>
-    <div id="latestVideoContainer"></div>
-  </section>
-  <section id="allVideos" class="tab-section" style="display:none;">
+<button id="toggleBtn">Show Menu</button>
+
+<div id="mainContent">
+  <div id="homePage" class="page active">
+    <h2>Latest Video</h2>
+    <div id="latestVideo">Loading latest video...</div>
+  </div>
+
+  <div id="allVideosPage" class="page">
     <h2>All Videos</h2>
-    <div id="videosGrid" class="video-grid"></div>
-  </section>
-  <section id="comments" class="tab-section" style="display:none;">
-    <h2>Comments & Questions</h2>
+    <div id="videosGrid"></div>
+  </div>
+
+  <div id="aboutPage" class="page">
+    <h2>About This Channel</h2>
+    <p>This is a Salafi YouTube Channel dedicated to spreading authentic Islamic knowledge.</p>
+  </div>
+
+  <div id="commentsPage" class="page">
+    <h2>Contact & Comments</h2>
     <form id="commentForm">
-      <label for="name">Name</label>
-      <input type="text" id="name" required />
-      <label for="email">Email</label>
-      <input type="email" id="email" required />
-      <label for="message">Message</label>
-      <textarea id="message" rows="5" required></textarea>
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
       <button type="submit">Send</button>
     </form>
-    <p id="formStatus" style="margin-top:10px;"></p>
-  </section>
-</div>
-
-<!-- Video modal -->
-<div id="videoModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal-content">
-    <button class="close-btn" aria-label="Close video">&times;</button>
-    <iframe src="" allowfullscreen allow="autoplay"></iframe>
+    <div id="formStatus"></div>
   </div>
 </div>
 
-<footer>
-  © 2025 Abu Yusuf Alhamdy | Salafi Dawah Channel
-</footer>
+<div id="videoModal">
+  <button id="closeModalBtn">&times;</button>
+  <iframe id="modalVideo" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
 
 <script>
   const API_KEY = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng'; // Replace with your API key
-  const CHANNEL_ID = 'UCoXzWPTne8dHYrftHpdIopw'; // Replace with your channel ID (starts with UC)
+  const CHANNEL_ID = 'UCoXzWPTne8dHYrftHpdIopw'; // Replace with your channel ID
 
-  // Sidebar toggle
   const sidebar = document.getElementById('sidebar');
   const toggleBtn = document.getElementById('toggleBtn');
-  toggleBtn.onclick = () => {
-    if(window.innerWidth > 700){
-      sidebar.classList.toggle('hide');
-      toggleBtn.textContent = sidebar.classList.contains('hide') ? '\u00BB' : '\u00AB';
-    } else {
-      sidebar.classList.toggle('show');
-    }
-  };
+  const homeTab = document.getElementById('homeTab');
+  const allVideosTab = document.getElementById('allVideosTab');
+  const aboutTab = document.getElementById('aboutTab');
+  const commentsTab = document.getElementById('commentsTab');
 
-  // Tab buttons
-  const tabs = {
-    home: document.getElementById('home'),
-    allVideos: document.getElementById('allVideos'),
-    comments: document.getElementById('comments'),
-  };
-  const tabButtons = {
-    tabHome: document.getElementById('tabHome'),
-    tabAllVideos: document.getElementById('tabAllVideos'),
-    tabComments: document.getElementById('tabComments'),
-  };
+  const homePage = document.getElementById('homePage');
+  const allVideosPage = document.getElementById('allVideosPage');
+  const aboutPage = document.getElementById('aboutPage');
+  const commentsPage = document.getElementById('commentsPage');
 
-  Object.entries(tabButtons).forEach(([id, btn]) => {
-    btn.addEventListener('click', () => {
-      Object.values(tabs).
+  const latestVideoContainer = document.getElementById('latestVideo');
+  const videosGrid = document.getElementById('videosGrid');
+
+  const videoModal = document.getElementById('videoModal');
+  const modalVideo = document.getElementById('modalVideo');
+  const closeModalBtn = document.getElementById
+('closeModalBtn');
+
+toggleBtn.addEventListener('click', () => {
+if (sidebar.classList.contains('hidden')) {
+sidebar.classList.remove('hidden');
+toggleBtn.textContent = 'Hide Menu';
+} else {
+sidebar.classList.add('hidden');
+toggleBtn.textContent = 'Show Menu';
+}
+});
+
+function setActiveTab(tab) {
+[homeTab, allVideosTab, aboutTab, commentsTab].forEach(t => t.classList.remove('active'));
+tab.classList.add('active');
+homePage.classList.remove('active');
+allVideosPage.classList.remove('active');
+aboutPage.classList.remove('active');
+commentsPage.classList.remove('active');
+
+if (tab === homeTab) homePage.classList.add('active');
+else if (tab === allVideosTab) allVideosPage.classList.add('active');
+else if (tab === aboutTab) aboutPage.classList.add('active');
+else if (tab === commentsTab) commentsPage.classList.add('active');
+}
+
+homeTab.addEventListener('click', e => { e.preventDefault(); setActiveTab(homeTab); });
+allVideosTab.addEventListener('click', e => { e.preventDefault(); setActiveTab(allVideosTab); });
+aboutTab.addEventListener('click', e => { e.preventDefault(); setActiveTab(aboutTab); });
+commentsTab.addEventListener('click', e => { e.preventDefault(); setActiveTab(commentsTab); });
+
+async function fetchVideos() {
+// Latest video
+const latestUrl = https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=1&type=video;
+try {
+const latestRes = await fetch(latestUrl);
+const latestData = await latestRes.json();
+if (latestData.items && latestData.items.length > 0) {
+const latestVid = latestData.items[0];
+const videoId = latestVid.id.videoId;
+latestVideoContainer.innerHTML = <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1" allow="autoplay; encrypted-media" allowfullscreen></iframe> <p>${latestVid.snippet.title}</p> <button id="likeSubscribeBtn">Like & Subscribe</button> ;
+      document.getElementById('likeSubscribeBtn').addEventListener('click', () => {
+      alert('Please like and subscribe on YouTube!');
+    });
+  } else {
+    latestVideoContainer.textContent = 'No videos found.';
+  }
+} catch (error) {
+  latestVideoContainer.textContent = 'Error loading latest video.';
+}
+
+// All videos
+const allUrl = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=50&type=video`;
+try {
+  const allRes = await fetch(allUrl);
+  const allData = await allRes.json();
+  videosGrid.innerHTML = '';
+  if (allData.items && allData.items.length > 0) {
+    allData.items.forEach(video => {
+      const vidId = video.id.videoId;
+      const thumb = video.snippet.thumbnails.medium.url;
+      const title = video.snippet.title;
+      const div = document.createElement('div');
+      div.className = 'video-item';
+      div.innerHTML = `<img src="${thumb}" alt="${title}"><div class="video-title">${title}</div>`;
+      div.addEventListener('click', () => openModal(vidId));
+      videosGrid.appendChild(div);
+    });
+  } else {
+    videosGrid.textContent = 'No videos found.';
+  }
+} catch (error) {
+  videosGrid.textContent = 'Error loading videos.';
+}
+}
+
+function openModal(videoId) {
+modalVideo.src = https://www.youtube.com/embed/${videoId}?autoplay=1;
+videoModal.classList.add('active');
+}
+function closeModal() {
+modalVideo.src = '';
+videoModal.classList.remove('active');
+}
+closeModalBtn.addEventListener('click', closeModal);
+videoModal.addEventListener('click', e => {
+if (e.target === videoModal) closeModal();
+});
+
+const commentForm = document.getElementById('commentForm');
+const formStatus = document.getElementById('formStatus');
+commentForm.addEventListener('submit', async e => {
+e.preventDefault();
+formStatus.textContent = 'Sending...';
+const formData = new FormData(commentForm);
+try {
+  const res = await fetch('https://formspree.io/f/yourFormID', { // Replace yourFormID
+    method: 'POST',
+    headers: { 'Accept': 'application/json' },
+    body: formData
+  });
+  if (res.ok) {
+    formStatus.textContent = 'Message sent! Thank you.';
+    commentForm.reset();
+  } else {
+    formStatus.textContent = 'Failed to send message.';
+  }
+} catch {
+  formStatus.textContent = 'Error sending message.';
+}
+const formData = new FormData(commentForm);
+try {
+  const res = await fetch('https://formspree.io/f/yourFormID', { // Replace yourFormID
+    method: 'POST',
+    headers: { 'Accept': 'application/json' },
+    body: formData
+  });
+  if (res.ok) {
+    formStatus.textContent = 'Message sent! Thank you.';
+    commentForm.reset();
+  } else {
+    formStatus.textContent = 'Failed to send message.';
+  }
+} catch {
+  formStatus.textContent = 'Error sending message.';
+}
+});
+
+// On load
+fetchVideos();
+</script>
+<footer>© 2025 Abu Yusuf Alhamdy</footer> </body> </html> 
