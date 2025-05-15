@@ -3,129 +3,332 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Abu Yusuf Alhamdy Official</title>
+<title>Abu Yusuf Alhamdy</title>
 <style>
-  /* Base reset */
-  * {
-    box-sizing: border-box;
+  :root {
+    --color-bg-light: #f4f7fb;
+    --color-bg-dark: #12131a;
+    --color-text-light: #222;
+    --color-text-dark: #ccc;
+    --color-accent: #0ff; /* neon teal */
+    --sidebar-width: 250px;
   }
   body {
-    margin: 0; padding: 0;
+    margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #eaeff4;
-    color: #111;
-    transition: background-color 0.5s, color 0.5s;
-    overflow-x: hidden;
-    position: relative;
-    min-height: 100vh;
+    background: var(--color-bg-light);
+    color: var(--color-text-light);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    transition: background 0.3s, color 0.3s;
   }
-
-  /* Neon teal variables */
-  :root {
-    --neon-teal: #00fff7;
-    --dark-bg: #0b1e2d;
-    --dark-tab-bg: #012229;
-    --dark-tab-hover: #014d4d;
-  }
-
-  /* Night mode */
   body.night {
-    background-color: var(--dark-bg);
-    color: #e0f7f7;
+    background: var(--color-bg-dark);
+    color: var(--color-text-dark);
   }
 
-  body.night a {
-    color: var(--neon-teal);
+  /* Neon corners for night mode */
+  body.night::before,
+  body.night::after,
+  body.night > div::before,
+  body.night > div::after {
+    content: '';
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--color-accent);
+    box-shadow:
+      0 0 8px var(--color-accent),
+      0 0 16px var(--color-accent),
+      0 0 24px var(--color-accent);
+    z-index: 9999;
   }
+  body.night::before { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+  body.night::after { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+  body.night > div::before { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+  body.night > div::after { bottom: 10px; right: 10px; border-left: none; border-top: none; }
 
   /* Sidebar */
   #sidebar {
-    position: fixed;
-    top: 0; left: 0;
-    width: 220px;
-    height: 100vh;
-    background: linear-gradient(145deg, #00181f, #00363f);
-    border-right: 3px solid var(--neon-teal);
+    width: var(--sidebar-width);
+    background: #0a0b10;
+    color: #0ff;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 20px 0;
-    box-shadow: 0 0 15px var(--neon-teal);
-    z-index: 1000;
+    padding: 1rem 0;
   }
-
-  #logo {
-    width: 130px;
-    height: auto;
-    margin-bottom: 25px;
-    filter: drop-shadow(0 0 5px var(--neon-teal));
-  }
-
-  #toggle-btn {
+  #sidebar img {
+    width: 140px;
+    margin: 0 auto 1rem;
     cursor: pointer;
-    font-size: 30px;
-    color: var(--neon-teal);
-    margin-bottom: 25px;
-    user-select: none;
-    transition: color 0.3s ease;
   }
-  #toggle-btn:hover {
-    color: #00d7cc;
+  #sidebar nav {
+    flex-grow: 1;
   }
-
-  .tabs {
+  #sidebar nav button {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tab {
-    padding: 15px 25px;
-    font-weight: 600;
-    color: var(--neon-teal);
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 1rem 2rem;
+    text-align: left;
+    font-size: 1rem;
     cursor: pointer;
     border-left: 4px solid transparent;
-    transition: background-color 0.3s ease, border-left 0.3s ease;
-    user-select: none;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  #sidebar nav button:hover,
+  #sidebar nav button.active {
+    background: #0ff2;
+    border-left-color: var(--color-accent);
   }
 
-  .tab:hover {
-    background-color: rgba(0, 255, 255, 0.15);
-    border-left: 4px solid var(--neon-teal);
+  /* Main content */
+  #main {
+    flex-grow: 1;
+    padding: 1.5rem 2rem;
+    overflow-y: auto;
   }
 
-  .tab.active {
-    background-color: rgba(0, 255, 255, 0.3);
-    border-left: 4px solid var(--neon-teal);
-    font-weight: 700;
+  /* Day/Night toggle */
+  #toggleMode {
+    background: none;
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+    padding: 0.3rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 1rem 1rem auto;
+    display: block;
+    width: fit-content;
   }
 
-  /* Content area */
-  #content {
-    margin-left: 220px;
-    padding: 40px 50px;
-    min-height: 100vh;
-    transition: color 0.5s ease;
+  /* Sections */
+  section {
+    display: none;
+  }
+  section.active {
+    display: block;
   }
 
-  body.night #content {
-    color: #a0f7f7;
+  /* Videos list */
+  #videos-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+    gap: 1rem;
+  }
+  .video-item iframe {
+    width: 100%;
+    height: 160px;
+    border: none;
+    border-radius: 6px;
+  }
+  .video-item .title {
+    margin-top: 0.3rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: inherit;
   }
 
-  /* Neon glowing corners on night mode */
-  body.night::before,
-  body.night::after,
-  #content.night-corners::before,
-  #content.night-corners::after {
-    content: '';
-    position: fixed;
-    width: 70px;
-    height: 70px;
-    border: 3px solid var(--neon-teal);
-    border-radius: 15px;
-    box-shadow:
-      0 0 15px var(--neon-teal),
-      0 0 40px var(--neon-teal),
-      0 0 70px var(--neon-teal);
-    z-index: 9999;
-    animation: neonGlow 2
+  /* Search input */
+  #video-search {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  body.night #video-search {
+    background: #222;
+    color: var(--color-text-dark);
+    border-color: var(--color-accent);
+  }
+
+  /* Contact form */
+  form {
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+  }
+  form input, form textarea {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    font-family: inherit;
+  }
+  body.night form input,
+  body.night form textarea {
+    background: #222;
+    color: var(--color-text-dark);
+    border-color: var(--color-accent);
+  }
+  form button {
+    background: var(--color-accent);
+    border: none;
+    color: #000;
+    padding: 0.7rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  #form-status {
+    margin-top: 0.5rem;
+    font-weight: 600;
+  }
+
+</style>
+</head>
+<body>
+  <div id="sidebar">
+    <img src="logo.png" alt="Abu Yusuf Alhamdy Logo" />
+    <nav>
+      <button class="active" data-target="home">Home</button>
+      <button data-target="articles">Articles</button>
+      <button data-target="videos">Videos</button>
+      <button data-target="contact">Contact Us</button>
+    </nav>
+    <button id="toggleMode" aria-label="Toggle Day Night Mode">Night Mode</button>
+  </div>
+  <main id="main">
+    <section id="home" class="active">
+      <h1>Welcome to Abu Yusuf Alhamdy</h1>
+      <p>This website shares Islamic knowledge, videos, and articles based on Salafi manhaj.</p>
+      <div id="latest-video-container">
+        <h2>Latest Video</h2>
+        <div id="latest-video"></div>
+      </div>
+    </section>
+    <section id="articles">
+      <h1>Articles</h1>
+      <p>Articles will be loaded here (not implemented yet).</p>
+    </section>
+    <section id="videos">
+      <h1>Videos</h1>
+      <input type="search" id="video-search" placeholder="Search videos..." />
+      <div id="videos-list"></div>
+    </section>
+    <section id="contact">
+      <h1>Contact Us</h1>
+      <form id="contact-form" autocomplete="off" spellcheck="false">
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="Your Email" required />
+        <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+        <button type="submit">Send</button>
+        <div id="form-status"></div>
+      </form>
+    </section>
+  </main>
+
+<script>
+  const apiKey = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng';
+  const channelId = 'UCoXzWPTne8dHYrftHpdIopw';
+
+  // Sidebar navigation logic
+  const buttons = document.querySelectorAll('#sidebar nav button');
+  const sections = document.querySelectorAll('main section');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = btn.getAttribute('data-target');
+      sections.forEach(s => s.classList.toggle('active', s.id === target));
+      // Reset video search on videos tab switch
+      if (target === 'videos') {
+        document.getElementById('video-search').value = '';
+        fetchVideos();
+      }
+    });
+  });
+
+  // Day/Night mode toggle
+  const toggleBtn = document.getElementById('toggleMode');
+  toggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('night');
+    toggleBtn.textContent = document.body.classList.contains('night') ? 'Day Mode' : 'Night Mode';
+  });
+
+  // Fetch latest video and embed
+  async function fetchLatestVideo() {
+    const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=1&type=video`;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.items && data.items.length > 0) {
+        const videoId = data.items[0].id.videoId;
+        document.getElementById('latest-video').innerHTML =
+          `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+      }
+    } catch (err) {
+      document.getElementById('latest-video').textContent = 'Failed to load latest video.';
+    }
+  }
+
+  // Fetch multiple videos for videos tab
+  let videosCache = [];
+  const videosList = document.getElementById('videos-list');
+  const videoSearch = document.getElementById('video-search');
+
+  async function fetchVideos() {
+    const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=20&type=video`;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      videosCache = data.items || [];
+      renderVideos(videosCache);
+    } catch {
+      videosList.innerHTML = '<p>Failed to load videos.</p>';
+    }
+  }
+
+  function renderVideos(videos) {
+    if (!videos.length) {
+      videosList.innerHTML = '<p>No videos found.</p>';
+      return;
+    }
+    videosList.innerHTML = videos.map(v => {
+      const vidId = v.id.videoId;
+      const title = v.snippet.title;
+      return `
+        <div class="video-item">
+          <iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe>
+          <div class="title">${title}</div>
+        </div>`;
+    }).join('');
+  }
+
+  videoSearch.addEventListener('input', () => {
+    const term = videoSearch.value.trim().toLowerCase();
+    if (!term) {
+      renderVideos(videosCache);
+      return;
+    }
+    const filtered = videosCache.filter(v => v.snippet.title.toLowerCase().includes(term));
+    renderVideos(filtered);
+  });
+
+  // Contact form dummy submit
+  const form = document.getElementById('contact-form');
+  const formStatus = document.getElementById('form-status');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    formStatus.style.color = '#0ff';
+    formStatus.textContent = 'Sending message...';
+    setTimeout(() => {
+      formStatus.style.color = '#0f0';
+      formStatus.textContent = 'Message sent successfully (dummy).';
+      form.reset();
+    }, 1500);
+  });
+
+  // Initial load
+  fetchLatestVideo();
+  fetchVideos();
+</script>
+</body>
+</html>
