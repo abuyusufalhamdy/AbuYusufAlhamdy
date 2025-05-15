@@ -87,3 +87,38 @@
     border-left: 4px solid var(--neon-teal);
     font-weight: 700;
   }
+  /* Content area */
+  #content {
+    margin-left: 220px;
+    padding: 30px 40px;
+    min-height: 100vh;
+    transition: color 0.5s;
+  }
+  body.night #content {
+    color: #eee;
+  }
+  /* Neon lights corners for night mode */
+  body.night::before,
+  body.night::after,
+  body.night #content::before,
+  body.night #content::after {
+    content: '';
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    border: 3px solid var(--neon-teal);
+    border-radius: 12px;
+    box-shadow:
+      0 0 20px var(--neon-teal),
+      0 0 40px var(--neon-teal),
+      0 0 60px var(--neon-teal);
+    z-index: 9999;
+    animation: neonGlow 2s ease-in-out infinite alternate;
+  }
+  body.night::before {
+    top: 10px; left: 10px;
+    border-right: none; border-bottom: none;
+  }
+  body.night::after {
+    top: 10px; right: 10px;
+    border-left
