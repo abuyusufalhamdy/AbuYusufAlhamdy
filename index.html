@@ -3,58 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Abu Yusuf Alhamdy</title>
+  <title>All Videos - Abu Yusuf Alhamdy</title>
   <style>
-    :root {
-      --neon-color: #00ffcc;
-      --dark-bg: #0a0a0a;
-      --light-bg: #f2f2f2;
-      --text-light: #ffffff;
-      --text-dark: #000000;
-    }
-
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: var(--dark-bg);
-      color: var(--text-light);
-      transition: background 0.3s, color 0.3s;
-    }
-
-    body.light-mode {
-      background: var(--light-bg);
-      color: var(--text-dark);
-    }
-
-    header {
-      padding: 2rem;
-      background: linear-gradient(135deg, var(--neon-color) 0%, transparent 100%);
-      text-align: center;
-    }
-
-    .title-container {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 1rem;
-    }
-
-    .title-container h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
-
-    .title-container .welcome {
-      position: absolute;
-      top: -1.5rem;
-      left: -2rem;
-      font-size: 1.2rem;
-    }
-
-    .title-container .website {
-      position: absolute;
-      top: 2.5rem;
-      right: -2rem;
-      font-size: 1.2rem;
+      background: #0a0a0a;
+      color: #ffffff;
     }
 
     nav {
@@ -67,11 +22,11 @@
       width: 200px;
       background-color: #111;
       padding-top: 3rem;
-      border-right: 3px dashed var(--neon-color);
+      border-right: 3px dashed #00ffcc;
     }
 
     nav a {
-      color: var(--neon-color);
+      color: #00ffcc;
       padding: 1rem;
       text-decoration: none;
       display: block;
@@ -86,95 +41,10 @@
       padding: 2rem;
     }
 
-    iframe {
-      width: 100%;
-      height: 400px;
+    h1 {
+      color: #00ffcc;
     }
 
-    .mode-toggle {
-      position: fixed;
-      bottom: 1rem;
-      right: 1rem;
-      padding: 0.5rem 1rem;
-      background: var(--neon-color);
-      color: #000;
-      border: none;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#videos">All Videos</a>
-    <a href="#articles">Articles</a>
-    <a href="#contact">Contact Us</a>
-  </nav>
-
-  <main>
-    <section id="home">
-      <header>
-        <div class="title-container">
-          <div class="welcome">Welcome to</div>
-          <h1>Abu Yusuf Alhamdy's</h1>
-          <div class="website">Website</div>
-        </div>
-      </header>
-      <h2>Latest Upload</h2>
-      <div id="latest-video"></div>
-    </section>
-
-    <section id="videos">
-      <h2>All Videos</h2>
-      <div id="video-list"></div>
-    </section>
-
-    <section id="articles">
-      <h2>Articles are coming soon</h2>
-    </section>
-
-    <section id="contact">
-      <h2>Contact Us</h2>
-      <form action="https://formspree.io/f/mwkgyojy" method="POST">
-        <label>Email:<br /><input type="email" name="email" required /></label><br />
-        <label>Message:<br /><textarea name="message" required></textarea></label><br />
-        <button type="submit">Send</button>
-      </form>
-    </section>
-  </main>
-
-  <button class="mode-toggle" onclick="toggleMode()">Toggle Day/Night</button>
-
-  <script>
-    const API_KEY = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng';
-    const CHANNEL_ID = 'UCoXzWPTne8dHYrftHpdIopw';
-
-    function toggleMode() {
-      document.body.classList.toggle('light-mode');
-    }
-
-    async function loadVideos() {
-      const res = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet&order=date&maxResults=10`);
-      const data = await res.json();
-
-      const latestVideo = data.items[0];
-      const latestVideoHTML = `
-        <iframe src="https://www.youtube.com/embed/${latestVideo.id.videoId}" frameborder="0" allowfullscreen></iframe>
-      `;
-      document.getElementById('latest-video').innerHTML = latestVideoHTML;
-
-      const videoListHTML = data.items.map(item => `
-        <div>
-          <h4>${item.snippet.title}</h4>
-          <iframe src="https://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
-          <a href="https://www.youtube.com/watch?v=${item.id.videoId}" target="_blank">Watch on YouTube</a>
-        </div>
-      `).join('');
-
-      document.getElementById('video-list').innerHTML = videoListHTML;
-    }
-
-    loadVideos();
-  </script>
-</body>
-</html>
+    .video-grid {
+      display: grid;
+      grid-template-colu
