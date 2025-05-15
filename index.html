@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>All Videos - Abu Yusuf Alhamdy</title>
+<title>Abu Yusuf Alhamdy Channel</title>
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -12,21 +12,21 @@
   <img src="logo.png" alt="Abu Yusuf Alhamdy logo" class="logo" />
   <nav>
     <ul class="tabs">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="all-videos.html" class="active">All Videos</a></li>
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="all-videos.html">All Videos</a></li>
       <li><a href="#about">About</a></li>
     </ul>
   </nav>
 </header>
 
 <main>
-  <section id="all-videos" class="video-grid"></section>
+  <section id="featured-videos" class="video-grid"></section>
 
-  <div id="pagination" class="pagination-controls">
-    <button id="prevPage" disabled>Previous</button>
-    <span id="pageInfo"></span>
-    <button id="nextPage">Next</button>
-  </div>
+  <section class="subscribe-prompt">
+    <h2>Like what you see?</h2>
+    <p>Don't forget to <strong>like</strong> and <strong>subscribe</strong> to Abu Yusuf Alhamdy's channel for regular updates.</p>
+    <a href="https://www.youtube.com/channel/UCoXzWPTne8dHYrftHpdIopw?sub_confirmation=1" target="_blank" class="subscribe-button">Subscribe Now</a>
+  </section>
 </main>
 
 <footer>
@@ -35,18 +35,12 @@
 
 <script src="script.js"></script>
 <script>
-  // Initialize all videos with pagination and max 100 videos
+  // Initialize page for home with limited videos (e.g., last 6)
   initYoutubePage({
     apiKey: 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng',
     channelId: 'UCoXzWPTne8dHYrftHpdIopw',
-    maxResults: 10, // videos per page
-    totalMaxResults: 100,
-    targetElementId: 'all-videos',
-    paginationControls: {
-      prevBtnId: 'prevPage',
-      nextBtnId: 'nextPage',
-      pageInfoId: 'pageInfo'
-    }
+    maxResults: 6,
+    targetElementId: 'featured-videos'
   });
 </script>
 
