@@ -1,107 +1,395 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Abu Yusuf Alhamdy Official Website</title>
-  <style>
-    /* Reset & base */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    body {
-      background-color: #121212;
-      color: #eee;
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    /* Sidebar */
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Abu Yusuf Alhamdy - Official Salafi Website</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+  body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f0f4f8;
+    color: #222;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  body.night-mode {
+    background-color: #121a2a;
+    color: #eee;
+  }
+  /* Sidebar */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100vh;
+    background: #fff;
+    border-right: 4px solid transparent;
+    border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><path d="M0,4 Q2,1 4,4 T8,4" stroke="navy" stroke-width="2" fill="none" stroke-linejoin="round"/></svg>') 4 repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 15px;
+    box-sizing: border-box;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  body.night-mode .sidebar {
+    background: #18243b;
+    color: #eee;
+  }
+  .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    width: 100%;
+    padding-left: 15px;
+    box-sizing: border-box;
+  }
+  .logo-container img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+  .toggle-switch {
+    cursor: pointer;
+    width: 45px;
+    height: 24px;
+    background: #ccc;
+    border-radius: 12px;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .toggle-switch::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: navy;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+  body.night-mode .toggle-switch {
+    background: #34495e;
+  }
+  body.night-mode .toggle-switch::before {
+    transform: translateX(21px);
+    background: #9bd1ff;
+  }
+  .sidebar a {
+    text-decoration: none;
+    color: inherit;
+    padding: 15px 25px;
+    width: 100%;
+    box-sizing: border-box;
+    border-left: 4px solid transparent;
+    transition: background-color 0.2s, border-color 0.2s;
+    font-weight: 600;
+    font-size: 1.1em;
+  }
+  .sidebar a:hover, .sidebar a.active {
+    background-color: #e0e7ff;
+    border-left-color: navy;
+  }
+  body.night-mode .sidebar a:hover, body.night-mode .sidebar a.active {
+    background-color: #25406d;
+    border-left-color: #9bd1ff;
+    color: #fff;
+  }
+  /* Content */
+  .content {
+    margin-left: 220px;
+    padding: 30px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  body.night-mode .content {
+    background-color: #18243b;
+    color: #eee;
+  }
+  /* Home page */
+  #latest-video-container iframe {
+    width: 100%;
+    height: 360px;
+    border: none;
+    border-radius: 8px;
+  }
+  /* Video grid */
+  #video-search {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    font-size: 1em;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1.5px solid navy;
+  }
+  body.night-mode #video-search {
+    background-color: #22304a;
+    border-color: #9bd1ff;
+    color: #eee;
+  }
+  #video-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 20px;
+  }
+  .video-item {
+    background: #f9fbff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0,0,50,0.1);
+    transition: background-color 0.3s;
+  }
+  body.night-mode .video-item {
+    background: #22304a;
+    box-shadow: none;
+  }
+  .video-item iframe {
+    width: 100%;
+    height: 160px;
+    border-radius: 6px;
+  }
+  .video-title {
+    margin-top: 8px;
+    font-weight: 600;
+    font-size: 0.9em;
+    color: #111;
+  }
+  body.night-mode .video-title {
+    color: #eee;
+  }
+  /* Articles placeholder */
+  #articles {
+    font-size: 1.1em;
+  }
+  /* Contact form */
+  form {
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  input, textarea {
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1.5px solid navy;
+  }
+  body.night-mode input, body.night-mode textarea {
+    background-color: #22304a;
+    border-color: #9bd1ff;
+    color: #eee;
+  }
+  button {
+    background-color: navy;
+    color: white;
+    font-weight: 700;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #123366;
+  }
+  /* Responsive */
+  @media (max-width: 700px) {
     .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
-      width: 220px;
-      background: #111;
-      border-right: 4px solid transparent;
-      border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="40"><path d="M0 0 L10 40" stroke="%230d6efd" stroke-width="4" stroke-linecap="round"/></svg>') 4 stretch;
-      display: flex;
-      flex-direction: column;
-      padding: 20px 10px;
-      gap: 25px;
-      z-index: 1000;
+      position: relative;
+      width: 100%;
+      height: auto;
+      border-right: none;
+      border-bottom: 4px solid transparent;
+      flex-direction: row;
+      padding: 10px 5px;
     }
-
+    .sidebar a {
+      padding: 10px 15px;
+      border-left: none;
+      border-bottom: 4px solid transparent;
+      font-size: 1em;
+      flex-grow: 1;
+      text-align: center;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      border-bottom-color: navy;
+      border-left: none;
+    }
+    .content {
+      margin-left: 0;
+      padding: 15px;
+    }
     .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 0;
+      padding-left: 5px;
+      width: auto;
+      flex-grow: 1;
+      justify-content: flex-start;
     }
+  }
+</style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo-container">
+      <img src="logo.png" alt="Abu Yusuf Alhamdy Logo" />
+      <div class="toggle-switch" id="mode-toggle" title="Toggle Day/Night Mode"></div>
+    </div>
+    <a href="#" class="active" data-page="home">Home</a>
+    <a href="#" data-page="articles">Articles</a>
+    <a href="#" data-page="videos">Videos</a>
+    <a href="#" data-page="contact">Contact Us</a>
+  </div>
+  <div class="content">
+    <!-- Home Page -->
+    <div id="home" class="page active">
+      <h1>Welcome to the Official Website of Abu Yusuf Alhamdy</h1>
+      <p>This is a Salafi website dedicated to delivering strict knowledge based on the science of Hadiths.</p>
+      <div id="latest-video-container">
+        <p>Loading latest video...</p>
+      </div>
+      <p style="margin-top:20px;">
+        Subscribe to the YouTube channel: <a href="https://youtube.com/@abuyusufalhamy" target="_blank" rel="noopener">youtube.com/@abuyusufalhamy</a>
+      </p>
+    </div>
+    <!-- Articles Page -->
+    <div id="articles" class="page" style="display:none;">
+      <h1>Articles</h1>
+      <p>Articles will be loaded here from <a href="https://abukhadeejah.com" target="_blank" rel="noopener">abukhadeejah.com</a> and <a href="https://salafipublications.com" target="_blank" rel="noopener">salafipublications.com</a>.</p>
+      <p><em>Article loading not implemented in this version.</em></p>
+    </div>
+    <!-- Videos Page -->
+    <div id="videos" class="page" style="display:none;">
+      <h1>All Videos</h1>
+      <input type="text" id="video-search" placeholder="Search videos..." autocomplete="off" />
+      <div id="video-list"><p>Loading videos...</p></div>
+    </div>
+    <!-- Contact Page -->
+    <div id="contact" class="page" style="display:none;">
+      <h1>Contact Us</h1>
+      <form id="contact-form">
+        <input type="text" id="name" placeholder="Your Name" required />
+        <input type="email" id="email" placeholder="Your Email" required />
+        <textarea id="message" placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+      <p id="form-status"></p>
+    </div>
+  </div>
+<script>
+  // Page switching
+  const sidebarLinks = document.querySelectorAll('.sidebar a');
+  const pages = document.querySelectorAll('.page');
 
-    .logo-container img {
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      sidebarLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      const target = link.getAttribute('data-page');
+      pages.forEach(p => {
+        p.style.display = p.id === target ? 'block' : 'none';
+      });
+      if (target === 'videos') loadAllVideos();
+      if (target === 'home') loadLatestVideo();
+    });
+  });
+
+  // Night mode toggle
+  const modeToggle = document.getElementById('mode-toggle');
+  const body = document.body;
+  // Load mode from localStorage
+  if(localStorage.getItem('mode') === 'night') {
+    body.classList.add('night-mode');
+  }
+  modeToggle.addEventListener('click', () => {
+    body.classList.toggle('night-mode');
+    if(body.classList.contains('night-mode')) {
+      localStorage.setItem('mode', 'night');
+    } else {
+      localStorage.setItem('mode', 'day');
     }
+  });
 
-    .toggle-button {
-      cursor: pointer;
-      background: #0d6efd;
-      border: none;
-      border-radius: 20px
-// Load all videos on videos page
-function loadAllVideos() {
-  const videoList = document.getElementById("video-list");
-  videoList.innerHTML = "<p>Loading videos...</p>";
+  // YouTube API setup
+  const apiKey = "AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng";
+  const channelId = "UCoXzWPTne8dHYrftHpdIopw";
 
-  fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=50`)
-    .then(res => res.json())
-    .then(data => {
-      videoList.innerHTML = "";
-      data.items.forEach(item => {
-        if(item.id.kind === "youtube#video") {
-          const videoId = item.id.videoId;
-          const videoEl = document.createElement("div");
-          videoEl.className = "video-item";
-          videoEl.innerHTML = `
+  // Load latest video for home page
+  function loadLatestVideo() {
+    fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=1`)
+      .then(res => res.json())
+      .then(data => {
+        if(data.items && data.items.length > 0) {
+          const vidId = data.items[0].id.videoId;
+          document.getElementById("latest-video-container").innerHTML = `
             <iframe
-              src="https://www.youtube.com/embed/${videoId}"
+              width="100%"
+              height="315"
+              src="https://www.youtube.com/embed/${vidId}"
+              frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen>
             </iframe>
-            <p class="video-title">${item.snippet.title}</p>
           `;
-          videoList.appendChild(videoEl);
+        } else {
+          document.getElementById("latest-video-container").innerHTML = "<p>No videos found.</p>";
         }
+      })
+      .catch(() => {
+        document.getElementById("latest-video-container").innerHTML = "<p>Unable to load latest video.</p>";
       });
-    })
-    .catch(() => {
-      videoList.innerHTML = "<p>Failed to load videos.</p>";
+  }
+
+  // Load all videos on videos page
+  function loadAllVideos() {
+    const videoList = document.getElementById("video-list");
+    videoList.innerHTML = "<p>Loading videos...</p>";
+
+    fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=50`)
+      .then(res => res.json())
+      .then(data => {
+        videoList.innerHTML = "";
+        data.items.forEach(item => {
+          if(item.id.kind === "youtube#video") {
+            const videoId = item.id.videoId;
+            const videoEl = document.createElement("div");
+            videoEl.className = "video-item";
+            videoEl.innerHTML = `
+              <iframe
+                src="https://www.youtube.com/embed/${videoId}"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+              <p class="video-title">${item.snippet.title}</p>
+            `;
+            videoList.appendChild(videoEl);
+          }
+        });
+      })
+      .catch(() => {
+        videoList.innerHTML = "<p>Failed to load videos.</p>";
+      });
+  }
+
+  // Search videos filter
+  const searchInput = document.getElementById("video-search");
+  searchInput.addEventListener("input", e => {
+    const query = e.target.value.toLowerCase();
+    const videos = document.querySelectorAll(".video-item");
+    videos.forEach(video => {
+      const title = video.querySelector(".video-title").textContent.toLowerCase();
+      video.style.display = title.includes(query) ? "block" : "none";
     });
-}
-
-// Search videos
-const searchInput = document.getElementById("video-search");
-searchInput.addEventListener("input", e => {
-  const query = e.target.value.toLowerCase();
-  const videos = document.querySelectorAll(".video-item");
-  videos.forEach(video => {
-    const title = video.querySelector(".video-title").textContent.toLowerCase();
-    video.style.display = title.includes(query) ? "block" : "none";
   });
-});
 
-// Initial load
-loadLatestVideo();
-
-// Load videos when videos tab is clicked
-document.querySelector('.sidebar a[data-page="videos"]').addEventListener("click", loadAllVideos);
- </script> </body> </html> 
-    
+  // Contact form submit handler (no backend, just show success message)
+  document.getElementById('contact-form').addEventListener('submit', e => {
+    e.preventDefault();
+    // You’ll need to hook this to a backend or email service for real functionality.
+    document.getElementById('form-status
