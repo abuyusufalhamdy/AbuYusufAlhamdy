@@ -1,0 +1,112 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #0d0d0d;
+  color: #f0f0f0;
+  display: flex;
+}
+
+#sidebar {
+  width: 250px;
+  background: #111;
+  border-right: 2px solid #0ff;
+  padding: 20px;
+  box-shadow: 0 0 15px #0ff;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.logo-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  width: 70px;
+  height: 70px;
+  filter: drop-shadow(0 0 5px #0ff);
+}
+
+#mode-toggle {
+  background: none;
+  border: none;
+  color: #0ff;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+nav a {
+  color: #ccc;
+  text-decoration: none;
+  padding: 10px;
+  border-left: 4px solid transparent;
+  transition: all 0.3s ease;
+}
+
+nav a.active, nav a:hover {
+  border-left: 4px solid #0ff;
+  color: #0ff;
+  background-color: #222;
+}
+
+#main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.tab {
+  display: none;
+}
+
+.tab.active {
+  display: block;
+}
+
+#video-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.video-item {
+  width: 300px;
+}
+
+.video-item img {
+  width: 100%;
+  border: 2px solid #0ff;
+  border-radius: 10px;
+}
+
+.video-item p {
+  color: #0ff;
+  margin: 5px 0 0;
+}
+
+.dark-mode {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+.dark-mode #sidebar {
+  background: #e0e0e0;
+  border-right: 2px solid #004466;
+  box-shadow: 0 0 15px #004466;
+}
+
+.dark-mode nav a {
+  color: #333;
+}
+
+.dark-mode nav a.active, .dark-mode nav a:hover {
+  border-left: 4px solid #004466;
+  color: #004466;
+  background-color: #ccc;
+}
+
+.dark-mode .video-item p {
+  color: #004466;
+}
