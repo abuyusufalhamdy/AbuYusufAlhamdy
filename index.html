@@ -1,152 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Abu Yusuf Alhamdy - Salafi YouTube Channel</title>
-<style>
-  body {
-    margin: 0;
-    font-family: 'Cinzel', serif;
-    background: #f5f5f5;
-    color: #111;
-    display: flex;
-    min-height: 100vh;
-  }
-  header {
-    background: #000;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-  }
-  header img {
-    width: 100px;
-    height: auto;
-  }
-  nav {
-    background: #fff;
-    width: 220px;
-    padding: 20px;
-    box-shadow: 1px 0 5px rgba(0,0,0,0.1);
-  }
-  nav h2 {
-    font-weight: 700;
-    margin-bottom: 20px;
-  }
-  nav a {
-    display: block;
-    margin-bottom: 12px;
-    color: #111;
-    text-decoration: none;
-    font-weight: 600;
-  }
-  nav a:hover {
-    text-decoration: underline;
-  }
-  main {
-    flex: 1;
-    padding: 20px;
-    background: #fff;
-    box-shadow: inset 0 0 10px #ddd;
-    overflow-y: auto;
-  }
-  .video-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-  .video-item {
-    width: 320px;
-  }
-  .video-item iframe {
-    width: 100%;
-    height: 180px;
-  }
-  .video-title {
-    margin-top: 6px;
-    font-weight: 600;
-  }
-</style>
-<script src="https://apis.google.com/js/api.js"></script>
-<script>
-  const API_KEY = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng'; // Replace with your actual API key
-  const CHANNEL_ID = 'UCXZpmb3LM-OvdqLCyZWc7FA'; // Your YouTube Channel ID starting with UC
-
-  function loadClient() {
-    gapi.client.setApiKey(API_KEY);
-    return gapi.client.load('youtube', 'v3');
-  }
-
-  function displayVideos(response) {
-    const videosContainer = document.getElementById('videos');
-    videosContainer.innerHTML = '';
-    const items = response.result.items;
-    if(!items.length){
-      videosContainer.innerHTML = '<p>No videos found.</p>';
-      return;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Abu Yusuf Alhamdy - Salafi YouTube Channel</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #f0f0f0; /* light gray */
+      color: #000; /* black */
+      font-family: 'Cinzel', serif;
     }
-    items.forEach(item => {
-      const videoId = item.id.videoId;
-      const title = item.snippet.title;
-      const videoDiv = document.createElement('div');
-      videoDiv.className = 'video-item';
-      videoDiv.innerHTML = `
-        <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>
-        <div class="video-title">${title}</div>
-      `;
-      videosContainer.appendChild(videoDiv);
-    });
-  }
-
-  function fetchVideos() {
-    return gapi.client.youtube.search.list({
-      part: 'snippet',
-      channelId: CHANNEL_ID,
-      maxResults: 12,
-      order: 'date',
-      type: 'video'
-    }).then(displayVideos, err => {
-      document.getElementById('videos').innerHTML = '<p>Failed to load videos.</p>';
-      console.error('YouTube API error:', err);
-    });
-  }
-
-  function init() {
-    gapi.load('client', () => {
-      loadClient().then(fetchVideos);
-    });
-  }
-
-  window.onload = init;
-</script>
+    header {
+      background-color: #000; /* black */
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+    }
+    header img {
+      height: 40px;
+      width: auto;
+      margin-right: 20px;
+    }
+    nav {
+      background-color: #fff; /* white */
+      padding: 20px;
+      width: 200px;
+      height: 100vh;
+      box-sizing: border-box;
+      float: left;
+      border-right: 1px solid #ccc;
+    }
+    nav a {
+      display: block;
+      margin-bottom: 15px;
+      color: #000;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      margin-left: 220px;
+      padding: 20px;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <nav>
+  <header>
     <img src="logo.png" alt="Abu Yusuf Alhamdy logo" />
-    <h2>Menu</h2>
-    <a href="#about">About This Page</a>
-    <a href="#all-videos">All Videos</a>
-    <a href="#latest-video">Latest Video</a>
+    <h1>Abu Yusuf Alhamdy - Salafi YouTube Channel</h1>
+  </header>
+  <nav>
+    <a href="#">About This Page</a>
+    <a href="#">All Videos</a>
+    <a href="#">Latest Uploaded Video</a>
   </nav>
   <main>
-    <section id="about">
-      <h1>About This Page</h1>
-      <p>This is the official Salafi YouTube Channel of Abu Yusuf Alhamdy. Here you will find Islamic videos following the Salafi manhaj.</p>
-    </section>
-
-    <section id="all-videos">
-      <h2>All Videos</h2>
-      <div id="videos" class="video-list">
-        <p>Loading videos...</p>
-      </div>
-    </section>
-
-    <section id="latest-video" style="margin-top: 40px;">
-      <h2>Latest Video</h2>
-      <div id="latest-video-container">
-        <!-- Latest video iframe will be added here -->
-      </div>
-    </section>
+    <p>Welcome to the official Salafi YouTube channel website.</p>
   </main>
 </body>
 </html>
