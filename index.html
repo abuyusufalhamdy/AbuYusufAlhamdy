@@ -49,12 +49,20 @@
 
         nav {
             display: flex;
+            align-items: center;
             justify-content: center;
             padding: 20px;
             background: rgba(0, 0, 0, 0.8);
             position: sticky;
             top: 0;
             z-index: 10;
+        }
+
+        .logo {
+            position: absolute;
+            left: 20px;
+            height: 60px;
+            width: auto;
         }
 
         nav a {
@@ -259,6 +267,7 @@
     <div class="neon-glow"></div>
 
     <nav>
+        <img src="logo.png" alt="Abu Yusuf Alhamdy Logo" class="logo">
         <a href="#home" onclick="showSection('home')">Home</a>
         <a href="#videos" onclick="showSection('videos')">All Videos</a>
         <a href="#articles" onclick="showSection('articles')">Articles</a>
