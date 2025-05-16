@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home - Abu Yusuf Alhamdy</title>
+  <title>Contact Us - Abu Yusuf Alhamdy</title>
   <style>
     :root {
       --neon-color: #00ffcc;
@@ -24,37 +24,6 @@
     body.light-mode {
       background: var(--light-bg);
       color: var(--text-dark);
-    }
-
-    header {
-      padding: 2rem;
-      background: linear-gradient(135deg, var(--neon-color) 0%, transparent 100%);
-      text-align: center;
-    }
-
-    .title-container {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 1rem;
-    }
-
-    .title-container h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
-
-    .title-container .welcome {
-      position: absolute;
-      top: -1.5rem;
-      left: -2rem;
-      font-size: 1.2rem;
-    }
-
-    .title-container .website {
-      position: absolute;
-      top: 2.5rem;
-      right: -2rem;
-      font-size: 1.2rem;
     }
 
     nav {
@@ -86,9 +55,10 @@
       padding: 2rem;
     }
 
-    iframe {
-      width: 100%;
-      height: 400px;
+    header {
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--neon-color) 0%, transparent 100%);
+      text-align: center;
     }
 
     .mode-toggle {
@@ -100,6 +70,30 @@
       color: #000;
       border: none;
       cursor: pointer;
+    }
+
+    form {
+      max-width: 600px;
+      margin: 2rem auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    input, textarea {
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    button.submit-btn {
+      background-color: var(--neon-color);
+      color: #000;
+      padding: 0.75rem;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -113,36 +107,22 @@
 
   <main>
     <header>
-      <div class="title-container">
-        <div class="welcome">Welcome to</div>
-        <h1>Abu Yusuf Alhamdy's</h1>
-        <div class="website">Website</div>
-      </div>
+      <h1>Contact Us</h1>
     </header>
-    <h2>Latest Upload</h2>
-    <div id="latest-video"></div>
+    <form action="https://formspree.io/f/mwkgyyob" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+      <button class="submit-btn" type="submit">Send Message</button>
+    </form>
   </main>
 
   <button class="mode-toggle" onclick="toggleMode()">Toggle Day/Night</button>
 
   <script>
-    const API_KEY = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng';
-    const CHANNEL_ID = 'UCoXzWPTne8dHYrftHpdIopw';
-
     function toggleMode() {
       document.body.classList.toggle('light-mode');
     }
-
-    async function loadLatestVideo() {
-      const res = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet&order=date&maxResults=1`);
-      const data = await res.json();
-      const latest = data.items[0];
-      document.getElementById('latest-video').innerHTML = `
-        <iframe src="https://www.youtube.com/embed/${latest.id.videoId}" frameborder="0" allowfullscreen></iframe>
-      `;
-    }
-
-    loadLatestVideo();
   </script>
 </body>
 </html>
