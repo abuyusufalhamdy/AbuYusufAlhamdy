@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abu Yusuf Alhamdy's Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            overflow-x: hidden;
+            transition: background 0.5s, color 0.5s;
+        }
+
+        body.day-mode {
+            background: #f5f5f0;
+            color: #333;
+        }
+
+        .neon-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.5), transparent 70%);
+            filter: blur(50px);
+            z-index: -1;
+            animation: pulse 5s infinite;
+            transition: background 0.5s;
+        }
+
+        body.day-mode .neon-glow {
+            background: radial-gradient(circle, rgba(0, 85, 85, 0.5), transparent 70%);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        nav a {
+            color: #0ff;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        body.day-mode nav a {
+            color: #005555;
+        }
+
+        nav a:hover {
+            color: #00cc99;
+        }
+
+        body.day-mode nav a:hover {
+            color: #003f3f;
+        }
+
+        .section {
+            display: none;
+            padding: 50px;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .home-text {
+            margin-top: 50px;
+            font-size: 3rem;
+            text-transform: uppercase;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .home-text div {
+            display: inline-block;
+        }
+
+        #welcome-to {
+            text-align: left;
+            margin-left: -150px;
+        }
+
+        #abu-yusuf {
+            font-size: 4rem;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff;
+            margin-top: 20px;
+            transition: color 0.5s, text-shadow 0.5s;
+        }
+
+        body.day-mode #abu-yusuf {
+            color: #005555;
+            text-shadow: 0 0 10px #005555;
+        }
+
+        #website {
+            text-align: right;
+            margin-right: -150px;
+            margin-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .latest-video, .all-videos {
+            margin-top: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .video-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #0ff;
+            border-radius: 10px;
+            padding: 10px;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        body.day-mode .video-card {
+            border: 1px solid #005555;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .video-card:hover {
+            transform: scale(1.05);
+        }
+
+        .video-card img {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .video-card h3 {
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+
+        .video-card a {
+            color: #0ff;
+            text-decoration: none;
+            transition: color 0.5s;
+        }
+
+        body.day-mode .video-card a {
+            color: #005555;
+        }
+
+        .articles-placeholder {
+            font-size: 2rem;
+            margin-top: 100px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .contact-form {
+            max-width: 500px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #0ff;
+            transition: border 0.5s, background 0.5s;
+        }
+
+        body.day-mode .contact-form {
+            border: 1px solid #005555;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: transparent;
+            border: 1px solid #0ff;
+            color: #e0e0e0;
+            border-radius: 5px;
+            transition: border 0.5s, color 0.5s;
+        }
+
+        body.day-mode .contact-form input,
+        body.day-mode .contact-form textarea {
+            border: 1px solid #005555;
+            color: #333;
+        }
+
+        .contact-form button {
+            background: #0ff;
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        body.day-mode .contact-form button {
+            background: #005555;
+        }
+
+        .contact-form button:hover {
+            background: #00cc99;
+        }
+
+        body.day-mode .contact-form button:hover {
+            background: #003f3f;
+        }
+
+        .mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0ff;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 10;
+            transition: background 0.5s;
+        }
+
+        body.day-mode .mode-toggle {
+            background: #005555;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="neon-glow"></div>
+
+    <nav>
+        <a href="#home" onclick="showSection('home')">Home</a>
+        <a href="#videos" onclick="showSection('videos')">All Videos</a>
+        <a href="#articles" onclick="showSection('articles')">Articles</a>
+        <a href="#contact" onclick="showSection('contact')">Contact Us</a>
+    </nav>
+
+    <div id="home" class="section active">
+        <div class="home-text">
+            <div id="welcome-to">Welcome to</div><br>
+            <div id="abu-yusuf">Abu Yusuf Alhamdy's</div><br>
+            <div id="website">Website</div>
+        </div>
+        <div class="latest-video" id="latest-video"></div>
+    </div>
+
+    <div id="videos" class="section">
+        <h2>All Videos</h2>
+        <div class="all-videos" id="all-videos"></div>
+    </div>
+
+    <div id="articles" class="section">
+        <div class="articles-placeholder">Articles are coming soon</div>
+    </div>
+
+    <div id="contact" class="section">
+        <h2>Contact Us</h2>
+        <div class="contact-form">
+            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                <input type="hidden" name="_subject" value="New Contact Form Submission">
+                <input type="hidden" name="_next" value="https://yourwebsite.com/thanks.html">
+                <input type="email" name="_replyto" value="abuyusufalhamdy@gmail.com" style="display: none;">
+                <button type="button" onclick="this.parentElement.submit()">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="mode-toggle" onclick="toggleMode()">Night Mode</div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function toggleMode() {
+            const body = document.body;
+            const toggleButton = document.querySelector('.mode-toggle');
+            body.classList.toggle('day-mode');
+            toggleButton.textContent = body.classList.contains('day-mode') ? 'Night Mode' : 'Day Mode';
+        }
+
+        const API_KEY = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng';
+        const CHANNEL_ID = 'UCoXzWPTne8dHYrftHpdIopw';
+
+        async function fetchLatestVideo() {
+            const response = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet&order=date&maxResults=1`);
+            const data = await response.json();
+            const video = data.items[0];
+            const videoId = video.id.videoId;
+            const title = video.snippet.title;
+            const thumbnail = video.snippet.thumbnails.medium.url;
+
+            const latestVideoDiv = document.getElementById('latest-video');
+            latestVideoDiv.innerHTML = `
+                <div class="video-card">
+                    <img src="${thumbnail}" alt="${title}">
+                    <h3>${title}</h3>
+                    <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">Watch on YouTube</a>
+                </div>
+            `;
+        }
+
+        async function fetchAllVideos() {
+            const response = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet&order=date&maxResults=50`);
+            const data = await response.json();
+            const videos = data.items;
+
+            const allVideosDiv = document.getElementById('all-videos');
+            allVideosDiv.innerHTML = videos.map(video => {
+                const videoId = video.id.videoId;
+                const title = video.snippet.title;
+                const thumbnail = video.snippet.thumbnails.medium.url;
+                return `
+                    <div class="video-card">
+                        <img src="${thumbnail}" alt="${title}">
+                        <h3>${title}</h3>
+                        <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">Watch on YouTube</a>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.onload = () => {
+            fetchLatestVideo();
+            fetchAllVideos();
+        };
+    </script>
+</body>
+</html>
