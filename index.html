@@ -413,14 +413,14 @@
             margin-left: 5px;
         }
 
-        .edit-form {
+        .edit-form, .reply-form {
             display: none;
             flex-direction: column;
             gap: 10px;
             margin-top: 10px;
         }
 
-        .edit-form textarea {
+        .edit-form textarea, .reply-form textarea {
             padding: 10px;
             background: transparent;
             border: 1px solid #0ff;
@@ -431,12 +431,12 @@
             min-height: 100px;
         }
 
-        body.day-mode .edit-form textarea {
+        body.day-mode .edit-form textarea, body.day-mode .reply-form textarea {
             border: 1px solid #005555;
             color: #333;
         }
 
-        .edit-form button {
+        .edit-form button, .reply-form button {
             background: #0ff;
             color: #000;
             padding: 8px 15px;
@@ -447,17 +447,27 @@
             align-self: flex-start;
         }
 
-        body.day-mode .edit-form button {
+        body.day-mode .edit-form button, body.day-mode .reply-form button {
             background: #005555;
             color: #fff;
         }
 
-        .edit-form button:hover {
+        .edit-form button:hover, .reply-form button:hover {
             background: #00cc99;
         }
 
-        body.day-mode .edit-form button:hover {
+        body.day-mode .edit-form button:hover, body.day-mode .reply-form button:hover {
             background: #003f3f;
+        }
+
+        .replies {
+            margin-top: 15px;
+            padding-left: 20px;
+            border-left: 2px solid #0ff;
+        }
+
+        body.day-mode .replies {
+            border-left: 2px solid #005555;
         }
 
         .contact-info {
@@ -591,12 +601,12 @@
                 margin: 10px auto;
             }
 
-            .comment-form input, .comment-form textarea, .edit-form textarea {
+            .comment-form input, .comment-form textarea, .edit-form textarea, .reply-form textarea {
                 font-size: 0.9rem;
                 padding: 8px;
             }
 
-            .comment-form button, .edit-form button {
+            .comment-form button, .edit-form button, .reply-form button {
                 padding: 8px 15px;
                 font-size: 0.9rem;
             }
@@ -701,7 +711,7 @@
                 toggleMenu();
             }
             if (sectionId === 'say-something') {
-                loadComments();
+                initializeCommentSection();
             }
         }
 
@@ -824,14 +834,44 @@
 
         // Comment Section Functionality
         let comments = JSON.parse(localStorage.getItem('comments')) || [];
+        let userId = localStorage.getItem('userId') || generateUserId();
+        let userName = localStorage.getItem('userName') || '';
+
+        function generateUserId() {
+            const id = 'user-' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('userId', id);
+            return id;
+        }
 
         function saveComments() {
             localStorage.setItem('comments', JSON.stringify(comments));
         }
 
+        function initializeCommentSection() {
+            const nameInput = document.getElementById('commentName');
+            if (userName) {
+                nameInput.value = userName;
+                nameInput.disabled = true;
+            }
+            loadComments();
+        }
+
         function loadComments() {
             const commentsDiv = document.getElementById('comments');
-            commentsDiv.innerHTML = comments.map((comment, index) => `
+            commentsDiv.innerHTML = comments
+                .filter(comment => !comment.parentId) // Only top-level comments
+                .map((comment, index) => renderComment(comment, index))
+                .join('');
+        }
+
+        function renderComment(comment, index) {
+            const userVote = getUserVote(comment.id);
+            const replies = comments
+                .filter(reply => reply.parentId === comment.id)
+                .map((reply, replyIndex) => renderReply(reply, replyIndex, index))
+                .join('');
+
+            return `
                 <div class="comment">
                     <div class="comment-header">
                         <span class="comment-name">${comment.name || 'Anonymous'}</span>
@@ -839,66 +879,175 @@
                     </div>
                     <div class="comment-text">${comment.text}</div>
                     <div class="comment-actions">
-                        <button onclick="likeComment(${index})">Like (<span class="like-count">${comment.likes}</span>)</button>
-                        <button onclick="dislikeComment(${index})">Dislike (<span class="dislike-count">${comment.dislikes}</span>)</button>
-                        <button onclick="toggleEdit(${index})">Edit</button>
+                        <button onclick="likeComment('${comment.id}')" ${userVote ? 'disabled' : ''}>
+                            Like (<span class="like-count">${comment.likes}</span>)
+                        </button>
+                        <button onclick="dislikeComment('${comment.id}')" ${userVote ? 'disabled' : ''}>
+                            Dislike (<span class="dislike-count">${comment.dislikes}</span>)
+                        </button>
+                        ${comment.userId === userId ? `
+                            <button onclick="toggleEdit('${comment.id}')">Edit</button>
+                            <button onclick="deleteComment('${comment.id}')">Delete</button>
+                        ` : ''}
+                        <button onclick="toggleReply('${comment.id}')">Reply</button>
                     </div>
-                    <div class="edit-form" id="edit-form-${index}">
-                        <textarea id="edit-text-${index}">${comment.text}</textarea>
-                        <button onclick="saveEdit(${index})">Save</button>
+                    <div class="edit-form" id="edit-form-${comment.id}">
+                        <textarea id="edit-text-${comment.id}">${comment.text}</textarea>
+                        <button onclick="saveEdit('${comment.id}')">Save</button>
+                    </div>
+                    <div class="reply-form" id="reply-form-${comment.id}">
+                        <textarea id="reply-text-${comment.id}" placeholder="Write your reply..." maxlength="500"></textarea>
+                        <button onclick="postReply('${comment.id}')">Post Reply</button>
+                    </div>
+                    <div class="replies">${replies}</div>
+                </div>
+            `;
+        }
+
+        function renderReply(reply, replyIndex, parentIndex) {
+            const userVote = getUserVote(reply.id);
+            return `
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-name">${reply.name || 'Anonymous'}</span>
+                        <span class="comment-date">${new Date(reply.date).toLocaleString()}</span>
+                    </div>
+                    <div class="comment-text">${reply.text}</div>
+                    <div class="comment-actions">
+                        <button onclick="likeComment('${reply.id}')" ${userVote ? 'disabled' : ''}>
+                            Like (<span class="like-count">${reply.likes}</span>)
+                        </button>
+                        <button onclick="dislikeComment('${reply.id}')" ${userVote ? 'disabled' : ''}>
+                            Dislike (<span class="dislike-count">${reply.dislikes}</span>)
+                        </button>
+                        ${reply.userId === userId ? `
+                            <button onclick="toggleEdit('${reply.id}')">Edit</button>
+                            <button onclick="deleteComment('${reply.id}')">Delete</button>
+                        ` : ''}
+                    </div>
+                    <div class="edit-form" id="edit-form-${reply.id}">
+                        <textarea id="edit-text-${reply.id}">${reply.text}</textarea>
+                        <button onclick="saveEdit('${reply.id}')">Save</button>
                     </div>
                 </div>
-            `).join('');
+            `;
+        }
+
+        function getUserVote(commentId) {
+            const votes = JSON.parse(localStorage.getItem('userVotes') || '{}');
+            return votes[commentId];
+        }
+
+        function setUserVote(commentId, voteType) {
+            const votes = JSON.parse(localStorage.getItem('userVotes') || '{}');
+            votes[commentId] = voteType;
+            localStorage.setItem('userVotes', JSON.stringify(votes));
         }
 
         function postComment() {
             const nameInput = document.getElementById('commentName').value.trim();
             const textInput = document.getElementById('commentText').value.trim();
             if (textInput) {
-                comments.unshift({
-                    name: nameInput,
+                if (nameInput && !userName) {
+                    userName = nameInput;
+                    localStorage.setItem('userName', userName);
+                    document.getElementById('commentName').value = userName;
+                    document.getElementById('commentName').disabled = true;
+                }
+                const comment = {
+                    id: 'comment-' + Math.random().toString(36).substr(2, 9),
+                    name: userName || 'Anonymous',
                     text: textInput,
                     date: new Date().toISOString(),
                     likes: 0,
-                    dislikes: 0
-                });
+                    dislikes: 0,
+                    userId: userId,
+                    parentId: null
+                };
+                comments.unshift(comment);
                 saveComments();
                 loadComments();
-                document.getElementById('commentName').value = '';
                 document.getElementById('commentText').value = '';
             }
         }
 
-        function likeComment(index) {
-            comments[index].likes++;
-            saveComments();
-            loadComments();
+        function postReply(parentId) {
+            const textInput = document.getElementById(`reply-text-${parentId}`).value.trim();
+            if (textInput) {
+                const reply = {
+                    id: 'comment-' + Math.random().toString(36).substr(2, 9),
+                    name: userName || 'Anonymous',
+                    text: textInput,
+                    date: new Date().toISOString(),
+                    likes: 0,
+                    dislikes: 0,
+                    userId: userId,
+                    parentId: parentId
+                };
+                comments.push(reply);
+                saveComments();
+                loadComments();
+                document.getElementById(`reply-form-${parentId}`).style.display = 'none';
+                document.getElementById(`reply-text-${parentId}`).value = '';
+            }
         }
 
-        function dislikeComment(index) {
-            comments[index].dislikes++;
-            saveComments();
-            loadComments();
-        }
-
-        function toggleEdit(index) {
-            const editForm = document.getElementById(`edit-form-${index}`);
-            editForm.style.display = editForm.style.display === 'none' ? 'flex' : 'none';
-        }
-
-        function saveEdit(index) {
-            const newText = document.getElementById(`edit-text-${index}`).value.trim();
-            if (newText) {
-                comments[index].text = newText;
-                comments[index].date = new Date().toISOString();
+        function likeComment(commentId) {
+            const comment = comments.find(c => c.id === commentId);
+            if (comment && !getUserVote(commentId)) {
+                comment.likes++;
+                setUserVote(commentId, 'like');
                 saveComments();
                 loadComments();
             }
+        }
+
+        function dislikeComment(commentId) {
+            const comment = comments.find(c => c.id === commentId);
+            if (comment && !getUserVote(commentId)) {
+                comment.dislikes++;
+                setUserVote(commentId, 'dislike');
+                saveComments();
+                loadComments();
+            }
+        }
+
+        function toggleEdit(commentId) {
+            const editForm = document.getElementById(`edit-form-${commentId}`);
+            editForm.style.display = editForm.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        function saveEdit(commentId) {
+            const newText = document.getElementById(`edit-text-${commentId}`).value.trim();
+            if (newText) {
+                const comment = comments.find(c => c.id === commentId);
+                if (comment && comment.userId === userId) {
+                    comment.text = newText;
+                    comment.date = new Date().toISOString();
+                    saveComments();
+                    loadComments();
+                }
+            }
+        }
+
+        function deleteComment(commentId) {
+            const comment = comments.find(c => c.id === commentId);
+            if (comment && comment.userId === userId) {
+                comments = comments.filter(c => c.id !== commentId && c.parentId !== commentId);
+                saveComments();
+                loadComments();
+            }
+        }
+
+        function toggleReply(commentId) {
+            const replyForm = document.getElementById(`reply-form-${commentId}`);
+            replyForm.style.display = replyForm.style.display === 'none' ? 'flex' : 'none';
         }
 
         window.onload = () => {
             fetchLatestVideo();
             fetchAllVideos();
+            initializeCommentSection();
         };
     </script>
 </body>
