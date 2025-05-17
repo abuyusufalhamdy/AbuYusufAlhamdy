@@ -285,40 +285,27 @@
             margin-top: 20px;
         }
 
-        .comment-section {
+        .donation-section {
             max-width: 700px;
             margin: 20px auto;
             text-align: left;
         }
 
-        .comment-form {
+        .donation-message {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .donation-form {
             display: flex;
             flex-direction: column;
             gap: 10px;
             margin-bottom: 20px;
+            text-align: center;
         }
 
-        .comment-form input, .comment-form textarea {
-            padding: 10px;
-            background: transparent;
-            border: 1px solid #0ff;
-            color: #e0e0e0;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: border 0.5s, color 0.5s;
-        }
-
-        body.day-mode .comment-form input, body.day-mode .comment-form textarea {
-            border: 1px solid #005555;
-            color: #333;
-        }
-
-        .comment-form textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .comment-form button {
+        .donation-form button {
             background: #0ff;
             color: #000;
             padding: 10px 20px;
@@ -327,147 +314,37 @@
             cursor: pointer;
             font-size: 1rem;
             transition: background 0.3s;
-            align-self: flex-start;
+            align-self: center;
         }
 
-        body.day-mode .comment-form button {
+        body.day-mode .donation-form button {
             background: #005555;
             color: #fff;
         }
 
-        .comment-form button:hover {
+        .donation-form button:hover {
             background: #00cc99;
         }
 
-        body.day-mode .comment-form button:hover {
+        body.day-mode .donation-form button:hover {
             background: #003f3f;
         }
 
-        .comment {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid #0ff;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            position: relative;
-        }
-
-        body.day-mode .comment {
-            border: 1px solid #005555;
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        .comment-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .comment-name {
-            font-weight: bold;
-            color: #0ff;
-        }
-
-        body.day-mode .comment-name {
-            color: #005555;
-        }
-
-        .comment-date {
-            font-size: 0.8rem;
-            color: #999;
-        }
-
-        .comment-text {
-            margin-bottom: 10px;
-        }
-
-        .comment-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .comment-actions button {
-            background: none;
-            border: none;
-            color: #0ff;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-
-        body.day-mode .comment-actions button {
-            color: #005555;
-        }
-
-        .comment-actions button:hover {
-            color: #00cc99;
-        }
-
-        body.day-mode .comment-actions button:hover {
-            color: #003f3f;
-        }
-
-        .like-count, .dislike-count {
-            margin-left: 5px;
-        }
-
-        .edit-form, .reply-form {
+        .thank-you-message {
             display: none;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 10px;
+            font-size: 1.5rem;
+            color: #0ff;
+            text-align: center;
+            margin-top: 20px;
+            animation: fadeIn 2s ease-in-out;
         }
 
-        .edit-form textarea, .reply-form textarea {
-            padding: 10px;
-            background: transparent;
-            border: 1px solid #0ff;
-            color: #e0e0e0;
-            border-radius: 5px;
-            font-size: 1rem;
-            resize: vertical;
-            min-height: 100px;
+        body.day-mode .thank-you-message {
+            color: #005555;
         }
 
-        body.day-mode .edit-form textarea, body.day-mode .reply-form textarea {
-            border: 1px solid #005555;
-            color: #333;
-        }
-
-        .edit-form button, .reply-form button {
-            background: #0ff;
-            color: #000;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            align-self: flex-start;
-        }
-
-        body.day-mode .edit-form button, body.day-mode .reply-form button {
-            background: #005555;
-            color: #fff;
-        }
-
-        .edit-form button:hover, .reply-form button:hover {
-            background: #00cc99;
-        }
-
-        body.day-mode .edit-form button:hover, body.day-mode .reply-form button:hover {
-            background: #003f3f;
-        }
-
-        .replies {
-            margin-top: 15px;
-            padding-left: 20px;
-            border-left: 2px solid #0ff;
-        }
-
-        body.day-mode .replies {
-            border-left: 2px solid #005555;
+        .thank-you-message.active {
+            display: block;
         }
 
         .contact-info {
@@ -597,34 +474,21 @@
                 margin-top: 10px;
             }
 
-            .comment-section {
+            .donation-section {
                 margin: 10px auto;
             }
 
-            .comment-form input, .comment-form textarea, .edit-form textarea, .reply-form textarea {
-                font-size: 0.9rem;
-                padding: 8px;
+            .donation-message {
+                font-size: 1rem;
             }
 
-            .comment-form button, .edit-form button, .reply-form button {
+            .donation-form button {
                 padding: 8px 15px;
                 font-size: 0.9rem;
             }
 
-            .comment {
-                padding: 10px;
-            }
-
-            .comment-name {
-                font-size: 1rem;
-            }
-
-            .comment-date {
-                font-size: 0.7rem;
-            }
-
-            .comment-actions button {
-                font-size: 0.8rem;
+            .thank-you-message {
+                font-size: 1.2rem;
             }
 
             .contact-info {
@@ -655,7 +519,7 @@
         <div class="nav-menu" id="navMenu">
             <a href="#home" onclick="showSection('home')">Home</a>
             <a href="#videos" onclick="showSection('videos')">All Videos</a>
-            <a href="#say-something" onclick="showSection('say-something')">Say Something</a>
+            <a href="#donate" onclick="showSection('donate')">Donate</a>
             <a href="#contact" onclick="showSection('contact')">Contact</a>
         </div>
     </nav>
@@ -679,15 +543,25 @@
         <button class="view-more" onclick="fetchMoreVideos()">View More Videos</button>
     </div>
 
-    <div id="say-something" class="section">
-        <h2>Say Something</h2>
-        <div class="comment-section">
-            <div class="comment-form">
-                <input type="text" id="commentName" placeholder="Your Name" maxlength="50">
-                <textarea id="commentText" placeholder="Write your comment or question..." maxlength="500"></textarea>
-                <button onclick="postComment()">Post Comment</button>
+    <div id="donate" class="section">
+        <h2>Support Abu Yusuf Alhamdy’s Work</h2>
+        <div class="donation-section">
+            <div class="donation-message">
+                Your support helps me continue creating content and sharing knowledge with the world. Every donation, even just $1, makes a huge difference in keeping this work alive. Thank you for your generosity!
             </div>
-            <div id="comments"></div>
+            <div class="donation-form">
+                <form action="https://www.paypal.com/donate" method="post" target="_blank">
+                    <input type="hidden" name="hosted_button_id" value="YOUR_BUTTON_ID" />
+                    <input type="hidden" name="business" value="barkabakhshuwein@gmail.com" />
+                    <input type="hidden" name="no_recurring" value="0" />
+                    <input type="hidden" name="currency_code" value="USD" />
+                    <input type="hidden" name="return" value="https://<your-username>.github.io/<your-repo>/#donate?donated=true" />
+                    <button type="submit">Donate via PayPal</button>
+                </form>
+            </div>
+            <div id="thank-you-message" class="thank-you-message">
+                Thank you for your donation! Your support means the world and helps me continue this journey.
+            </div>
         </div>
     </div>
 
@@ -710,8 +584,8 @@
             if (window.innerWidth <= 768) {
                 toggleMenu();
             }
-            if (sectionId === 'say-something') {
-                initializeCommentSection();
+            if (sectionId === 'donate') {
+                checkDonationStatus();
             }
         }
 
@@ -725,6 +599,18 @@
         function toggleMenu() {
             const navMenu = document.getElementById('navMenu');
             navMenu.classList.toggle('active');
+        }
+
+        function checkDonationStatus() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const thankYouMessage = document.getElementById('thank-you-message');
+            if (urlParams.get('donated') === 'true') {
+                thankYouMessage.classList.add('active');
+                // Clear the query parameter to prevent repeated triggers
+                window.history.replaceState({}, document.title, window.location.pathname + '#donate');
+            } else {
+                thankYouMessage.classList.remove('active');
+            }
         }
 
         const API_KEY = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng';
@@ -832,222 +718,10 @@
             }
         }
 
-        // Comment Section Functionality
-        let comments = JSON.parse(localStorage.getItem('comments')) || [];
-        let userId = localStorage.getItem('userId') || generateUserId();
-        let userName = localStorage.getItem('userName') || '';
-
-        function generateUserId() {
-            const id = 'user-' + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem('userId', id);
-            return id;
-        }
-
-        function saveComments() {
-            localStorage.setItem('comments', JSON.stringify(comments));
-        }
-
-        function initializeCommentSection() {
-            const nameInput = document.getElementById('commentName');
-            if (userName) {
-                nameInput.value = userName;
-                nameInput.disabled = true;
-            }
-            loadComments();
-        }
-
-        function loadComments() {
-            const commentsDiv = document.getElementById('comments');
-            commentsDiv.innerHTML = comments
-                .filter(comment => !comment.parentId) // Only top-level comments
-                .map((comment, index) => renderComment(comment, index))
-                .join('');
-        }
-
-        function renderComment(comment, index) {
-            const userVote = getUserVote(comment.id);
-            const replies = comments
-                .filter(reply => reply.parentId === comment.id)
-                .map((reply, replyIndex) => renderReply(reply, replyIndex, index))
-                .join('');
-
-            return `
-                <div class="comment">
-                    <div class="comment-header">
-                        <span class="comment-name">${comment.name || 'Anonymous'}</span>
-                        <span class="comment-date">${new Date(comment.date).toLocaleString()}</span>
-                    </div>
-                    <div class="comment-text">${comment.text}</div>
-                    <div class="comment-actions">
-                        <button onclick="likeComment('${comment.id}')" ${userVote ? 'disabled' : ''}>
-                            Like (<span class="like-count">${comment.likes}</span>)
-                        </button>
-                        <button onclick="dislikeComment('${comment.id}')" ${userVote ? 'disabled' : ''}>
-                            Dislike (<span class="dislike-count">${comment.dislikes}</span>)
-                        </button>
-                        ${comment.userId === userId ? `
-                            <button onclick="toggleEdit('${comment.id}')">Edit</button>
-                            <button onclick="deleteComment('${comment.id}')">Delete</button>
-                        ` : ''}
-                        <button onclick="toggleReply('${comment.id}')">Reply</button>
-                    </div>
-                    <div class="edit-form" id="edit-form-${comment.id}">
-                        <textarea id="edit-text-${comment.id}">${comment.text}</textarea>
-                        <button onclick="saveEdit('${comment.id}')">Save</button>
-                    </div>
-                    <div class="reply-form" id="reply-form-${comment.id}">
-                        <textarea id="reply-text-${comment.id}" placeholder="Write your reply..." maxlength="500"></textarea>
-                        <button onclick="postReply('${comment.id}')">Post Reply</button>
-                    </div>
-                    <div class="replies">${replies}</div>
-                </div>
-            `;
-        }
-
-        function renderReply(reply, replyIndex, parentIndex) {
-            const userVote = getUserVote(reply.id);
-            return `
-                <div class="comment">
-                    <div class="comment-header">
-                        <span class="comment-name">${reply.name || 'Anonymous'}</span>
-                        <span class="comment-date">${new Date(reply.date).toLocaleString()}</span>
-                    </div>
-                    <div class="comment-text">${reply.text}</div>
-                    <div class="comment-actions">
-                        <button onclick="likeComment('${reply.id}')" ${userVote ? 'disabled' : ''}>
-                            Like (<span class="like-count">${reply.likes}</span>)
-                        </button>
-                        <button onclick="dislikeComment('${reply.id}')" ${userVote ? 'disabled' : ''}>
-                            Dislike (<span class="dislike-count">${reply.dislikes}</span>)
-                        </button>
-                        ${reply.userId === userId ? `
-                            <button onclick="toggleEdit('${reply.id}')">Edit</button>
-                            <button onclick="deleteComment('${reply.id}')">Delete</button>
-                        ` : ''}
-                    </div>
-                    <div class="edit-form" id="edit-form-${reply.id}">
-                        <textarea id="edit-text-${reply.id}">${reply.text}</textarea>
-                        <button onclick="saveEdit('${reply.id}')">Save</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function getUserVote(commentId) {
-            const votes = JSON.parse(localStorage.getItem('userVotes') || '{}');
-            return votes[commentId];
-        }
-
-        function setUserVote(commentId, voteType) {
-            const votes = JSON.parse(localStorage.getItem('userVotes') || '{}');
-            votes[commentId] = voteType;
-            localStorage.setItem('userVotes', JSON.stringify(votes));
-        }
-
-        function postComment() {
-            const nameInput = document.getElementById('commentName').value.trim();
-            const textInput = document.getElementById('commentText').value.trim();
-            if (textInput) {
-                if (nameInput && !userName) {
-                    userName = nameInput;
-                    localStorage.setItem('userName', userName);
-                    document.getElementById('commentName').value = userName;
-                    document.getElementById('commentName').disabled = true;
-                }
-                const comment = {
-                    id: 'comment-' + Math.random().toString(36).substr(2, 9),
-                    name: userName || 'Anonymous',
-                    text: textInput,
-                    date: new Date().toISOString(),
-                    likes: 0,
-                    dislikes: 0,
-                    userId: userId,
-                    parentId: null
-                };
-                comments.unshift(comment);
-                saveComments();
-                loadComments();
-                document.getElementById('commentText').value = '';
-            }
-        }
-
-        function postReply(parentId) {
-            const textInput = document.getElementById(`reply-text-${parentId}`).value.trim();
-            if (textInput) {
-                const reply = {
-                    id: 'comment-' + Math.random().toString(36).substr(2, 9),
-                    name: userName || 'Anonymous',
-                    text: textInput,
-                    date: new Date().toISOString(),
-                    likes: 0,
-                    dislikes: 0,
-                    userId: userId,
-                    parentId: parentId
-                };
-                comments.push(reply);
-                saveComments();
-                loadComments();
-                document.getElementById(`reply-form-${parentId}`).style.display = 'none';
-                document.getElementById(`reply-text-${parentId}`).value = '';
-            }
-        }
-
-        function likeComment(commentId) {
-            const comment = comments.find(c => c.id === commentId);
-            if (comment && !getUserVote(commentId)) {
-                comment.likes++;
-                setUserVote(commentId, 'like');
-                saveComments();
-                loadComments();
-            }
-        }
-
-        function dislikeComment(commentId) {
-            const comment = comments.find(c => c.id === commentId);
-            if (comment && !getUserVote(commentId)) {
-                comment.dislikes++;
-                setUserVote(commentId, 'dislike');
-                saveComments();
-                loadComments();
-            }
-        }
-
-        function toggleEdit(commentId) {
-            const editForm = document.getElementById(`edit-form-${commentId}`);
-            editForm.style.display = editForm.style.display === 'none' ? 'flex' : 'none';
-        }
-
-        function saveEdit(commentId) {
-            const newText = document.getElementById(`edit-text-${commentId}`).value.trim();
-            if (newText) {
-                const comment = comments.find(c => c.id === commentId);
-                if (comment && comment.userId === userId) {
-                    comment.text = newText;
-                    comment.date = new Date().toISOString();
-                    saveComments();
-                    loadComments();
-                }
-            }
-        }
-
-        function deleteComment(commentId) {
-            const comment = comments.find(c => c.id === commentId);
-            if (comment && comment.userId === userId) {
-                comments = comments.filter(c => c.id !== commentId && c.parentId !== commentId);
-                saveComments();
-                loadComments();
-            }
-        }
-
-        function toggleReply(commentId) {
-            const replyForm = document.getElementById(`reply-form-${commentId}`);
-            replyForm.style.display = replyForm.style.display === 'none' ? 'flex' : 'none';
-        }
-
         window.onload = () => {
             fetchLatestVideo();
             fetchAllVideos();
-            initializeCommentSection();
+            checkDonationStatus();
         };
     </script>
 </body>
