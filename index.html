@@ -481,6 +481,46 @@
             background: #005555;
         }
 
+        /* Visitor Counter Styles */
+        .visitor-counter {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: #0ff;
+            text-shadow: 0 0 5px #0ff;
+            z-index: 10;
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #0ff;
+            border-radius: 5px;
+            transition: color 0.5s, text-shadow 0.5s, border 0.5s;
+        }
+
+        body.day-mode .visitor-counter {
+            color: #005555;
+            text-shadow: 0 0 5px #005555;
+            border: 1px solid #005555;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .visitor-count {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            display: inline-block;
+            background: #000;
+            padding: 2px 5px;
+            border-radius: 3px;
+            box-shadow: inset 0 0 5px #0ff;
+        }
+
+        body.day-mode .visitor-count {
+            background: #fff;
+            box-shadow: inset 0 0 5px #005555;
+        }
+
         /* Qur'an Page Styles */
         .quran-index {
             display: grid;
@@ -574,99 +614,6 @@
             background: #00cc99;
         }
 
-        /* Telegram Groups Page Styles */
-        .telegram-logo {
-            width: 100px;
-            height: auto;
-            margin: 20px auto;
-            display: block;
-        }
-
-        .telegram-header {
-            font-size: 1.5rem;
-            color: #0ff;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        body.day-mode .telegram-header {
-            color: #005555;
-        }
-
-        .telegram-groups {
-            max-width: 800px;
-            margin: 20px auto;
-            text-align: left;
-        }
-
-        .group-section {
-            margin-bottom: 30px;
-        }
-
-        .group-section h3 {
-            font-size: 1.3rem;
-            color: #0ff;
-            margin-bottom: 15px;
-        }
-
-        body.day-mode .group-section h3 {
-            color: #005555;
-        }
-
-        .group-list {
-            list-style: none;
-        }
-
-        .group-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #0ff;
-            border-radius: 5px;
-            transition: box-shadow 0.3s;
-        }
-
-        body.day-mode .group-item {
-            border: 1px solid #005555;
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        .group-item:hover {
-            box-shadow: 0 0 15px #0ff;
-        }
-
-        body.day-mode .group-item:hover {
-            box-shadow: 0 0 15px #005555;
-        }
-
-        .group-item img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 15px;
-        }
-
-        .group-item a {
-            color: #0ff;
-            text-decoration: none;
-            font-size: 1.1rem;
-            transition: color 0.3s;
-        }
-
-        body.day-mode .group-item a {
-            color: #005555;
-        }
-
-        .group-item a:hover {
-            color: #00cc99;
-        }
-
-        body.day-mode .group-item a:hover {
-            color: #003f3f;
-        }
-
         @media (max-width: 768px) {
             .logo {
                 height: 40px;
@@ -709,6 +656,16 @@
             .home-text {
                 margin-top: 10px;
                 font-size: 1.5rem;
+            }
+
+            .visitor-counter {
+                font-size: 0.8rem;
+                padding: 3px 8px;
+            }
+
+            .visitor-count {
+                font-size: 1rem;
+                letter-spacing: 1px;
             }
 
             #welcome-to {
@@ -822,27 +779,6 @@
             .surah-content h2 {
                 font-size: 1.2rem;
             }
-
-            .telegram-logo {
-                width: 80px;
-            }
-
-            .telegram-header {
-                font-size: 1.2rem;
-            }
-
-            .group-section h3 {
-                font-size: 1.1rem;
-            }
-
-            .group-item a {
-                font-size: 1rem;
-            }
-
-            .group-item img {
-                width: 30px;
-                height: 30px;
-            }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&Tajawal:wght@400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
@@ -865,7 +801,6 @@
             <a href="#home" onclick="showSection('home')">Home</a>
             <a href="#quran" onclick="showSection('quran')">Read Qur’an</a>
             <a href="#videos" onclick="showSection('videos')">All Videos</a>
-            <a href="#telegram" onclick="showSection('telegram')">Telegram Groups</a>
             <a href="#donate" onclick="showSection('donate')">Donate</a>
             <a href="#contact" onclick="showSection('contact')">Contact</a>
         </div>
@@ -898,68 +833,6 @@
         <button class="view-more" onclick="fetchMoreVideos()">View More Videos</button>
     </div>
 
-    <div id="telegram" class="section">
-        <h2>Telegram Groups</h2>
-        <img src="https://telegram.org/img/t_logo.png" alt="Telegram Logo" class="telegram-logo">
-        <div class="telegram-header">These are legit verified Islamic, Salafi Groups on Telegram.</div>
-        <div class="telegram-groups">
-            <div class="group-section">
-                <h3>Arabic Groups</h3>
-                <ul class="group-list">
-                    <li class="group-item">
-                        <img src="https://via.placeholder.com/40" alt="Group Icon">
-                        <span>1. </span><a href="https://t.me/AbuQusaiAlMadani" target="_blank">AbuQusaiAlMadani</a>
-                    </li>
-                    <li class="group-item">
-                        <img src="https://via.placeholder.com/40" alt="Group Icon">
-                        <span>2. </span><a href="https://t.me/binothaimeenofficial" target="_blank">binothaimeenofficial</a>
-                    </li>
-                    <li class="group-item">
-                        <img src="https://via.placeholder.com/40" alt="Group Icon">
-                        <span>3. </span><a href="https://t.me/muttasilhadith" target="_blank">muttasilhadith</a>
-                    </li>
-                    <li class="group-item">
-                        <img src="https://via.placeholder.com/40" alt="Group Icon">
-                        <span>4. </span><a href="https://t.me/rslancom" target="_blank">rslancom</a>
-                    </li>
-                    <li class="group-item">
-                        <img src="https://via.placeholder.com/40" alt="Group Icon">
-                        <span>5. </span><a href="https://t.me/sheikhaziz" target="_blank">sheikhaziz</a>
-                    </li>
-                    <li class="group-item">
-                        <img src="https://via.placeholder.com/40" alt="Group Icon">
-                        <span>6. </span><a href="https://t.me/Sualruhaily" target="_blank">Sualruhaily</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="group-section">
-                <h3>English Groups</h3>
-                <ul class="group-list">
-                    <li class="group-item">
-                        <img src="https://via.placeholder.com/40" alt="Group Icon">
-                        <span>1. </span><a href="https://t.me/abukhadeejahsp" target="_blank">abukhadeejahsp</a>
-                    </li>
-                    <li class="group-item">
-                        <img src="https://via.placeholder.com/40" alt="Group Icon">
-                        <span>2. </span><a href="https://t.me/SalafiAudioULTD" target="_blank">SalafiAudioULTD</a>
-                    </li>
-                    <li class="group-item">
-                        <img src="https://via.placeholder.com/40" alt="Group Icon">
-                        <span>3. </span><a href="https://t.me/SalafiRecording" target="_blank">SalafiRecording</a>
-                    </li>
-                    <li class="group-item">
-                        <img src="https://via.placeholder.com/40" alt="Group Icon">
-                        <span>4. </span><a href="https://t.me/troidorg" target="_blank">troidorg</a>
-                    </li>
-                    <li class="group-item">
-                        <img src="https://via.placeholder.com/40" alt="Group Icon">
-                        <span>5. </span><a href="https://t.me/+i6x3FDP2SoA0NmI0" target="_blank">Ummah Radio</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
     <div id="donate" class="section">
         <h2>Support Abu Yusuf Alhamdy’s Work</h2>
         <div class="donation-section">
@@ -971,7 +844,7 @@
                     <input type="hidden" name="business" value="abuyusufalhamdy@gmail.com" />
                     <input type="hidden" name="no_recurring" value="0" />
                     <input type="hidden" name="currency_code" value="USD" />
-                    <input type="hidden" name="return" value="https://<your-username>.github.io/<your-repo>/#donate?donated=true" />
+                    <input type="hidden" name="return" value="https://your-github-username.github.io/your-repo/#donate?donated=true" />
                     <button type="submit">Donate via PayPal</button>
                 </form>
             </div>
@@ -988,6 +861,10 @@
         </div>
     </div>
 
+    <div class="visitor-counter">
+        Website Visitors Count: <span class="visitor-count" id="visitorCount">0</span>
+    </div>
+
     <div class="mode-toggle" onclick="toggleMode()">Night Mode</div>
     <audio id="hover-sound" src="hover.wav" preload="auto"></audio>
 
@@ -998,7 +875,7 @@
             });
             const targetSection = document.getElementById(sectionId);
             targetSection.classList.add('active');
-            if (window.innerWidth <= 768) {
+            if (window.innerWidth <= 768px) {
                 toggleMenu();
             }
             if (sectionId === 'donate') {
@@ -1038,6 +915,17 @@
                 sound.play().catch(e => console.log('Audio play failed:', e));
             });
         });
+
+        // Visitor Counter Logic
+        function updateVisitorCount() {
+            let count = localStorage.getItem('visitorCount');
+            if (!count) {
+                count = 0;
+            }
+            count = parseInt(count) + 1;
+            localStorage.setItem('visitorCount', count);
+            document.getElementById('visitorCount').textContent = count.toString().padStart(6, '0');
+        }
 
         const API_KEY = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng';
         const CHANNEL_ID = 'UCoXzWPTne8dHYrftHpdIopw';
@@ -1199,6 +1087,7 @@
             fetchAllVideos();
             checkDonationStatus();
             showQuranIndex();
+            updateVisitorCount();
         };
     </script>
 </body>
