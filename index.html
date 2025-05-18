@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron', 'Tajawal', sans-serif;
         }
 
         body {
@@ -119,8 +119,23 @@
             opacity: 1;
         }
 
+        .basmalah, .salam {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 2rem;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff;
+            margin: 10px auto;
+            text-align: center;
+            transition: color 0.5s, text-shadow 0.5s;
+        }
+
+        body.day-mode .basmalah, body.day-mode .salam {
+            color: #005555;
+            text-shadow: 0 0 10px #005555;
+        }
+
         .home-text {
-            margin-top: 30px;
+            margin-top: 10px;
             font-size: 2rem;
             text-transform: uppercase;
             animation: fadeIn 2s ease-in-out;
@@ -159,6 +174,57 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        .quote-carousel {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 15px;
+            border: 1px solid #0ff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #0ff;
+            text-align: center;
+        }
+
+        body.day-mode .quote-carousel {
+            border: 1px solid #005555;
+            box-shadow: 0 0 20px #005555;
+        }
+
+        .quote {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .quote-author {
+            font-size: 1rem;
+            color: #00cc99;
+            margin-bottom: 5px;
+        }
+
+        .quote-source {
+            font-size: 0.9rem;
+            color: #00cc99;
+            font-style: italic;
+        }
+
+        .quote-next {
+            background: #0ff;
+            color: #000;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        body.day-mode .quote-next {
+            background: #005555;
+            color: #fff;
+        }
+
+        .quote-next:hover {
+            background: #00cc99;
+        }
+
         .latest-video {
             margin-top: 20px;
             display: flex;
@@ -176,7 +242,6 @@
             border-radius: 10px;
             padding: 10px;
             box-shadow: 0 0 20px #0ff;
-            animation: pulse 5s infinite;
             transition: border 0.5s, box-shadow 0.5s;
         }
 
@@ -483,8 +548,12 @@
                 font-size: 1rem;
             }
 
+            .basmalah, .salam {
+                font-size: 1.5rem;
+            }
+
             .home-text {
-                margin-top: 20px;
+                margin-top: 10px;
                 font-size: 1.5rem;
             }
 
@@ -500,6 +569,22 @@
             #website {
                 margin-right: -50px;
                 margin-top: 5px;
+            }
+
+            .quote-carousel {
+                margin: 10px auto;
+            }
+
+            .quote {
+                font-size: 1rem;
+            }
+
+            .quote-author {
+                font-size: 0.9rem;
+            }
+
+            .quote-source {
+                font-size: 0.8rem;
             }
 
             .video-player {
@@ -582,7 +667,7 @@
             }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&Tajawal:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="neon-glow"></div>
@@ -599,10 +684,18 @@
     </nav>
 
     <div id="home" class="section active">
+        <div class="basmalah">بسم الله الرحمن الرحيم</div>
+        <div class="salam">السلام عليكم</div>
         <div class="home-text">
             <div id="welcome-to">Welcome to</div><br>
             <div id="abu-yusuf">Abu Yusuf Alhamdy's</div><br>
             <div id="website">Website</div>
+        </div>
+        <div class="quote-carousel">
+            <div class="quote" id="quote-text"></div>
+            <div class="quote-author" id="quote-author"></div>
+            <div class="quote-source" id="quote-source"></div>
+            <button class="quote-next" onclick="nextQuote()">Next Quote</button>
         </div>
         <div class="latest-video" id="latest-video"></div>
     </div>
@@ -646,6 +739,7 @@
     </div>
 
     <div class="mode-toggle" onclick="toggleMode()">Night Mode</div>
+    <audio id="hover-sound" src="hover.wav" preload="auto"></audio>
 
     <script>
         function showSection(sectionId) {
@@ -679,12 +773,37 @@
             const thankYouMessage = document.getElementById('thank-you-message');
             if (urlParams.get('donated') === 'true') {
                 thankYouMessage.classList.add('active');
-                // Clear the query parameter to prevent repeated triggers
                 window.history.replaceState({}, document.title, window.location.pathname + '#donate');
             } else {
                 thankYouMessage.classList.remove('active');
             }
         }
+
+        const quotes = [
+            { text: "Seek knowledge from the cradle to the grave.", author: "Imam Ahmad ibn Hanbal", source: "Reported in Al-Bayhaqi’s Shu’ab al-Iman" },
+            { text: "The best of people are those who benefit others.", author: "Ibn Taymiyyah", source: "Majmu’ al-Fatawa" },
+            { text: "Patience is the key to relief.", author: "Imam al-Shafi’i", source: "Al-Shafi’i’s Diwan" }
+        ];
+        let currentQuote = 0;
+        function showQuote() {
+            document.getElementById('quote-text').textContent = quotes[currentQuote].text;
+            document.getElementById('quote-author').textContent = `- ${quotes[currentQuote].author}`;
+            document.getElementById('quote-source').textContent = quotes[currentQuote].source;
+        }
+        function nextQuote() {
+            currentQuote = (currentQuote + 1) % quotes.length;
+            showQuote();
+        }
+        showQuote();
+        setInterval(nextQuote, 10000);
+
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('mouseover', () => {
+                const sound = document.getElementById('hover-sound');
+                sound.currentTime = 0;
+                sound.play().catch(e => console.log('Audio play failed:', e));
+            });
+        });
 
         const API_KEY = 'AIzaSyBxjceYQcKUaSwU12QLeu6meNmuIBunMng';
         const CHANNEL_ID = 'UCoXzWPTne8dHYrftHpdIopw';
