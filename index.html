@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Orbitron', 'Tajawal', sans-serif;
+            font-family: 'Orbitron', 'Tajawal', 'UthmanicHafs', sans-serif;
         }
 
         body {
@@ -119,7 +119,7 @@
             opacity: 1;
         }
 
-        .basmalah, .salam {
+        .basmalah {
             font-family: 'Tajawal', sans-serif;
             font-size: 2rem;
             color: #0ff;
@@ -129,7 +129,22 @@
             transition: color 0.5s, text-shadow 0.5s;
         }
 
-        body.day-mode .basmalah, body.day-mode .salam {
+        body.day-mode .basmalah {
+            color: #005555;
+            text-shadow: 0 0 10px #005555;
+        }
+
+        .salam {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.5rem;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff;
+            margin: 10px auto;
+            text-align: center;
+            transition: color 0.5s, text-shadow 0.5s;
+        }
+
+        body.day-mode .salam {
             color: #005555;
             text-shadow: 0 0 10px #005555;
         }
@@ -174,59 +189,8 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .quote-carousel {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 15px;
-            border: 1px solid #0ff;
-            border-radius: 10px;
-            box-shadow: 0 0 20px #0ff;
-            text-align: center;
-        }
-
-        body.day-mode .quote-carousel {
-            border: 1px solid #005555;
-            box-shadow: 0 0 20px #005555;
-        }
-
-        .quote {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        .quote-author {
-            font-size: 1rem;
-            color: #00cc99;
-            margin-bottom: 5px;
-        }
-
-        .quote-source {
-            font-size: 0.9rem;
-            color: #00cc99;
-            font-style: italic;
-        }
-
-        .quote-next {
-            background: #0ff;
-            color: #000;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        body.day-mode .quote-next {
-            background: #005555;
-            color: #fff;
-        }
-
-        .quote-next:hover {
-            background: #00cc99;
-        }
-
         .latest-video {
-            margin-top: 20px;
+            margin-top: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -517,6 +481,192 @@
             background: #005555;
         }
 
+        /* Qur'an Page Styles */
+        .quran-index {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 10px;
+        }
+
+        .surah-link {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #0ff;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.2rem;
+            color: #0ff;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        body.day-mode .surah-link {
+            border: 1px solid #005555;
+            color: #005555;
+        }
+
+        .surah-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #0ff;
+        }
+
+        body.day-mode .surah-link:hover {
+            box-shadow: 0 0 15px #005555;
+        }
+
+        .surah-content {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #0ff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #0ff;
+            font-family: 'UthmanicHafs', 'Amiri', sans-serif;
+            font-size: 1.8rem;
+            line-height: 2.5;
+            color: #e0e0e0;
+            text-align: right;
+            direction: rtl;
+        }
+
+        body.day-mode .surah-content {
+            border: 1px solid #005555;
+            box-shadow: 0 0 20px #005555;
+            color: #333;
+        }
+
+        .surah-content h2 {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.5rem;
+            color: #0ff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        body.day-mode .surah-content h2 {
+            color: #005555;
+        }
+
+        .back-to-index {
+            background: #0ff;
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 20px auto;
+            display: block;
+            transition: background 0.3s;
+        }
+
+        body.day-mode .back-to-index {
+            background: #005555;
+            color: #fff;
+        }
+
+        .back-to-index:hover {
+            background: #00cc99;
+        }
+
+        /* Telegram Groups Page Styles */
+        .telegram-logo {
+            width: 100px;
+            height: auto;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .telegram-header {
+            font-size: 1.5rem;
+            color: #0ff;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        body.day-mode .telegram-header {
+            color: #005555;
+        }
+
+        .telegram-groups {
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: left;
+        }
+
+        .group-section {
+            margin-bottom: 30px;
+        }
+
+        .group-section h3 {
+            font-size: 1.3rem;
+            color: #0ff;
+            margin-bottom: 15px;
+        }
+
+        body.day-mode .group-section h3 {
+            color: #005555;
+        }
+
+        .group-list {
+            list-style: none;
+        }
+
+        .group-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #0ff;
+            border-radius: 5px;
+            transition: box-shadow 0.3s;
+        }
+
+        body.day-mode .group-item {
+            border: 1px solid #005555;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .group-item:hover {
+            box-shadow: 0 0 15px #0ff;
+        }
+
+        body.day-mode .group-item:hover {
+            box-shadow: 0 0 15px #005555;
+        }
+
+        .group-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .group-item a {
+            color: #0ff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        body.day-mode .group-item a {
+            color: #005555;
+        }
+
+        .group-item a:hover {
+            color: #00cc99;
+        }
+
+        body.day-mode .group-item a:hover {
+            color: #003f3f;
+        }
+
         @media (max-width: 768px) {
             .logo {
                 height: 40px;
@@ -548,8 +698,12 @@
                 font-size: 1rem;
             }
 
-            .basmalah, .salam {
+            .basmalah {
                 font-size: 1.5rem;
+            }
+
+            .salam {
+                font-size: 1.2rem;
             }
 
             .home-text {
@@ -569,22 +723,6 @@
             #website {
                 margin-right: -50px;
                 margin-top: 5px;
-            }
-
-            .quote-carousel {
-                margin: 10px auto;
-            }
-
-            .quote {
-                font-size: 1rem;
-            }
-
-            .quote-author {
-                font-size: 0.9rem;
-            }
-
-            .quote-source {
-                font-size: 0.8rem;
             }
 
             .video-player {
@@ -665,9 +803,57 @@
                 padding: 8px 12px;
                 font-size: 0.8rem;
             }
+
+            .quran-index {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .surah-link {
+                font-size: 1rem;
+                padding: 10px;
+            }
+
+            .surah-content {
+                font-size: 1.5rem;
+                line-height: 2.2;
+                padding: 15px;
+            }
+
+            .surah-content h2 {
+                font-size: 1.2rem;
+            }
+
+            .telegram-logo {
+                width: 80px;
+            }
+
+            .telegram-header {
+                font-size: 1.2rem;
+            }
+
+            .group-section h3 {
+                font-size: 1.1rem;
+            }
+
+            .group-item a {
+                font-size: 1rem;
+            }
+
+            .group-item img {
+                width: 30px;
+                height: 30px;
+            }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&Tajawal:wght@400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'UthmanicHafs';
+            src: url('https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/fonts/UthmanicHafs.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
 </head>
 <body>
     <div class="neon-glow"></div>
@@ -677,7 +863,9 @@
         <button class="hamburger" onclick="toggleMenu()">☰</button>
         <div class="nav-menu" id="navMenu">
             <a href="#home" onclick="showSection('home')">Home</a>
+            <a href="#quran" onclick="showSection('quran')">Read Qur’an</a>
             <a href="#videos" onclick="showSection('videos')">All Videos</a>
+            <a href="#telegram" onclick="showSection('telegram')">Telegram Groups</a>
             <a href="#donate" onclick="showSection('donate')">Donate</a>
             <a href="#contact" onclick="showSection('contact')">Contact</a>
         </div>
@@ -685,19 +873,19 @@
 
     <div id="home" class="section active">
         <div class="basmalah">بسم الله الرحمن الرحيم</div>
-        <div class="salam">السلام عليكم</div>
+        <div class="salam">السلام عليكم ورحمة الله وبركاته</div>
         <div class="home-text">
             <div id="welcome-to">Welcome to</div><br>
             <div id="abu-yusuf">Abu Yusuf Alhamdy's</div><br>
             <div id="website">Website</div>
         </div>
-        <div class="quote-carousel">
-            <div class="quote" id="quote-text"></div>
-            <div class="quote-author" id="quote-author"></div>
-            <div class="quote-source" id="quote-source"></div>
-            <button class="quote-next" onclick="nextQuote()">Next Quote</button>
-        </div>
         <div class="latest-video" id="latest-video"></div>
+    </div>
+
+    <div id="quran" class="section">
+        <h2>Read Qur’an</h2>
+        <div id="quran-index" class="quran-index"></div>
+        <div id="surah-content" class="surah-content" style="display: none;"></div>
     </div>
 
     <div id="videos" class="section">
@@ -708,6 +896,68 @@
         </div>
         <div class="all-videos" id="all-videos"></div>
         <button class="view-more" onclick="fetchMoreVideos()">View More Videos</button>
+    </div>
+
+    <div id="telegram" class="section">
+        <h2>Telegram Groups</h2>
+        <img src="https://telegram.org/img/t_logo.png" alt="Telegram Logo" class="telegram-logo">
+        <div class="telegram-header">These are legit verified Islamic, Salafi Groups on Telegram.</div>
+        <div class="telegram-groups">
+            <div class="group-section">
+                <h3>Arabic Groups</h3>
+                <ul class="group-list">
+                    <li class="group-item">
+                        <img src="https://via.placeholder.com/40" alt="Group Icon">
+                        <span>1. </span><a href="https://t.me/AbuQusaiAlMadani" target="_blank">AbuQusaiAlMadani</a>
+                    </li>
+                    <li class="group-item">
+                        <img src="https://via.placeholder.com/40" alt="Group Icon">
+                        <span>2. </span><a href="https://t.me/binothaimeenofficial" target="_blank">binothaimeenofficial</a>
+                    </li>
+                    <li class="group-item">
+                        <img src="https://via.placeholder.com/40" alt="Group Icon">
+                        <span>3. </span><a href="https://t.me/muttasilhadith" target="_blank">muttasilhadith</a>
+                    </li>
+                    <li class="group-item">
+                        <img src="https://via.placeholder.com/40" alt="Group Icon">
+                        <span>4. </span><a href="https://t.me/rslancom" target="_blank">rslancom</a>
+                    </li>
+                    <li class="group-item">
+                        <img src="https://via.placeholder.com/40" alt="Group Icon">
+                        <span>5. </span><a href="https://t.me/sheikhaziz" target="_blank">sheikhaziz</a>
+                    </li>
+                    <li class="group-item">
+                        <img src="https://via.placeholder.com/40" alt="Group Icon">
+                        <span>6. </span><a href="https://t.me/Sualruhaily" target="_blank">Sualruhaily</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="group-section">
+                <h3>English Groups</h3>
+                <ul class="group-list">
+                    <li class="group-item">
+                        <img src="https://via.placeholder.com/40" alt="Group Icon">
+                        <span>1. </span><a href="https://t.me/abukhadeejahsp" target="_blank">abukhadeejahsp</a>
+                    </li>
+                    <li class="group-item">
+                        <img src="https://via.placeholder.com/40" alt="Group Icon">
+                        <span>2. </span><a href="https://t.me/SalafiAudioULTD" target="_blank">SalafiAudioULTD</a>
+                    </li>
+                    <li class="group-item">
+                        <img src="https://via.placeholder.com/40" alt="Group Icon">
+                        <span>3. </span><a href="https://t.me/SalafiRecording" target="_blank">SalafiRecording</a>
+                    </li>
+                    <li class="group-item">
+                        <img src="https://via.placeholder.com/40" alt="Group Icon">
+                        <span>4. </span><a href="https://t.me/troidorg" target="_blank">troidorg</a>
+                    </li>
+                    <li class="group-item">
+                        <img src="https://via.placeholder.com/40" alt="Group Icon">
+                        <span>5. </span><a href="https://t.me/+i6x3FDP2SoA0NmI0" target="_blank">Ummah Radio</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <div id="donate" class="section">
@@ -753,6 +1003,8 @@
             }
             if (sectionId === 'donate') {
                 checkDonationStatus();
+            } else if (sectionId === 'quran') {
+                showQuranIndex();
             }
         }
 
@@ -778,24 +1030,6 @@
                 thankYouMessage.classList.remove('active');
             }
         }
-
-        const quotes = [
-            { text: "Seek knowledge from the cradle to the grave.", author: "Imam Ahmad ibn Hanbal", source: "Reported in Al-Bayhaqi’s Shu’ab al-Iman" },
-            { text: "The best of people are those who benefit others.", author: "Ibn Taymiyyah", source: "Majmu’ al-Fatawa" },
-            { text: "Patience is the key to relief.", author: "Imam al-Shafi’i", source: "Al-Shafi’i’s Diwan" }
-        ];
-        let currentQuote = 0;
-        function showQuote() {
-            document.getElementById('quote-text').textContent = quotes[currentQuote].text;
-            document.getElementById('quote-author').textContent = `- ${quotes[currentQuote].author}`;
-            document.getElementById('quote-source').textContent = quotes[currentQuote].source;
-        }
-        function nextQuote() {
-            currentQuote = (currentQuote + 1) % quotes.length;
-            showQuote();
-        }
-        showQuote();
-        setInterval(nextQuote, 10000);
 
         document.querySelectorAll('.nav-menu a').forEach(link => {
             link.addEventListener('mouseover', () => {
@@ -908,10 +1142,63 @@
             }
         }
 
+        // Qur'an Page Logic
+        const surahNames = [
+            "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة",
+            "يونس", "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم",
+            "طه", "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص",
+            "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص",
+            "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد",
+            "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة",
+            "الحديد", "المجادلة", "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن",
+            "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج", "نوح", "الجن", "المزمل",
+            "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس", "التكوير",
+            "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر",
+            "البلد", "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة",
+            "الزلزلة", "العاديات", "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش",
+            "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"
+        ];
+
+        async function showQuranIndex() {
+            const quranIndex = document.getElementById('quran-index');
+            const surahContent = document.getElementById('surah-content');
+            quranIndex.style.display = 'grid';
+            surahContent.style.display = 'none';
+            quranIndex.innerHTML = surahNames.map((name, index) => `
+                <a href="#quran/surah-${index + 1}" class="surah-link" onclick="fetchSurah(${index + 1})">${index + 1}. ${name}</a>
+            `).join('');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function fetchSurah(surahNumber) {
+            try {
+                const response = await fetch(`http://api.alquran.cloud/v1/surah/${surahNumber}/ar.hafs`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                const surah = data.data;
+                const quranIndex = document.getElementById('quran-index');
+                const surahContent = document.getElementById('surah-content');
+                quranIndex.style.display = 'none';
+                surahContent.style.display = 'block';
+                surahContent.innerHTML = `
+                    <h2>سورة ${surah.name}</h2>
+                    ${surah.ayahs.map(ayah => `<p>${ayah.text} (${ayah.numberInSurah})</p>`).join('')}
+                    <button class="back-to-index" onclick="showQuranIndex()">Back to Index</button>
+                `;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (error) {
+                console.error('Error fetching Surah:', error.message);
+                document.getElementById('surah-content').innerHTML = '<p>Failed to load Surah. Please try again later.</p>';
+            }
+        }
+
         window.onload = () => {
             fetchLatestVideo();
             fetchAllVideos();
             checkDonationStatus();
+            showQuranIndex();
         };
     </script>
 </body>
